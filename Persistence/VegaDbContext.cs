@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using vega.Core.Models;
+using vega.Core.Models.States;
 
 namespace vega.Persistence
 {
@@ -12,6 +13,9 @@ namespace vega.Persistence
         public DbSet<Vehicle> Vehicle { get; set; }
         public DbSet<Model> Models { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<StateInitialiser> StateInitialisers { get; set; }
+        public DbSet<PlanningApp> PlanningApps { get; set; }
+        public DbSet<StateStatus> StateStatus { get; set; }
 
         public VegaDbContext(DbContextOptions<VegaDbContext> options) : base (options)
         {

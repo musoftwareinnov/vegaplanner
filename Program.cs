@@ -19,7 +19,7 @@ namespace vega
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseKestrel()
+                .UseKestrel(options => { options.Limits.MaxRequestBodySize = 1000000000; } ) //For large images uploads 100MB
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()

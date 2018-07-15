@@ -30,7 +30,13 @@ namespace vega
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
+            services.Configure<StateStatusSettings>(Configuration.GetSection("StateStatusSettings"));
             services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IPhotoRepository, PhotoRepository>();
+
+            //Add new repository here
+            services.AddScoped<IStateInitialiserRepository, StateInitialiserRepository>();
+            services.AddScoped<IPlanningAppRepository, PlanningAppRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper();
             services.AddDbContext<VegaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));

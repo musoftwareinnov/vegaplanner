@@ -12,6 +12,9 @@
   npm webpack   #check build is okay
 
 
+#change env to production
+export ASPNETCORE_ENVIRONMENT=Production
+webpack -- run to update changes  
 
 #database stuff
   215  dotnet ef migrations add InitialModel

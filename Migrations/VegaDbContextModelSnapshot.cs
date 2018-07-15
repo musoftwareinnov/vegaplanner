@@ -75,13 +75,117 @@ namespace vega.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<int?>("VehicleId");
+                    b.Property<int>("VehicleId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("VehicleId");
 
                     b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("vega.Core.Models.PlanningApp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CustomerId");
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<int>("StateInitialiserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateInitialiserId");
+
+                    b.ToTable("PlanningApps");
+                });
+
+            modelBuilder.Entity("vega.Core.Models.PlanningAppState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("CompletionDate");
+
+                    b.Property<DateTime>("DueByDate");
+
+                    b.Property<int?>("PlanningAppId");
+
+                    b.Property<int>("StateInitialiserStateId");
+
+                    b.Property<int>("StateStatusId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlanningAppId");
+
+                    b.HasIndex("StateInitialiserStateId");
+
+                    b.HasIndex("StateStatusId");
+
+                    b.ToTable("PlanningAppState");
+                });
+
+            modelBuilder.Entity("vega.Core.Models.StateInitialiser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StateInitialisers");
+                });
+
+            modelBuilder.Entity("vega.Core.Models.States.StateInitialiserState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AlertToCompletionTime");
+
+                    b.Property<int>("CompletionTime");
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<int?>("StateInitialiserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateInitialiserId");
+
+                    b.ToTable("StateInitialiserState");
+                });
+
+            modelBuilder.Entity("vega.Core.Models.States.StateStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StateStatus");
                 });
 
             modelBuilder.Entity("vega.Core.Models.Vehicle", b =>
@@ -127,7 +231,40 @@ namespace vega.Migrations
                 {
                     b.HasOne("vega.Core.Models.Vehicle")
                         .WithMany("Photos")
-                        .HasForeignKey("VehicleId");
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("vega.Core.Models.PlanningApp", b =>
+                {
+                    b.HasOne("vega.Core.Models.StateInitialiser", "StateInitialiser")
+                        .WithMany()
+                        .HasForeignKey("StateInitialiserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("vega.Core.Models.PlanningAppState", b =>
+                {
+                    b.HasOne("vega.Core.Models.PlanningApp")
+                        .WithMany("PlanningAppStates")
+                        .HasForeignKey("PlanningAppId");
+
+                    b.HasOne("vega.Core.Models.States.StateInitialiserState", "state")
+                        .WithMany()
+                        .HasForeignKey("StateInitialiserStateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("vega.Core.Models.States.StateStatus", "StateStatus")
+                        .WithMany()
+                        .HasForeignKey("StateStatusId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("vega.Core.Models.States.StateInitialiserState", b =>
+                {
+                    b.HasOne("vega.Core.Models.StateInitialiser")
+                        .WithMany("States")
+                        .HasForeignKey("StateInitialiserId");
                 });
 
             modelBuilder.Entity("vega.Core.Models.Vehicle", b =>
