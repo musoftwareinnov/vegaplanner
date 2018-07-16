@@ -29,19 +29,27 @@ namespace vega.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            //vehicle.LastUpdate = DateTime.Now;
-
             var planningApp = mapper.Map<CreatePlanningAppResource, PlanningApp>(planningResource);
-
             repository.Add(planningApp);
 
             await unitOfWork.CompleteAsync();
 
-            //PlanningApp planningApp = await repository.GetPlanningApp();
+            planningApp = await repository.GetPlanningApp(planningApp.Id, includeRelated: true);
+            var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
 
-            // var result = mapper.Map<Vehicle, VehicleResource>(vehicle);
+            return Ok(result);
+        }
 
-            return Ok();
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPlanningApp(int id)
+        {
+            var planningApp = await repository.GetPlanningApp(id, includeRelated: true);
+
+            if (planningApp == null)
+                return NotFound();
+
+            var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
+            return Ok(result);
         }
     }
 }

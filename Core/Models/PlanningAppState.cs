@@ -15,5 +15,6 @@ namespace vega.Core.Models
 
         public int StateStatusId { get; set; }
         public StateStatus StateStatus { get; set; }
+        public bool CurrentState { get; set; }
     }
 }

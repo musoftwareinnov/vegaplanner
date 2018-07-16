@@ -25,30 +25,33 @@ namespace vega.Persistence
 
         public void Add(PlanningApp planningApp)
         {
-
             var stateInitialiser = vegaDbContext.StateInitialisers
                             .Where(s => s.Id == planningApp.StateInitialiserId)
                                 .Include(t => t.States)
                                 .SingleOrDefault();
 
-    		DateTime today = DateTime.Now;
+            var initialStatus = vegaDbContext.StateStatus.Where(s => s.Name == stateStatusSettings.STATE_ON_TIME).SingleOrDefault();
 
-            foreach(var state in stateInitialiser.States) {
-                
-                PlanningAppState newState = new PlanningAppState();
+            planningApp.GeneratePlanningStates(stateInitialiser, initialStatus);
 
-                //Refactor to Business Logic
-                newState.state = state;
-                newState.DueByDate = today.AddDays(state.CompletionTime); //exclude weekends
-                
-                var status = stateStatusSettings.STATE_ON_TIME;
-                var initialStatus = vegaDbContext.StateStatus.Where(s => s.Name == stateStatusSettings.STATE_ON_TIME).SingleOrDefault();
-                newState.StateStatus = initialStatus;
-
-                planningApp.PlanningAppStates.Add(newState);
-                //planningApp.PlanningAppStates.Add()
-            }
             vegaDbContext.Add(planningApp);   
+        }
+
+        public async Task<PlanningApp> GetPlanningApp(int id, bool includeRelated = true)
+        {
+            if(!includeRelated) {
+                return await vegaDbContext.PlanningApps.FindAsync(id);
+            }
+            else {
+                return await vegaDbContext.PlanningApps
+                                .Where(s => s.Id == id)
+                                    .Include(t => t.PlanningAppStates)
+                                        .ThenInclude(s => s.state) 
+                                    .Include(t => t.PlanningAppStates)
+                                        .ThenInclude(a => a.StateStatus) 
+                                    .SingleOrDefaultAsync();
+
+            }
         }
     }
 }

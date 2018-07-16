@@ -9,6 +9,7 @@ using vega.Core;
 using vega.Persistence;
 using AutoMapper;
 using vega.Core.Models;
+using vega.Core.Models.Settings;
 
 namespace vega
 {
@@ -31,6 +32,8 @@ namespace vega
         {
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
             services.Configure<StateStatusSettings>(Configuration.GetSection("StateStatusSettings"));
+            services.Configure<DateFormatSetting>(Configuration.GetSection("DateFormatSetting"));
+            //services.Configure<DateSettings>(Configuration.GetSection("DateSettings"));
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
 
