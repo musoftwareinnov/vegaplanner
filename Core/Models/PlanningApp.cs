@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using vega.Core.Models.Generic;
 using vega.Core.Models.States;
 using vega.Extensions.DateTime;
@@ -31,11 +32,11 @@ namespace vega.Core.Models
 
         }
 
-        public void GeneratePlanningStates(StateInitialiser stateInitialiser, StateStatus initialStatus) 
+        public void GeneratePlanningStates(IOrderedEnumerable<StateInitialiserState> stateInitialisers, StateStatus initialStatus) 
         {
             DateTime today = DateTime.Now; //TODO Get From Settings
 
-            foreach(var stateInialiser in stateInitialiser.States) {
+            foreach(var stateInialiser in stateInitialisers) {
                 PlanningAppState newState = new PlanningAppState();
                 newState.state = stateInialiser;
 

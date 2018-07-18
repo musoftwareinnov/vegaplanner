@@ -21,18 +21,5 @@ namespace vega.Mapping.MappingProfiles
                 .ForMember(psr => psr.StateStatus,
                     opt => opt.MapFrom(ps => ps.StateStatus.Name));
         }
-
-        // public PlanningAppStateMapping(IOptionsSnapshot<DateFormatSetting> options)
-        // {
-        //     this.options = options.Value;  //Date format
-
-        //     CreateMap<PlanningAppState, PlanningAppStateResource>()
-        //         .ForMember(psr => psr.StateName,
-        //             opt => opt.MapFrom(ps => ps.state.Name))
-        //         .ForMember(psr => psr.DueByDate,
-        //             opt => opt.MapFrom(ps => ps.DueByDate.ToString(this.options.DateFormat)))
-        //         .ForMember(psr => psr.StateStatus,
-        //             opt => opt.MapFrom(ps => ps.StateStatus.Name));
-        // }
     }
 }

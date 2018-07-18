@@ -1,7 +1,14 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using vega.Core;
 using vega.Core.Models;
+using vega.Core;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System;
+using vega.Extensions;
+using vega.Core.Models.States;
+using Microsoft.Extensions.Options;
 
 namespace vega.Persistence
 {
@@ -14,68 +21,26 @@ namespace vega.Persistence
 
         }
 
-        //   Task<StateInitialiser> GetStateInitialiser(int id);
-        //   void Add(StateInitialiser StateInitialiser);
-
-        //   void Remove(StateInitialiser StateInitialiser);
-
-        //   Task<IEnumerable<StateInitialiser>> GetStateInitialisers();
-
-
         public async Task<StateInitialiser> GetStateInitialiser(int id)
         {
-            return await vegaDbContext.StateInitialisers
-                .Include(s => s.States)
-                .SingleOrDefaultAsync(i => i.Id == id);
+            var stateInitialiser =  await vegaDbContext.StateInitialisers
+                            .Where(s => s.Id == id)
+                                .Include(t => t.States)
+                                .SingleOrDefaultAsync();
+
+            //Important to keep order of states as they can be added and removed - 
+            //EF core cant do Include(t => t.States.Orderby)
+            var orderedStates = stateInitialiser.States.OrderBy(o => o.OrderId); 
+            stateInitialiser.States = orderedStates.ToList();
+
+            return stateInitialiser;
+        }
+
+        public async Task<ICollection<StateInitialiser>> GetStateInitialisers()
+        {
+                return  await vegaDbContext.StateInitialisers.ToListAsync();
+          
         }
     }
 }
-    //     public void Add(Vehicle vehicle)
-    //     {
-    //         vegaDbContext.Add(vehicle);
-
-    //     }
-
-    //     public void Remove(Vehicle vehicle)
-    //     {
-    //         vegaDbContext.Remove(vehicle);
-
-    //     }
-
-    //     public async Task<QueryResult<Vehicle>> GetVehicles(VehicleQuery queryObj)
-    //     {
-    //         var result = new QueryResult<Vehicle>();
-
-    //         var query = vegaDbContext.Vehicle
-    //             .Include(v => v.Model)
-    //                 .ThenInclude(m => m.Make)
-    //             .Include(v => v.Features)
-    //                 .ThenInclude(vf => vf.Feature)
-    //             .AsQueryable();
-
-    //         if (queryObj.MakeId.HasValue)
-    //             query = query.Where(v => v.Model.MakeId == queryObj.MakeId);
-
-    //         if (queryObj.ModelId.HasValue)
-    //             query = query.Where(v => v.ModelId == queryObj.ModelId);
-                
-    //         var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>()
-    //         {
-    //             ["make"] = v => v.Model.Make.Name,
-    //             ["model"] = v => v.Model.Name,
-    //             ["contactName"] = v => v.Contact.Name,
-    //             //["id"] = v => v.Id   NOTE EF auto adds Id if not existing here!
-    //         };
-
-    //         query = query.ApplyOrdering(queryObj, columnsMap);
-            
-    //         result.TotalItems = await query.CountAsync();
-
-    //         query = query.ApplyPaging(queryObj);
-
-    //         result.Items = await query.ToListAsync();
-
-    //         return result;     
-    //     }
-    // }
-    // }
+   

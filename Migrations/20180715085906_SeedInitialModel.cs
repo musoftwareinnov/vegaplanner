@@ -45,7 +45,7 @@ namespace vega.Migrations
             migrationBuilder.Sql("DELETE FROM Models");
 
             migrationBuilder.Sql("DELETE Features WHERE NAME IN ('Feature1', 'Feature2', 'Feature3')");
-                        migrationBuilder.Sql("DELETE StateInitialiserState WHERE StateInitialiserId = (SELECT ID FROM Stateinitialisers WHERE Name = 'General')");
+            migrationBuilder.Sql("DELETE StateInitialiserState WHERE StateInitialiserId = (SELECT ID FROM Stateinitialisers WHERE Name = 'General')");
             migrationBuilder.Sql("DELETE Stateinitialisers WHERE Name = 'General'");
         }
     }

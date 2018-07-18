@@ -9,11 +9,11 @@ namespace vega.Core.Models
 {
     public class StateInitialiser : IdNameProperty
     {
-        public ICollection<StateInitialiserState> States { get; set; }
+        public List<StateInitialiserState> States { get; set; }
 
         public StateInitialiser()
         {
-            States = new Collection<StateInitialiserState>();
+            States = new List<StateInitialiserState>();
 
         }
     }

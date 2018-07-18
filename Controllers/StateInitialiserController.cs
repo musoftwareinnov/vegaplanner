@@ -1,7 +1,11 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using vega.Controllers.Resources;
 using vega.Core;
+using vega.Core.Models;
+using vega.Core.Models.States;
 
 namespace vega.Controllers
 {
@@ -26,10 +30,29 @@ namespace vega.Controllers
             if (stateInitialiser == null)
                 return NotFound();
 
-            //var result = mapper.Map<Vehicle, VehicleResource>(vehicle);
+            var result = mapper.Map<StateInitialiser, StateInitialiserResource>(stateInitialiser);
 
-            return Ok(stateInitialiser);
+            return Ok(result);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetStateInitialisers()   
+        {
+            var stateInitialiser = await stateRepository.GetStateInitialisers();
+
+            if (stateInitialiser == null)
+                return NotFound();
+
+            var result = mapper.Map<ICollection<StateInitialiser>, ICollection<StateInitialiserResource>>(stateInitialiser);
+
+            return Ok(result);
+        }
+
+        // [HttpPost]
+        // public async Task<IActionResult> CreateNewState([FromBody] SaveVehicleResource vehicleResource)
+        // {
+        //     if (!ModelState.IsValid)
+        //         return BadRequest(ModelState);
+        // }
     }
 }

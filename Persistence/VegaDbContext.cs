@@ -25,6 +25,14 @@ namespace vega.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
                 modelBuilder.Entity<VehicleFeature>().HasKey(vf => new { vf.VehicleId, vf.FeatureId });
                 modelBuilder.Entity<Vehicle>().OwnsOne(c => c.Contact);
+        
+                
+                // modelBuilder.Entity<InitialiseState>()
+                //     .HasIndex(s => s.OrderId);
+
+                    //.IsUnique();
+
+                //modelBuilder.Entity<StateInitialiserState>().HasKey(vf => new { vf.OrderId });
         }
     }
 }

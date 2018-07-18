@@ -11,9 +11,10 @@ using vega.Persistence;
 namespace vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    partial class VegaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180717075102_AddOrderIdToStateTable")]
+    partial class AddOrderIdToStateTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,11 +168,14 @@ namespace vega.Migrations
 
                     b.Property<int>("OrderId");
 
-                    b.Property<int>("StateInitialiserId");
+                    b.Property<int?>("StateInitialiserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("StateInitialiserId");
+
+                    b.HasIndex("OrderId", "Id")
+                        .IsUnique();
 
                     b.ToTable("StateInitialiserState");
                 });
@@ -268,8 +272,7 @@ namespace vega.Migrations
                 {
                     b.HasOne("vega.Core.Models.StateInitialiser")
                         .WithMany("States")
-                        .HasForeignKey("StateInitialiserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("StateInitialiserId");
                 });
 
             modelBuilder.Entity("vega.Core.Models.Vehicle", b =>

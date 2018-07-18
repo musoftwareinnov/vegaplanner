@@ -38,6 +38,7 @@ namespace vega
             services.AddScoped<IPhotoRepository, PhotoRepository>();
 
             //Add new repository here
+            services.AddScoped<IStateInitialiserStateRepository, StateInitialiserStateRepository>();
             services.AddScoped<IStateInitialiserRepository, StateInitialiserRepository>();
             services.AddScoped<IPlanningAppRepository, PlanningAppRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -30,10 +30,12 @@ namespace vega.Persistence
                                 .Include(t => t.States)
                                 .SingleOrDefault();
 
+            //Important to keep order of states as they can be added and removed - 
+            //EF core cant do Include(t => t.States.Orderby)
+            var orderedStates = stateInitialiser.States.OrderBy(o => o.OrderId); 
             var initialStatus = vegaDbContext.StateStatus.Where(s => s.Name == stateStatusSettings.STATE_ON_TIME).SingleOrDefault();
 
-            planningApp.GeneratePlanningStates(stateInitialiser, initialStatus);
-
+            planningApp.GeneratePlanningStates(orderedStates, initialStatus);
             vegaDbContext.Add(planningApp);   
         }
 
