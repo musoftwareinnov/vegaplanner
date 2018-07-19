@@ -15,10 +15,6 @@ namespace vega.Controllers
     [Route("/api/stateinitialiserstates")]
     public class StateInitialiserStateController : Controller
     {
-        static readonly int BEFORE = 1;
-        static readonly int BETWEEN = 2;
-        static readonly int END = 3;
-
         public StateInitialiserStateController(IMapper mapper, IStateInitialiserStateRepository repository, IUnitOfWork unitOfWork)
         {
             Mapper = mapper;
@@ -52,10 +48,6 @@ namespace vega.Controllers
             }
             else 
                 Repository.AddAfter(stateInitialiserState, stateInitialiserResource.InsertAfterStateOrderId) ;
-            
-            // else {  //Default to END
-            //     Repository.AddEnd(stateInitialiserState);
-            // }
 
             await UnitOfWork.CompleteAsync();
 

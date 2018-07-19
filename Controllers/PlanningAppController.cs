@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using vega.Controllers.Resources;
 using vega.Core.Models;
 using vega.Core;
+using System.Globalization;
+
 namespace vega.Controllers
 {
     [Route("/api/planningapp")]
@@ -49,6 +51,29 @@ namespace vega.Controllers
                 return NotFound();
 
             var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePlanningAppState(int id, [FromBody] UpdatePlanningAppResource planningResource)
+        {
+            DateTime currentDate = DateTime.Now;
+            CultureInfo provider = CultureInfo.InvariantCulture;
+
+            var planningApp = await repository.GetPlanningApp(id, includeRelated: true);
+
+            if (planningApp == null)
+                return NotFound();
+
+            if(planningResource.DateCompleted != null) {
+                currentDate = DateTime.ParseExact(planningResource.DateCompleted, "dd-MM-yyyy", new CultureInfo("en-US") );
+            }
+
+            planningApp = repository.UpdatePlanningAppState(id, currentDate);
+            await unitOfWork.CompleteAsync();
+            
+            var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
+  
             return Ok(result);
         }
     }

@@ -19,14 +19,6 @@ namespace vega.Persistence
         {
             this.vegaDbContext = vegaDbContext;
         }
-
-        // public void AddEnd(StateInitialiserState stateInitialiserState ) {
-        //     var stateInitialiser = GetStateInitialiser(stateInitialiserState.StateInitialiserId);
-
-        //     stateInitialiserState.OrderId = stateInitialiser.States.Max(o => o.OrderId) + 1;
-        //     vegaDbContext.Add(stateInitialiserState);
-        // }
-
         public void AddBeginning(StateInitialiserState stateInitialiserState ) {
             var stateInitialiser = GetStateInitialiser(stateInitialiserState.StateInitialiserId);
 

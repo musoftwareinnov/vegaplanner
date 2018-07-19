@@ -3,6 +3,8 @@ using Microsoft.Extensions.Options;
 using vega.Controllers.Resources;
 using vega.Core.Models;
 using vega.Core.Models.Settings;
+using System;
+using System.Globalization;
 
 namespace vega.Mapping.MappingProfiles
 {
@@ -18,7 +20,9 @@ namespace vega.Mapping.MappingProfiles
                     opt => opt.MapFrom(ps => ps.state.Name))
                 .ForMember(psr => psr.DueByDate,
                     opt => opt.MapFrom(ps => ps.DueByDate.ToString("dd-MM-yyyy"))) //TODO Get from settings
-                .ForMember(psr => psr.StateStatus,
+                .ForMember(psr => psr.DateCompleted,
+                    opt => opt.MapFrom(ps => ps.CompletionDate == null ? "" : ps.CompletionDate.Value.ToLocalTime().ToString("dd-MM-yyyy")))
+                       .ForMember(psr => psr.StateStatus,
                     opt => opt.MapFrom(ps => ps.StateStatus.Name));
         }
     }

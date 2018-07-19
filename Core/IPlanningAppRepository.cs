@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using vega.Core.Models;
 
@@ -7,5 +8,6 @@ namespace vega.Core
     {
         void Add(PlanningApp planningApp);
         Task<PlanningApp> GetPlanningApp(int id, bool includeRelated = true);
+        PlanningApp UpdatePlanningAppState(int id, DateTime dateCompleted);
     }
 }
