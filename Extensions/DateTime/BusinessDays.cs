@@ -40,5 +40,9 @@ namespace vega.Extensions.DateTime
 
             return Enumerable.Range(0, (finishDateExclusive - current).Days).Count(isWorkingDay);
         }
+
+        public static string SettingDateFormat(this System.DateTime date) {
+            return date.ToString("dd-MM-yyyy");
+        }
     }
 }

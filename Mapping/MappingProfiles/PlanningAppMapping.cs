@@ -2,6 +2,7 @@ using System.Linq;
 using AutoMapper;
 using vega.Controllers.Resources;
 using vega.Core.Models;
+using vega.Extensions.DateTime;
 
 namespace vega.Mapping.MappingProfiles
 {
@@ -11,12 +12,15 @@ namespace vega.Mapping.MappingProfiles
         {
             CreateMap<PlanningApp, PlanningAppResource>()
                 .ForMember(psr => psr.CurrentStateStatus,
-                    opt => opt.MapFrom(ps => ps.PlanningAppStates.Where(p => p.CurrentState == true).SingleOrDefault().StateStatus.Name))
+                    opt => opt.MapFrom(ps => ps.Current().StateStatus.Name))
                 .ForMember(psr => psr.CurrentState,
-                    opt => opt.MapFrom(ps => ps.PlanningAppStates.Where(p => p.CurrentState == true).SingleOrDefault().state.Name))
+                    opt => opt.MapFrom(ps => ps.Current().state.Name))
                 .ForMember(psr => psr.NextState,
-                    opt => opt.MapFrom(ps => ps.PlanningAppStates
-                        .Where(p => p.CurrentState == false && p.StateStatus.Name != "Complete").Take(1).SingleOrDefault().state.Name));
+                    opt => opt.MapFrom(ps => ps.Next().state.Name))
+                .ForMember(psr => psr.PlanningStatus, 
+                    opt => opt.MapFrom(ps => ps.PlanningStatus()))
+                .ForMember(psr => psr.CompletionDate, 
+                    opt => opt.MapFrom(ps => ps.CompletionDate().SettingDateFormat())); 
             
             CreateMap<CreatePlanningAppResource, PlanningApp>();
         }

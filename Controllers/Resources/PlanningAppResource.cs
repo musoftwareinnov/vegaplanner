@@ -6,14 +6,15 @@ namespace vega.Controllers.Resources
 {
     public class PlanningAppResource
     {
+        public int Id { get; set; }
         public int CustomerId { get; set; }
-        //public String StateName { get; set; }
-        // public DateTime DueByDate { get; set; }
-        // public DateTime? DateCompleted { get; set; }
-        // public String StateStatus { get; set; }
+
+        public string PlanningStatus { get; set; }
         public string CurrentStateStatus { get; set; }
         public string CurrentState { get; set; }
         public string NextState { get; set; }
+
+        public string CompletionDate { get; set; }
 
         // public ICollection<KeyValuePairResource> states { get; set; }
         // public PlanningAppResource()

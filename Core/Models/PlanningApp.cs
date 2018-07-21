@@ -18,11 +18,11 @@ namespace vega.Core.Models
         public StateInitialiser StateInitialiser { get; set; }
 
         // public int CurrentStateId { get; set; }
-        // public StateInitialiserState CurrentState { get; set; }
+        // public PlanningAppState CurrentPlanningState { get; set; }
 
         // public int NextStateId { get; set; }
-        // public StateInitialiserState NextState { get; set; }
-
+        // public PlanningAppState NextPlanningState { get; set; }
+        public DateTime CurrentStateCompletionDate { get; set; }
 
         public IList<PlanningAppState> PlanningAppStates { get; set; }
 
@@ -34,7 +34,7 @@ namespace vega.Core.Models
 
         public void GeneratePlanningStates(IOrderedEnumerable<StateInitialiserState> stateInitialisers, StateStatus initialStatus) 
         {
-            DateTime today = DateTime.Now; //TODO Get From Settings
+            DateTime today = DateTime.Now.Date; //TODO Get From Settings
 
             foreach(var stateInialiser in stateInitialisers) {
                 PlanningAppState newState = new PlanningAppState();
@@ -52,10 +52,92 @@ namespace vega.Core.Models
                 newState.StateStatus = initialStatus;
                 PlanningAppStates.Add(newState);
             }
-
             //set first state to current state
             if(PlanningAppStates.Count > 0)
                  PlanningAppStates[0].CurrentState = true;
         }
+
+        public void NextState(List<StateStatus> statusList)
+        {
+            if(!Completed()) {
+                if(CurrentStateCompletionDate != null)
+                {
+                    var current = Current(); 
+                    if(!isLastState(current)) {
+                            Next().CurrentState = true;   //move to next state
+                    }                   
+                    current.CloseOutState(CurrentStateCompletionDate, statusList );                   
+                    //If Overran then roll all future dates
+                }
+            }
+        }
+
+        public void PrevState(List<StateStatus> statusList)
+        {
+            
+            var current = Current();
+            if(current != null)   //Cannot Role back a completed application
+            {
+                if(!isFirstState(current))
+                {
+                    Prev().ReOpenState(CurrentStateCompletionDate, statusList);
+                    current.ReSetState(CurrentStateCompletionDate, statusList);
+                }
+            }
+        }
+
+        public PlanningAppState Next()
+        {       
+            if(!Completed() && !isLastState(Current()))
+                return PlanningAppStates[PlanningAppStates.IndexOf(Current())+1]; 
+            else    
+                return null;
+        }
+
+        private PlanningAppState Prev()
+        {   
+                return PlanningAppStates[PlanningAppStates.IndexOf(Current())-1]; 
+        }
+
+        public bool Completed()
+        { 
+             return PlanningAppStates.Where(p => p.CurrentState == true).Count() == 0;
+        }
+
+        public PlanningAppState Current()
+        {
+                return PlanningAppStates.Where(s => s.CurrentState == true).SingleOrDefault();
+        }
+
+        public string PlanningStatus() {
+            return Completed() ? "Completed" : "In Progress";  //TODO take from database
+        }
+
+        public DateTime CompletionDate() {
+            return LastState().DueByDate;
+        }
+
+        private bool isLastState(PlanningAppState planningAppState)
+        {
+                return PlanningAppStates.Count() == (PlanningAppStates.IndexOf(planningAppState) + 1);
+        }
+
+        private bool isFirstState(PlanningAppState planningAppState)
+        {
+                return PlanningAppStates.IndexOf(planningAppState) == 0;
+        }
+
+        private PlanningAppState LastState()
+        {
+                return PlanningAppStates.Count() > 0 ? PlanningAppStates[PlanningAppStates.Count() - 1] : null;
+                
+        }
+
+        private PlanningAppState FirstState(PlanningAppState planningAppState)
+        {
+                return PlanningAppStates.Count() > 0 ? PlanningAppStates[0] : null;
+        }
+
+
     }
 }

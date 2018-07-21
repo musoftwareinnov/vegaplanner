@@ -56,35 +56,8 @@ namespace vega.Persistence
             }
         }
 
-        public PlanningApp UpdatePlanningAppState(int id, DateTime dateCompleted)
+        public PlanningApp UpdatePlanningApp(PlanningApp planningApp)
         {
-            var planningApp = vegaDbContext.PlanningApps
-                                .Where(s => s.Id == id)
-                                    .Include(t => t.PlanningAppStates)
-                                        .ThenInclude(s => s.state) 
-                                    .Include(t => t.PlanningAppStates)
-                                        .ThenInclude(a => a.StateStatus)
-                                    .SingleOrDefault();
-
-            //States are in sorted order when generated so will always be sorted by OrderId in database
-            var currentState = planningApp.PlanningAppStates.Where(s => s.CurrentState == true).SingleOrDefault();
-
-            if(currentState == null) return planningApp;
-            
-            int idx = planningApp.PlanningAppStates.IndexOf(currentState);
-            if(idx+1 == planningApp.PlanningAppStates.Count) {
-                //We have completed the application Update Where Required
-            }
-            else {
-                planningApp.PlanningAppStates[idx+1].CurrentState = true;
-            }
-            
-            planningApp.PlanningAppStates[idx].CompletionDate = dateCompleted;
-            planningApp.PlanningAppStates[idx].CurrentState = false;
-            planningApp.PlanningAppStates[idx].StateStatus = vegaDbContext.StateStatus.Where(s => s.Name == "Complete").SingleOrDefault();
-            //Assign current state to planning app
-            //planningApp.
-
             vegaDbContext.Update(planningApp);
 
             return planningApp;

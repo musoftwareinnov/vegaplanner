@@ -8,6 +8,6 @@ namespace vega.Core
     {
         void Add(PlanningApp planningApp);
         Task<PlanningApp> GetPlanningApp(int id, bool includeRelated = true);
-        PlanningApp UpdatePlanningAppState(int id, DateTime dateCompleted);
+        PlanningApp UpdatePlanningApp(PlanningApp planningApp);
     }
 }

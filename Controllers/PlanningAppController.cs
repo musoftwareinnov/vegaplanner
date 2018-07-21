@@ -17,13 +17,23 @@ namespace vega.Controllers
         private readonly IMapper mapper;
         private readonly IPlanningAppRepository repository;
         private readonly IUnitOfWork unitOfWork;
-        public PlanningAppController(IMapper mapper, IPlanningAppRepository repository, IUnitOfWork unitOfWork)
+        public IStateStatusRepository statusListRepository { get; }
+
+        private readonly int NextState = 1;
+        private readonly int PrevState = 2;
+        private readonly int RollbackState = 3;
+        public PlanningAppController(IMapper mapper, 
+                                     IPlanningAppRepository repository, 
+                                     IUnitOfWork unitOfWork,
+                                     IStateStatusRepository statusListRepository)
         {
             this.unitOfWork = unitOfWork;
             this.repository = repository;
             this.mapper = mapper;
-
+            this.statusListRepository = statusListRepository;
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> CreatePlanningApp([FromBody] CreatePlanningAppResource planningResource)
@@ -45,10 +55,14 @@ namespace vega.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPlanningApp(int id)
         {
+            
             var planningApp = await repository.GetPlanningApp(id, includeRelated: true);
 
             if (planningApp == null)
                 return NotFound();
+
+            //Update statuses depending on current date.
+            //planningApp.updateStatuses
 
             var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
             return Ok(result);
@@ -58,22 +72,35 @@ namespace vega.Controllers
         public async Task<IActionResult> UpdatePlanningAppState(int id, [FromBody] UpdatePlanningAppResource planningResource)
         {
             DateTime currentDate = DateTime.Now;
-            CultureInfo provider = CultureInfo.InvariantCulture;
+            var stateStatusList = await statusListRepository.GetStateStatusList(); //List of possible statuses
 
             var planningApp = await repository.GetPlanningApp(id, includeRelated: true);
 
             if (planningApp == null)
                 return NotFound();
 
-            if(planningResource.DateCompleted != null) {
-                currentDate = DateTime.ParseExact(planningResource.DateCompleted, "dd-MM-yyyy", new CultureInfo("en-US") );
-            }
+            if(planningResource.CurrentStateCompletionDate != null)
+                currentDate = DateTime.ParseExact(planningResource.CurrentStateCompletionDate, "dd-MM-yyyy", new CultureInfo("en-US") );
 
-            planningApp = repository.UpdatePlanningAppState(id, currentDate);
+            planningApp.CurrentStateCompletionDate = currentDate;
+            if(planningResource.method == NextState) {
+                planningApp.NextState(stateStatusList);
+                //Inject Logger to say what changed state by which user
+            }
+            else if (planningResource.method == PrevState) 
+                planningApp.PrevState(stateStatusList);
+            // else if (planningResource.method = UpdatePlanningInitialise(id)
+            //     planningApp = repository.UpdatePlanningAppRollbackToState(id, stateId);
+            else 
+                {
+                ModelState.AddModelError("Update Planning App", "Invalid Instuction Method Id: " + planningResource.method);
+                    return BadRequest(ModelState);
+                }
+
+            repository.UpdatePlanningApp(planningApp);
             await unitOfWork.CompleteAsync();
-            
+         
             var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
-  
             return Ok(result);
         }
     }
