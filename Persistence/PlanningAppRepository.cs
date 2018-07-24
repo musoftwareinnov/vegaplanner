@@ -54,7 +54,26 @@ namespace vega.Persistence
                                     .SingleOrDefaultAsync();
 
             }
+
+            
         }
+
+        // public async Task<IEnumerable<PlanningApp>> GetPlanningApps(bool includeRelated = true)
+        // {
+           
+        //         var apps =  vegaDbContext.PlanningApps
+        //                             .Include(t => t.PlanningAppStates).Where(p => p.Current().StateStatus.Name == "Overdue")
+        //                             .Include(t => t.PlanningAppStates)
+        //                                 .ThenInclude(a => a.StateStatus)
+        //                             // .SingleOrDefaultAsync();
+
+
+
+        //         return apps;
+        //     }
+
+            
+        // }
 
         public PlanningApp UpdatePlanningApp(PlanningApp planningApp)
         {

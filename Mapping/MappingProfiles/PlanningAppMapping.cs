@@ -7,12 +7,12 @@ using vega.Extensions.DateTime;
 namespace vega.Mapping.MappingProfiles
 {
     public class PlanningAppMapping : Profile
-    {
+    {  
         public PlanningAppMapping()
         {
             CreateMap<PlanningApp, PlanningAppResource>()
                 .ForMember(psr => psr.CurrentStateStatus,
-                    opt => opt.MapFrom(ps => ps.Current().StateStatus.Name))
+                    opt => opt.MapFrom(ps => ps.Current().DynamicStateStatus()))
                 .ForMember(psr => psr.CurrentState,
                     opt => opt.MapFrom(ps => ps.Current().state.Name))
                 .ForMember(psr => psr.NextState,

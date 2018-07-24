@@ -4,6 +4,6 @@ namespace vega.Core.Models.Settings
 {
     public class DateSettings
     {
-        public DateTime currentDate { get; set; }
+        public string CurrentDateOverride { get; set; }
     }
 }

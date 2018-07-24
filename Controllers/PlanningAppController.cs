@@ -8,6 +8,10 @@ using vega.Controllers.Resources;
 using vega.Core.Models;
 using vega.Core;
 using System.Globalization;
+using vega.Extensions.DateTime;
+using Microsoft.Extensions.Options;
+using vega.Core.Models.Settings;
+using vega.Core.Utils;
 
 namespace vega.Controllers
 {
@@ -18,22 +22,34 @@ namespace vega.Controllers
         private readonly IPlanningAppRepository repository;
         private readonly IUnitOfWork unitOfWork;
         public IStateStatusRepository statusListRepository { get; }
+        public DateSettings dateSettings { get; set; }
 
+        public DateTime CurrentDate { get; set; }
         private readonly int NextState = 1;
         private readonly int PrevState = 2;
         private readonly int RollbackState = 3;
         public PlanningAppController(IMapper mapper, 
                                      IPlanningAppRepository repository, 
                                      IUnitOfWork unitOfWork,
-                                     IStateStatusRepository statusListRepository)
+                                     IStateStatusRepository statusListRepository,
+                                     IOptionsSnapshot<DateSettings> options)
         {
             this.unitOfWork = unitOfWork;
             this.repository = repository;
             this.mapper = mapper;
             this.statusListRepository = statusListRepository;
+            dateSettings = options.Value;
+
+            //TODO: refactor out of controller
+            if(options.Value.CurrentDateOverride == "")
+                CurrentDate = DateTime.Now;
+            else {
+                CurrentDate = options.Value.CurrentDateOverride.ParseInputDate();
+            }
+
+            //Store as singleton date for entire controller
+            CurrentDateSingleton.setDate(CurrentDate);
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> CreatePlanningApp([FromBody] CreatePlanningAppResource planningResource)
@@ -48,6 +64,7 @@ namespace vega.Controllers
 
             planningApp = await repository.GetPlanningApp(planningApp.Id, includeRelated: true);
             var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
+            result.BusinessDate = CurrentDate.SettingDateFormat();
 
             return Ok(result);
         }
@@ -59,12 +76,11 @@ namespace vega.Controllers
             var planningApp = await repository.GetPlanningApp(id, includeRelated: true);
 
             if (planningApp == null)
-                return NotFound();
-
-            //Update statuses depending on current date.
-            //planningApp.updateStatuses
+                return NotFound();          
 
             var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
+            result.BusinessDate = CurrentDate.SettingDateFormat();
+
             return Ok(result);
         }
 
@@ -80,15 +96,15 @@ namespace vega.Controllers
                 return NotFound();
 
             if(planningResource.CurrentStateCompletionDate != null)
-                currentDate = DateTime.ParseExact(planningResource.CurrentStateCompletionDate, "dd-MM-yyyy", new CultureInfo("en-US") );
+                currentDate = planningResource.CurrentStateCompletionDate.ParseInputDate();
 
             planningApp.CurrentStateCompletionDate = currentDate;
             if(planningResource.method == NextState) {
                 planningApp.NextState(stateStatusList);
                 //Inject Logger to say what changed state by which user
             }
-            else if (planningResource.method == PrevState) 
-                planningApp.PrevState(stateStatusList);
+            // else if (planningResource.method == PrevState) 
+            //     planningApp.PrevState(stateStatusList);
             // else if (planningResource.method = UpdatePlanningInitialise(id)
             //     planningApp = repository.UpdatePlanningAppRollbackToState(id, stateId);
             else 

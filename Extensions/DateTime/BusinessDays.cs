@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
+using vega.Core.Models.Settings;
 
 namespace vega.Extensions.DateTime
 {
@@ -28,6 +30,9 @@ namespace vega.Extensions.DateTime
 
         public static int GetBusinessDays(this System.DateTime current, System.DateTime finishDateExclusive, List<System.DateTime> excludedDates)
         {
+            if(System.DateTime.Compare(finishDateExclusive, current ) <= 0)
+                return 0;
+
             Func<int, bool> isWorkingDay = days =>
             {
                 var currentDate = current.AddDays(days);
@@ -44,5 +49,15 @@ namespace vega.Extensions.DateTime
         public static string SettingDateFormat(this System.DateTime date) {
             return date.ToString("dd-MM-yyyy");
         }
+
+        public static System.DateTime ParseInputDate(this string dateStr) {
+           return System.DateTime.ParseExact(dateStr, "dd-MM-yyyy", new CultureInfo("en-US"));
+        }    
+
+        // public static System.DateTime CurrentDate(DateSettings dateSettings)
+        // {
+        //         var date = dateSettings.CurrentDateOverride;
+        //         return System.DateTime.ParseExact(dateSettings.CurrentDateOverride, "dd-MM-yyyy", new CultureInfo("en-US"));
+        // }
     }
 }

@@ -4,17 +4,13 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using vega.Core.Models.Generic;
 using vega.Core.Models.States;
+using vega.Core.Utils;
+using vega.Extensions.DateTime;
 
 namespace vega.Core.Models
 {
     public class PlanningAppState
     {
-        public readonly string OnTime =  "OnTime";
-        public readonly string Due =  "Due";
-        public readonly string Overdue =  "Overdue";
-        public readonly string Complete =  "Complete";
-        public readonly string Overran =  "Overran";
-        public readonly string Error =  "Error";
 
         public int Id { get; set; }
         public int StateInitialiserStateId { get; set; }
@@ -29,17 +25,27 @@ namespace vega.Core.Models
         public bool CurrentState { get; set; }
         public StateStatusSettings Options { get; }
 
+
+        public PlanningAppState()
+        {
+            
+
+        }
         /* Helper Methods  */
-        public void CloseOutState(DateTime completionDate, List<StateStatus> stateStatusList) 
+
+        public int CompleteState(DateTime completionDate, List<StateStatus> stateStatusList) 
         {
             CurrentState = false;
             CompletionDate = completionDate;
 
             if(CompletionDate > DueByDate)
-                StateStatus = stateStatusList.Where(s => s.Name == Overran).SingleOrDefault();
+                StateStatus = stateStatusList.Where(s => s.Name == StateList.Overran).SingleOrDefault();
             else 
-                StateStatus = stateStatusList.Where(s => s.Name == Complete).SingleOrDefault();
+                StateStatus = stateStatusList.Where(s => s.Name == StateList.Complete).SingleOrDefault();
+
+            return DateTime.Compare(CompletionDate.Value, DueByDate); 
         }
+    
 
         //REFACTOR THIS CODE !!!!
         public void ReOpenState(DateTime completionDate, List<StateStatus> stateStatusList) 
@@ -47,23 +53,38 @@ namespace vega.Core.Models
             CurrentState = true;
             CompletionDate = null;
 
-            if(DueByDate >= completionDate)
-                  StateStatus = stateStatusList.Where(s => s.Name == OnTime).SingleOrDefault();
-            else 
-                  StateStatus = stateStatusList.Where(s => s.Name == Overdue).SingleOrDefault();
+            // if(DueByDate >= completionDate)
+            //       StateStatus = stateStatusList.Where(s => s.Name == OnTime).SingleOrDefault();
+            // else 
+            //       StateStatus = stateStatusList.Where(s => s.Name == Overdue).SingleOrDefault();
         }
 
-        public void ReSetState(DateTime completionDate, List<StateStatus> stateStatusList) 
+        public void CloseState(DateTime completionDate, List<StateStatus> stateStatusList) 
         {
             CurrentState = false;
             CompletionDate = null;
 
-            if(DueByDate >= completionDate)
-                  StateStatus = stateStatusList.Where(s => s.Name == OnTime).SingleOrDefault();
-            else 
-                  StateStatus = stateStatusList.Where(s => s.Name == Overdue).SingleOrDefault();
+            // if(DueByDate >= completionDate)
+            //       StateStatus = stateStatusList.Where(s => s.Name == OnTime).SingleOrDefault();
+            // else 
+            //       StateStatus = stateStatusList.Where(s => s.Name == Overdue).SingleOrDefault();
         }
 
+        public string DynamicStateStatus() {
+            var alertDate = DueByDate.AddBusinessDays(state.AlertToCompletionTime * -1);
+            
+            var CurrentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
 
+            if(CompletionDate == null  )
+            {
+                if(CurrentDate > DueByDate)
+                    return StateList.Overdue;
+                else if (CurrentDate >= alertDate && CurrentDate <= DueByDate)
+                    return StateList.Due;          
+                else   
+                    return StateList.OnTime;
+            }
+            return StateStatus.Name;
+        }
     }
 }

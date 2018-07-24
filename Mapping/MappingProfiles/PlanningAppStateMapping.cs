@@ -24,7 +24,7 @@ namespace vega.Mapping.MappingProfiles
                 .ForMember(psr => psr.DateCompleted,
                     opt => opt.MapFrom(ps => ps.CompletionDate == null ? "" : ps.CompletionDate.Value.ToLocalTime().SettingDateFormat()))
                 .ForMember(psr => psr.StateStatus,
-                    opt => opt.MapFrom(ps => ps.StateStatus.Name));
+                    opt => opt.MapFrom(ps => ps.DynamicStateStatus()));
         }
     }
 }

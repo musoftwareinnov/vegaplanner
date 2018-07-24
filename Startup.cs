@@ -33,7 +33,7 @@ namespace vega
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
             services.Configure<StateStatusSettings>(Configuration.GetSection("StateStatusSettings"));
             services.Configure<DateFormatSetting>(Configuration.GetSection("DateFormatSetting"));
-            //services.Configure<DateSettings>(Configuration.GetSection("DateSettings"));
+            services.Configure<DateSettings>(Configuration.GetSection("DateSettings"));
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
 
@@ -76,6 +76,8 @@ namespace vega
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+
+            
         }
     }
 }

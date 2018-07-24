@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using vega.Core.Models.Generic;
 using vega.Core.Models.States;
+using vega.Core.Utils;
 using vega.Extensions.DateTime;
 
 namespace vega.Core.Models
@@ -34,7 +35,7 @@ namespace vega.Core.Models
 
         public void GeneratePlanningStates(IOrderedEnumerable<StateInitialiserState> stateInitialisers, StateStatus initialStatus) 
         {
-            DateTime today = DateTime.Now.Date; //TODO Get From Settings
+            var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
 
             foreach(var stateInialiser in stateInitialisers) {
                 PlanningAppState newState = new PlanningAppState();
@@ -47,7 +48,7 @@ namespace vega.Core.Models
                     newState.DueByDate =  prevState.DueByDate.AddBusinessDays(stateInialiser.CompletionTime);
                 }
                 else
-                    newState.DueByDate = today.AddBusinessDays(stateInialiser.CompletionTime);
+                    newState.DueByDate = currentDate.AddBusinessDays(stateInialiser.CompletionTime);
 
                 newState.StateStatus = initialStatus;
                 PlanningAppStates.Add(newState);
@@ -59,19 +60,26 @@ namespace vega.Core.Models
 
         public void NextState(List<StateStatus> statusList)
         {
+
             if(!Completed()) {
-                if(CurrentStateCompletionDate != null)
-                {
-                    var current = Current(); 
-                    if(!isLastState(current)) {
-                            Next().CurrentState = true;   //move to next state
-                    }                   
-                    current.CloseOutState(CurrentStateCompletionDate, statusList );                   
-                    //If Overran then roll all future dates
+
+                var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+                var current = Current(); 
+                if(!isLastState(current)) {
+                        Next().CurrentState = true;   //move to next state
+                }                   
+                current.CompleteState(currentDate, statusList );  
+                var daysDiff = current.DueByDate.GetBusinessDays(currentDate, new List<DateTime>());
+
+                if(daysDiff > 0) {              
+                    //If Overran then roll all future completion dates by business days overdue
+                    var statesToUpdate = UpdateDueByDates(daysDiff);  
                 }
+                
             }
         }
 
+        //Currently Not used = business input required
         public void PrevState(List<StateStatus> statusList)
         {
             
@@ -80,10 +88,30 @@ namespace vega.Core.Models
             {
                 if(!isFirstState(current))
                 {
-                    Prev().ReOpenState(CurrentStateCompletionDate, statusList);
-                    current.ReSetState(CurrentStateCompletionDate, statusList);
+                    var prevState = Prev();
+                    //daysDiff is used to reset the future DueByStates to initial value
+                    var daysDiff = prevState.DueByDate.GetBusinessDays(prevState.CompletionDate.Value, new List<DateTime>());
+
+                    Prev().ReOpenState(CurrentStateCompletionDate, statusList);  //IMPROVE ON THIS!!!!
+                    current.CloseState(CurrentStateCompletionDate, statusList);
+
+                    if(daysDiff > 0)  {
+                        //negate daysDiff to recalculate dueByDa
+                        var statesToUpdate = UpdateDueByDates(-daysDiff);      
+                    }
+
                 }
             }
+        }
+
+
+        //NOT WORKING use completion date
+        private List<PlanningAppState> UpdateDueByDates(int daysDiff)
+        {
+            return PlanningAppStates
+                    .Where(s => s.DueByDate >= Current().DueByDate)
+                    .Select(c => {c.DueByDate = c.DueByDate.AddBusinessDays(daysDiff); return c;})
+                    .ToList();  
         }
 
         public PlanningAppState Next()
@@ -114,7 +142,10 @@ namespace vega.Core.Models
         }
 
         public DateTime CompletionDate() {
-            return LastState().DueByDate;
+            if(!Completed())
+                return LastState().DueByDate;
+            else   
+                return LastState().CompletionDate.Value;
         }
 
         private bool isLastState(PlanningAppState planningAppState)
