@@ -14,8 +14,6 @@ namespace vega.Mapping.MappingProfiles
         //private readonly DateFormatSetting options;
         public PlanningAppStateMapping()
         {
-            //TODO!!!!!!! this.options = options.Value;  //Date format
-
             CreateMap<PlanningAppState, PlanningAppStateResource>()
                 .ForMember(psr => psr.StateName,
                     opt => opt.MapFrom(ps => ps.state.Name))

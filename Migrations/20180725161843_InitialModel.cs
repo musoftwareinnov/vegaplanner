@@ -50,6 +50,20 @@ namespace vega.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StateStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LastUpdate = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StateStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Models",
                 columns: table => new
                 {
@@ -70,6 +84,28 @@ namespace vega.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PlanningApps",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CustomerId = table.Column<int>(nullable: false),
+                    LastUpdate = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(maxLength: 255, nullable: false),
+                    StateInitialiserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlanningApps", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlanningApps_StateInitialisers_StateInitialiserId",
+                        column: x => x.StateInitialiserId,
+                        principalTable: "StateInitialisers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StateInitialiserState",
                 columns: table => new
                 {
@@ -79,7 +115,8 @@ namespace vega.Migrations
                     CompletionTime = table.Column<int>(nullable: false),
                     LastUpdate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
-                    StateInitialiserId = table.Column<int>(nullable: true)
+                    OrderId = table.Column<int>(nullable: false),
+                    StateInitialiserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,7 +126,7 @@ namespace vega.Migrations
                         column: x => x.StateInitialiserId,
                         principalTable: "StateInitialisers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,6 +150,42 @@ namespace vega.Migrations
                         name: "FK_Vehicles_Models_ModelId",
                         column: x => x.ModelId,
                         principalTable: "Models",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlanningAppState",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CompletionDate = table.Column<DateTime>(nullable: true),
+                    CurrentState = table.Column<bool>(nullable: false),
+                    DueByDate = table.Column<DateTime>(nullable: false),
+                    PlanningAppId = table.Column<int>(nullable: true),
+                    StateInitialiserStateId = table.Column<int>(nullable: false),
+                    StateStatusId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlanningAppState", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlanningAppState_PlanningApps_PlanningAppId",
+                        column: x => x.PlanningAppId,
+                        principalTable: "PlanningApps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PlanningAppState_StateInitialiserState_StateInitialiserStateId",
+                        column: x => x.StateInitialiserStateId,
+                        principalTable: "StateInitialiserState",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlanningAppState_StateStatus_StateStatusId",
+                        column: x => x.StateStatusId,
+                        principalTable: "StateStatus",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -172,6 +245,26 @@ namespace vega.Migrations
                 column: "VehicleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlanningApps_StateInitialiserId",
+                table: "PlanningApps",
+                column: "StateInitialiserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlanningAppState_PlanningAppId",
+                table: "PlanningAppState",
+                column: "PlanningAppId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlanningAppState_StateInitialiserStateId",
+                table: "PlanningAppState",
+                column: "StateInitialiserStateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlanningAppState_StateStatusId",
+                table: "PlanningAppState",
+                column: "StateStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StateInitialiserState_StateInitialiserId",
                 table: "StateInitialiserState",
                 column: "StateInitialiserId");
@@ -193,19 +286,28 @@ namespace vega.Migrations
                 name: "Photos");
 
             migrationBuilder.DropTable(
-                name: "StateInitialiserState");
+                name: "PlanningAppState");
 
             migrationBuilder.DropTable(
                 name: "VehicleFeatures");
 
             migrationBuilder.DropTable(
-                name: "StateInitialisers");
+                name: "PlanningApps");
+
+            migrationBuilder.DropTable(
+                name: "StateInitialiserState");
+
+            migrationBuilder.DropTable(
+                name: "StateStatus");
 
             migrationBuilder.DropTable(
                 name: "Features");
 
             migrationBuilder.DropTable(
                 name: "Vehicles");
+
+            migrationBuilder.DropTable(
+                name: "StateInitialisers");
 
             migrationBuilder.DropTable(
                 name: "Models");

@@ -11,8 +11,8 @@ using vega.Persistence;
 namespace vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    [Migration("20180716150353_AddCurrentState")]
-    partial class AddCurrentState
+    [Migration("20180725162025_SeedInitialModel")]
+    partial class SeedInitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -166,7 +166,9 @@ namespace vega.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<int?>("StateInitialiserId");
+                    b.Property<int>("OrderId");
+
+                    b.Property<int>("StateInitialiserId");
 
                     b.HasKey("Id");
 
@@ -267,7 +269,8 @@ namespace vega.Migrations
                 {
                     b.HasOne("vega.Core.Models.StateInitialiser")
                         .WithMany("States")
-                        .HasForeignKey("StateInitialiserId");
+                        .HasForeignKey("StateInitialiserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("vega.Core.Models.Vehicle", b =>

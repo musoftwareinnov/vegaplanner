@@ -1,5 +1,11 @@
-        StaticData
-        
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.Collections.Generic;
+
+namespace vega.Migrations
+{
+    public partial class SeedInitialModel : Migration
+    {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('OnTime', getdate())");
@@ -29,7 +35,9 @@
             migrationBuilder.Sql("INSERT INTO Features (Name) VALUES ('Feature2')");
             migrationBuilder.Sql("INSERT INTO Features (Name) VALUES ('Feature3')");
 
-         migrationBuilder.Sql("DELETE FROM StateInitialiserState WHERE StateInitialiserId = (SELECT ID FROM Stateinitialisers WHERE Name = 'General') ");
+            migrationBuilder.Sql("INSERT INTO StateInitialisers (Name, LastUpdate) VALUES ('General', getdate())"); 
+
+            migrationBuilder.Sql("DELETE FROM StateInitialiserState WHERE StateInitialiserId = (SELECT ID FROM Stateinitialisers WHERE Name = 'General') ");
             migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId) VALUES ('Initial',3, 10, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 1)");
             migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId) VALUES ('EMail Sent',2, 15, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 2)");
             migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId) VALUES ('Client Visited',3, 6, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 3)");
@@ -50,7 +58,5 @@
                         migrationBuilder.Sql("DELETE StateInitialiserState WHERE StateInitialiserId = (SELECT ID FROM Stateinitialisers WHERE Name = 'General')");
             migrationBuilder.Sql("DELETE Stateinitialisers WHERE Name = 'General'");
         }
-
-
-
-
+    }
+}

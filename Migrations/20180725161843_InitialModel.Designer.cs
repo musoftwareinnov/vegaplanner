@@ -11,8 +11,8 @@ using vega.Persistence;
 namespace vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    [Migration("20180718105159_LinkStateToInitialiser")]
-    partial class LinkStateToInitialiser
+    [Migration("20180725161843_InitialModel")]
+    partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

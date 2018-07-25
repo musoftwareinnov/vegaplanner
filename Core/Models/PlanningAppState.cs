@@ -25,14 +25,12 @@ namespace vega.Core.Models
         public bool CurrentState { get; set; }
         public StateStatusSettings Options { get; }
 
-
+   
         public PlanningAppState()
         {
-            
-
+             
         }
         /* Helper Methods  */
-
         public int CompleteState(DateTime completionDate, List<StateStatus> stateStatusList) 
         {
             CurrentState = false;
@@ -45,31 +43,7 @@ namespace vega.Core.Models
 
             return DateTime.Compare(CompletionDate.Value, DueByDate); 
         }
-    
-
-        //REFACTOR THIS CODE !!!!
-        public void ReOpenState(DateTime completionDate, List<StateStatus> stateStatusList) 
-        {
-            CurrentState = true;
-            CompletionDate = null;
-
-            // if(DueByDate >= completionDate)
-            //       StateStatus = stateStatusList.Where(s => s.Name == OnTime).SingleOrDefault();
-            // else 
-            //       StateStatus = stateStatusList.Where(s => s.Name == Overdue).SingleOrDefault();
-        }
-
-        public void CloseState(DateTime completionDate, List<StateStatus> stateStatusList) 
-        {
-            CurrentState = false;
-            CompletionDate = null;
-
-            // if(DueByDate >= completionDate)
-            //       StateStatus = stateStatusList.Where(s => s.Name == OnTime).SingleOrDefault();
-            // else 
-            //       StateStatus = stateStatusList.Where(s => s.Name == Overdue).SingleOrDefault();
-        }
-
+   
         public string DynamicStateStatus() {
             var alertDate = DueByDate.AddBusinessDays(state.AlertToCompletionTime * -1);
             

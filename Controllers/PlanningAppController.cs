@@ -95,16 +95,16 @@ namespace vega.Controllers
             if (planningApp == null)
                 return NotFound();
 
-            if(planningResource.CurrentStateCompletionDate != null)
-                currentDate = planningResource.CurrentStateCompletionDate.ParseInputDate();
+            //Add possibility of override for testing
+            // if(planningResource.CurrentStateCompletionDate != null)
+            //     currentDate = planningResource.CurrentStateCompletionDate.ParseInputDate();
 
-            planningApp.CurrentStateCompletionDate = currentDate;
             if(planningResource.method == NextState) {
                 planningApp.NextState(stateStatusList);
                 //Inject Logger to say what changed state by which user
             }
-            // else if (planningResource.method == PrevState) 
-            //     planningApp.PrevState(stateStatusList);
+            else if (planningResource.method == PrevState) 
+                planningApp.PrevState(stateStatusList);
             // else if (planningResource.method = UpdatePlanningInitialise(id)
             //     planningApp = repository.UpdatePlanningAppRollbackToState(id, stateId);
             else 
@@ -113,10 +113,12 @@ namespace vega.Controllers
                     return BadRequest(ModelState);
                 }
 
+            //Save to database
             repository.UpdatePlanningApp(planningApp);
             await unitOfWork.CompleteAsync();
-         
+
             var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
+            result.BusinessDate = CurrentDate.SettingDateFormat();
             return Ok(result);
         }
     }

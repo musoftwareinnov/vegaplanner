@@ -35,6 +35,7 @@ namespace vega.Persistence
             var orderedStates = stateInitialiser.States.OrderBy(o => o.OrderId); 
             var initialStatus = vegaDbContext.StateStatus.Where(s => s.Name == stateStatusSettings.STATE_ON_TIME).SingleOrDefault();
 
+            //TODO!!! Move out of repository!!!!
             planningApp.GeneratePlanningStates(orderedStates, initialStatus);
             vegaDbContext.Add(planningApp);   
         }
@@ -58,22 +59,23 @@ namespace vega.Persistence
             
         }
 
-        // public async Task<IEnumerable<PlanningApp>> GetPlanningApps(bool includeRelated = true)
-        // {
+        public async Task<IEnumerable<PlanningApp>> GetPlanningApps(bool includeRelated = true)
+        {
            
-        //         var apps =  vegaDbContext.PlanningApps
-        //                             .Include(t => t.PlanningAppStates).Where(p => p.Current().StateStatus.Name == "Overdue")
-        //                             .Include(t => t.PlanningAppStates)
-        //                                 .ThenInclude(a => a.StateStatus)
-        //                             // .SingleOrDefaultAsync();
+                var apps =  await vegaDbContext.PlanningApps
+                                    .Include(t => t.PlanningAppStates)
+                                        .Where(p => p.Current().StateStatus.Name == StateList.Overdue).ToListAsync();
+                                    // .Include(t => t.PlanningAppStates)
+                                    //     .ThenInclude(a => a.StateStatus)
+                                    // // .SingleOrDefaultAsync();
 
 
 
-        //         return apps;
-        //     }
+                return apps;
+            
 
             
-        // }
+        }
 
         public PlanningApp UpdatePlanningApp(PlanningApp planningApp)
         {
