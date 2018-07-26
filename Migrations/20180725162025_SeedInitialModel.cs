@@ -12,7 +12,10 @@ namespace vega.Migrations
           migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Due', getdate())");
           migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Overdue', getdate())");          
           migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Complete', getdate())");  
-          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Overran', getdate())");         
+          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Overran', getdate())");  
+          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('InProgress', getdate())"); 
+          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Archived', getdate())"); 
+          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Terminated', getdate())");
           migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Error', getdate())");  
 
             migrationBuilder.Sql("INSERT INTO Makes (Name) VALUES ('Make1')");

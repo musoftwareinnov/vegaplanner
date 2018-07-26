@@ -9,7 +9,7 @@ namespace vega.Core
     {
         void Add(PlanningApp planningApp);
         Task<PlanningApp> GetPlanningApp(int id, bool includeRelated = true);
-        Task<IEnumerable<PlanningApp>> GetPlanningApps(bool includeRelated = true);
+        QueryResult<PlanningApp> GetPlanningApps(PlanningAppQuery queryObj);
         PlanningApp UpdatePlanningApp(PlanningApp planningApp);
     }
 }

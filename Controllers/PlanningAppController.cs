@@ -15,7 +15,7 @@ using vega.Core.Utils;
 
 namespace vega.Controllers
 {
-    [Route("/api/planningapp")]
+    [Route("/api/planningapps")]
     public class PlanningAppController : Controller
     {
         private readonly IMapper mapper;
@@ -105,14 +105,12 @@ namespace vega.Controllers
             }
             else if (planningResource.method == PrevState) 
                 planningApp.PrevState(stateStatusList);
-            // else if (planningResource.method = UpdatePlanningInitialise(id)
-            //     planningApp = repository.UpdatePlanningAppRollbackToState(id, stateId);
             else 
                 {
                 ModelState.AddModelError("Update Planning App", "Invalid Instuction Method Id: " + planningResource.method);
                     return BadRequest(ModelState);
-                }
-
+                }  
+  
             //Save to database
             repository.UpdatePlanningApp(planningApp);
             await unitOfWork.CompleteAsync();
@@ -120,6 +118,16 @@ namespace vega.Controllers
             var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
             result.BusinessDate = CurrentDate.SettingDateFormat();
             return Ok(result);
+        }
+
+        [HttpGet]
+        public QueryResultResource<PlanningAppSummaryResource> GetPlanningApps(PlanningAppQueryResource filterResource)
+        {
+            var filter = mapper.Map<PlanningAppQueryResource, PlanningAppQuery>(filterResource);
+            
+            var queryResult = repository.GetPlanningApps(filter);
+
+            return mapper.Map<QueryResult<PlanningApp>, QueryResultResource<PlanningAppSummaryResource>>(queryResult);
         }
     }
 }

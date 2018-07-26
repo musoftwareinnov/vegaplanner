@@ -34,9 +34,9 @@ namespace vega.Persistence
             //EF core cant do Include(t => t.States.Orderby)
             var orderedStates = stateInitialiser.States.OrderBy(o => o.OrderId); 
             var initialStatus = vegaDbContext.StateStatus.Where(s => s.Name == stateStatusSettings.STATE_ON_TIME).SingleOrDefault();
-
-            //TODO!!! Move out of repository!!!!
-            planningApp.GeneratePlanningStates(orderedStates, initialStatus);
+            var initialStatusList  = vegaDbContext.StateStatus.ToList();
+            //TODO!!!!!! Move out of repository!!!!
+            planningApp.GeneratePlanningStates(orderedStates, initialStatusList);
             vegaDbContext.Add(planningApp);   
         }
 
@@ -48,6 +48,7 @@ namespace vega.Persistence
             else {
                 return await vegaDbContext.PlanningApps
                                 .Where(s => s.Id == id)
+                                    .Include(b => b.CurrentPlanningStatus) 
                                     .Include(t => t.PlanningAppStates)
                                         .ThenInclude(s => s.state) 
                                     .Include(t => t.PlanningAppStates)
@@ -59,24 +60,54 @@ namespace vega.Persistence
             
         }
 
-        public async Task<IEnumerable<PlanningApp>> GetPlanningApps(bool includeRelated = true)
+        public QueryResult<PlanningApp> GetPlanningApps(PlanningAppQuery queryObj)
         {
-           
-                var apps =  await vegaDbContext.PlanningApps
-                                    .Include(t => t.PlanningAppStates)
-                                        .Where(p => p.Current().StateStatus.Name == StateList.Overdue).ToListAsync();
-                                    // .Include(t => t.PlanningAppStates)
-                                    //     .ThenInclude(a => a.StateStatus)
-                                    // // .SingleOrDefaultAsync();
+            var result = new QueryResult<PlanningApp>();
+            var resList = new List<PlanningApp>();
 
+            var query =  vegaDbContext.PlanningApps
+                                .Include(b => b.CurrentPlanningStatus) 
+                                .Include(t => t.PlanningAppStates)
+                                    .ThenInclude(a => a.StateStatus)
+                                .Include(t => t.PlanningAppStates)
+                                    .ThenInclude(s => s.state)
+                                .AsQueryable();
 
+            //TODO Later!!!! Use IQuerable for Customer lookup
 
-                return apps;
-            
+            var planningStatusSelectorMap = new Dictionary<string, Expression<Func<PlanningApp, bool>>>()
+            {
+                [StatusList.AppInProgress] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress,
+                [StatusList.AppArchived] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppArchived,
+                [StatusList.AppTerminated] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppTerminated
+            };
 
-            
+            var queryList = query.Where(planningStatusSelectorMap[queryObj.PlanningStatus]).ToList();
+
+            //TODO Refactor not the best in performance either but prefer dynamic calculations!!!!!
+            var planningAppsDue = queryList.Where(p => p.Current().DynamicStateStatus() == StatusList.Overdue)
+                                            .OrderBy(p => p.Current().DueByDate)
+                                            .ToList();
+
+            planningAppsDue.AddRange(queryList.Where(p => p.Current().DynamicStateStatus() == StatusList.Due)
+                                            .OrderBy(p => p.Current().DueByDate)
+                                            .ToList());
+
+            planningAppsDue.AddRange(queryList.Where(p => p.Current().DynamicStateStatus() == StatusList.OnTime)
+                                            .OrderBy(p => p.Current().DueByDate)
+                                            .ToList());
+
+            query = planningAppsDue.AsQueryable();
+            result.TotalItems =  query.Count();
+
+            query = query.ApplyPaging(queryObj);
+
+            //result.Items = await query.ToListAsync();
+            result.Items = query.ToList();
+            return result;
         }
 
+        //private List<PlanningApp> buildPlanningAppList()
         public PlanningApp UpdatePlanningApp(PlanningApp planningApp)
         {
             vegaDbContext.Update(planningApp);

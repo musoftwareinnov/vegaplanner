@@ -37,9 +37,9 @@ namespace vega.Core.Models
             CompletionDate = completionDate;
 
             if(CompletionDate > DueByDate)
-                StateStatus = stateStatusList.Where(s => s.Name == StateList.Overran).SingleOrDefault();
+                StateStatus = stateStatusList.Where(s => s.Name == StatusList.Overran).SingleOrDefault();
             else 
-                StateStatus = stateStatusList.Where(s => s.Name == StateList.Complete).SingleOrDefault();
+                StateStatus = stateStatusList.Where(s => s.Name == StatusList.Complete).SingleOrDefault();
 
             return DateTime.Compare(CompletionDate.Value, DueByDate); 
         }
@@ -52,11 +52,11 @@ namespace vega.Core.Models
             if(CompletionDate == null  )
             {
                 if(CurrentDate > DueByDate)
-                    return StateList.Overdue;
+                    return StatusList.Overdue;
                 else if (CurrentDate >= alertDate && CurrentDate <= DueByDate)
-                    return StateList.Due;          
+                    return StatusList.Due;          
                 else   
-                    return StateList.OnTime;
+                    return StatusList.OnTime;
             }
             return StateStatus.Name;
         }

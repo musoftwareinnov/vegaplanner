@@ -11,15 +11,16 @@ namespace vega.Core.Models
 {
     public class PlanningApp : IdNameProperty
     {
-
+        // public int PlanningAppStatusId { get; set; }
+        // public PlanningAppStatus PlanningAppStatus { get; set; }
         public int CustomerId { get; set; }
         
         public int StateInitialiserId { get; set; }
 
         public StateInitialiser StateInitialiser { get; set; }
 
-        // public int CurrentStateId { get; set; }
-        // public PlanningAppState CurrentPlanningState { get; set; }
+        public int CurrentPlanningStatusId { get; set; }
+        public StateStatus CurrentPlanningStatus { get; set; }
 
         // public int NextStateId { get; set; }
         // public PlanningAppState NextPlanningState { get; set; }
@@ -33,7 +34,7 @@ namespace vega.Core.Models
 
         }
 
-        public void GeneratePlanningStates(IOrderedEnumerable<StateInitialiserState> stateInitialisers, StateStatus initialStatus) 
+        public void GeneratePlanningStates(IOrderedEnumerable<StateInitialiserState> stateInitialisers, IEnumerable<StateStatus> stateStatus) 
         {
             var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
 
@@ -47,15 +48,19 @@ namespace vega.Core.Models
                     prevState = PlanningAppStates[stateCount-1];
                     newState.DueByDate =  prevState.DueByDate.AddBusinessDays(stateInialiser.CompletionTime);
                 }
-                else
+                else 
                     newState.DueByDate = currentDate.AddBusinessDays(stateInialiser.CompletionTime);
 
-                newState.StateStatus = initialStatus;
+                newState.StateStatus = stateStatus.Where(s => s.Name == StatusList.OnTime).SingleOrDefault();
                 PlanningAppStates.Add(newState);
             }
             //set first state to current state
             if(PlanningAppStates.Count > 0)
                  PlanningAppStates[0].CurrentState = true;
+
+            //Set overall Status to InProgress
+            CurrentPlanningStatus = stateStatus.Where(s => s.Name == StatusList.AppInProgress).SingleOrDefault();
+        
         }
 
         public void NextState(List<StateStatus> statusList)
@@ -67,7 +72,7 @@ namespace vega.Core.Models
                 var current = Current();    
                 if(!isLastState(current)) {
                         Next().CurrentState = true;   //move to next state
-                }                   
+                }                      
                 current.CompleteState(currentDate, statusList );  
                 //If Overran then roll all future completion dates by business days overdue
                 if(currentDate > current.DueByDate) {   
@@ -75,6 +80,10 @@ namespace vega.Core.Models
                     RollForwardDueByDates(daysDiff);  
                 }                  
             }
+            if(Completed()) {
+                CurrentPlanningStatus = statusList.Where(s => s.Name == StatusList.Complete).SingleOrDefault();
+            }
+
         }
 
         public void PrevState(List<StateStatus> statusList)
@@ -146,6 +155,7 @@ namespace vega.Core.Models
 
         public PlanningAppState Current()
         {
+
                 return PlanningAppStates.Where(s => s.CurrentState == true).SingleOrDefault();
         }
 
