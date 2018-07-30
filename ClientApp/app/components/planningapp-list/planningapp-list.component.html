@@ -1,0 +1,80 @@
+<h2>Planning Applications</h2>
+<p>
+  <a [routerLink]="['/vehicles/new']" class="btn btn-primary">New Planning App</a>
+</p>
+
+<div class="well">
+  <div class="form-group">
+    <label for="Planning Status">Planning Status</label>
+    <select id="planningStatus" class="form-control" [(ngModel)]="query.makeId" (change)="onFilterChange()">
+      <option value=""></option>
+      <option *ngFor="let m of statuses" value="{{ m.id }}">{{ m.name }}</option>
+    </select>  
+  </div>
+</div>
+<!-- <div>
+    <label for="model">Model</label>
+    <select id="model" class="form-control" [(ngModel)]="query.modelId" name="modelId" required #model="ngModel" (change)="onFilterChange()">
+      <option value=""></option>
+      <option *ngFor="let m of models" value="{{ m.id }}">{{ m.name }}</option>
+    </select>  
+  </div>
+  <button class="btn btn-default" (click)="resetFilter()">Reset</button>
+</div> --> 
+
+<!-- <div style="overflow-x:auto;">  //Used to scroll 
+  <table></table> -->
+
+  
+<head>
+  <style>
+  table {
+      border-collapse: collapse;
+      width: 100%;
+  }
+  
+  th, td {
+      text-align: left;
+      padding: 8px;
+  }
+  
+  tr:nth-child(even) {background-color: #f2f2f2;}
+  </style>
+</head>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>CustomerId</th>
+      <th>Name</th>
+      <th>State</th>
+      <th>State Status</th>
+      <th>Due By </th>
+      <th>Next State</th>
+      <th>Planning Completion Date</th>
+    </tr>
+  </thead>
+  <!-- <tr *ngFor="let r of queryResult.items">
+    <td>{{ r.id }}</td>
+    <td>
+      <a [routerLink]="['/vehicles/', v.id]">View</a>
+    </td>
+  </tr> -->
+  <tr *ngFor="let v of queryResult.items">
+      <td>{{ v.id }}</td>
+      <td>{{ v.customerId}}</td>
+      <td>{{ v.name }}</td>
+      <td>{{ v.currentStateStatus }}</td>
+      <td>{{ v.currentState }}</td>
+      <td>{{ v.expectedStateCompletionDate }}</td>
+      <td>{{ v.nextState }}</td>
+      <td>{{ v.completionDate }}</td>
+      <td>
+        <a [routerLink]="['/planningapps/', v.id]">View</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- <pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination> -->
+<pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>

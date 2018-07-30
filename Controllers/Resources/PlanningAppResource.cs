@@ -14,7 +14,7 @@ namespace vega.Controllers.Resources
         public string CurrentStateStatus { get; set; }
         public string CurrentState { get; set; }
         public string NextState { get; set; }
-
+        public string ExpectedStateCompletionDate { get; set; }
         public string CompletionDate { get; set; }
 
         // public ICollection<KeyValuePairResource> states { get; set; }

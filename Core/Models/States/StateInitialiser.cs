@@ -6,13 +6,12 @@ using vega.Core.Models.Generic;
 using vega.Core.Models.States;
 
 namespace vega.Core.Models
-{
+{  
     public class StateInitialiser : IdNameProperty
-    {
+    {  
         public List<StateInitialiserState> States { get; set; }
-
         public StateInitialiser()
-        {
+        {  
             States = new List<StateInitialiserState>();
 
         }

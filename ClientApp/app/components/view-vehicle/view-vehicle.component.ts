@@ -1,10 +1,10 @@
-import { ProgressService } from './../../services/progress.service';
-import { PhotoService } from './../../services/photo.service';
+import { ProgressService } from '../../services/progress.service';
+import { PhotoService } from '../../services/photo.service';
 import { ToastyService } from 'ng2-toasty';
-import { VehicleService } from './../../services/vehicle.service';
+import { VehicleService } from '../../services/vehicle.service';
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { elementDef } from '../../../../node_modules/@angular/core/src/view';
+import { elementDef } from '@angular/core/src/view';
 
 @Component({
   templateUrl: 'view-vehicle.component.html'

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from '../../../node_modules/rxjs/Subject';
-import { BrowserXhr } from '../../../node_modules/@angular/http';
+import { Subject } from 'rxjs/Subject';
+import { BrowserXhr } from '@angular/http';
 
 @Injectable()
 export class ProgressService {

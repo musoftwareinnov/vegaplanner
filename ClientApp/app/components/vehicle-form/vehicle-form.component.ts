@@ -1,7 +1,7 @@
 import * as _ from 'underscore';
-import { SaveVehicle, Vehicle } from './../../models/vehicle';
+import { SaveVehicle, Vehicle } from '../../models/vehicle';
 import { INITIAL_CONFIG } from '@angular/platform-server';
-import { VehicleService } from './../../services/vehicle.service';
+import { VehicleService } from '../../services/vehicle.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import 'rxjs/add/Observable/forkJoin';
@@ -60,8 +60,6 @@ export class VehicleFormComponent implements OnInit {
       if (err.status == 404)
         this.router.navigate(['/home']);
     });
-    // this.vehicleService.getMakes().subscribe(makes =>  this.makes = makes);
-    // this.vehicleService.getFeatures().subscribe(features => this.features = features)
   }
 
   private setVehicle(v:Vehicle) {
@@ -105,17 +103,17 @@ export class VehicleFormComponent implements OnInit {
       //     timeout: 5000
       // })
       // },
-        vehicle => {
-          this.toastyService.success({
-            title: 'Success', 
-            msg: 'Vehicle was sucessfully saved.',
-            theme: 'bootstrap',
-            showClose: true,
-            timeout: 5000
-          })
-      
-          this.router.navigate(['/vehicles/', vehicle.id])
-        });
+    vehicle => {
+      this.toastyService.success({
+        title: 'Success', 
+        msg: 'Vehicle was sucessfully saved.',
+        theme: 'bootstrap',
+        showClose: true,
+        timeout: 5000
+      })
+  
+      this.router.navigate(['/vehicles/', vehicle.id])
+    });
   }
   
   delete() {
@@ -124,4 +122,6 @@ export class VehicleFormComponent implements OnInit {
         .subscribe(x => { this.router.navigate(['/home'])});
     }
   }
+
+  
 }

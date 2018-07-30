@@ -12,11 +12,7 @@ namespace vega.Core.Models.States
         public static readonly string AppTerminated =  "Terminated";
         public static readonly string AppError =  "Error";
 
-        // public var planningStatusSelectorMap = new Dictionary<string, Expression<Func<PlanningApp, bool>>>()
-        //     {
-        //         [StatusList.AppInProgress] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress,
-        //         [StatusList.AppArchived] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppArchived,
-        //         [StatusList.AppTerminated] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppTerminated
-        //     };
+        
+
     }
 }

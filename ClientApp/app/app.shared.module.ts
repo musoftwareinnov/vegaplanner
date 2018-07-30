@@ -13,11 +13,17 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { PaginationComponent } from './components/shared/pagination.component';
+import { PlanningAppNewComponent } from './components/planningapp-new/planningapp-new.component';
+import { PlanningAppListComponent } from './components/planningapp-list/planningapp-list.component';
+import { PlanningAppFormComponent } from './components/planningapp-form/planningapp-form.component';
+import { StateInitialiserListComponent } from './components/stateinitialiser-list/stateinitialiser-list.component';
+import { CustomerListComponent } from './components/customer-list/customer-list.component';
 
 import { VehicleService } from './services/vehicle.service';
+import { PlanningAppService } from './services/planningapp.service';
 import { PhotoService } from './services/photo.service';
 import { AppErrorHandler } from './app.error.handler';
-
+  
 @NgModule({
     declarations: [
         AppComponent,
@@ -27,8 +33,12 @@ import { AppErrorHandler } from './app.error.handler';
         VehicleFormComponent,
         ViewVehicleComponent,
         VehicleListComponent,
+        PlanningAppNewComponent,
+        PlanningAppListComponent,
+        PlanningAppFormComponent,
+        StateInitialiserListComponent,
+        CustomerListComponent,
         PaginationComponent,
-
     ],
     imports: [
         CommonModule,
@@ -43,6 +53,11 @@ import { AppErrorHandler } from './app.error.handler';
             { path: 'vehicles/edit/:id', component: VehicleFormComponent },
             { path: 'vehicles/:id', component: ViewVehicleComponent },
             { path: 'vehicles', component: VehicleListComponent },
+            { path: 'planningapps/new', component: PlanningAppNewComponent },
+            { path: 'planningapps', component: PlanningAppListComponent },
+            { path: 'planningapps/:id', component: PlanningAppFormComponent },
+            { path: 'stateinitialisers', component: StateInitialiserListComponent },
+            { path: 'customers', component: CustomerListComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ],
@@ -51,6 +66,7 @@ import { AppErrorHandler } from './app.error.handler';
         { provide: ErrorHandler, useClass: AppErrorHandler},
         { provide: BrowserXhr, useClass: BrowserXhrWithProgress},
         VehicleService,
+        PlanningAppService,
         PhotoService,
         ProgressService
     ]

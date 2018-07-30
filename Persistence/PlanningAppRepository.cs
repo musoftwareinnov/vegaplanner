@@ -75,6 +75,10 @@ namespace vega.Persistence
 
             //TODO Later!!!! Use IQuerable for Customer lookup
 
+            if(queryObj.PlanningAppType==null) {
+                queryObj.PlanningAppType = StatusList.AppInProgress;
+            }
+
             var planningStatusSelectorMap = new Dictionary<string, Expression<Func<PlanningApp, bool>>>()
             {
                 [StatusList.AppInProgress] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress,
@@ -82,24 +86,28 @@ namespace vega.Persistence
                 [StatusList.AppTerminated] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppTerminated
             };
 
-            var queryList = query.Where(planningStatusSelectorMap[queryObj.PlanningStatus]).ToList();
+            var queryList = query.Where(planningStatusSelectorMap[queryObj.PlanningAppType]).ToList();
 
-            //TODO Refactor not the best in performance either but prefer dynamic calculations!!!!!
-            var planningAppsDue = queryList.Where(p => p.Current().DynamicStateStatus() == StatusList.Overdue)
-                                            .OrderBy(p => p.Current().DueByDate)
-                                            .ToList();
+            if(queryObj.PlanningAppType == StatusList.AppInProgress) {
+                List<String> statusList = new List<String>();
+                if(queryObj.PlanningAppStatusType == null)
+                    statusList.AddRange(new List<String> { StatusList.Overdue, StatusList.Due, StatusList.OnTime} );
+                else 
+                    statusList.Add(queryObj.PlanningAppStatusType);
 
-            planningAppsDue.AddRange(queryList.Where(p => p.Current().DynamicStateStatus() == StatusList.Due)
-                                            .OrderBy(p => p.Current().DueByDate)
-                                            .ToList());
+                List<PlanningApp> planningAppList = new List<PlanningApp>();
+                foreach ( var status in statusList) {
+                    planningAppList.AddRange(queryList.Where(p => p.Current().DynamicStateStatus() == status)
+                                                    .OrderBy(p => p.Current().DueByDate)
+                                                    .ToList());
+                }
+                query = planningAppList.AsQueryable();
+            }
+            else 
+                query = queryList.AsQueryable();
+            
 
-            planningAppsDue.AddRange(queryList.Where(p => p.Current().DynamicStateStatus() == StatusList.OnTime)
-                                            .OrderBy(p => p.Current().DueByDate)
-                                            .ToList());
-
-            query = planningAppsDue.AsQueryable();
             result.TotalItems =  query.Count();
-
             query = query.ApplyPaging(queryObj);
 
             //result.Items = await query.ToListAsync();

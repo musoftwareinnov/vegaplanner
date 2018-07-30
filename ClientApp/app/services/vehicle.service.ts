@@ -1,4 +1,4 @@
-import { Vehicle, SaveVehicle } from './../models/vehicle';
+import { Vehicle, SaveVehicle } from '../models/vehicle';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';

@@ -4,8 +4,8 @@ namespace vega.Core.Models
     public class PlanningAppQuery : IQueryObject
     {
         public int? Id { get; set; }
-        public string PlanningStatus { get; set; }
         public string PlanningAppType { get; set; }   //1 = InProgress | 2 = Archived | 3 = Terminated
+        public string PlanningAppStatusType { get; set; }
         public string SortBy { get; set; }
         public bool IsSortAscending { get; set; }
         public int Page { get; set; }

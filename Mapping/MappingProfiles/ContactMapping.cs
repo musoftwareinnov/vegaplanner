@@ -8,7 +8,7 @@ namespace vega.Mapping.MappingProfiles
     public class ContactMapping : Profile
     {
         public ContactMapping()
-        {
+        {  
             CreateMap<ContactResource, Contact>();
             CreateMap<Contact, ContactResource>(); 
         }

@@ -1,6 +1,6 @@
-import { VehicleService } from './../../services/vehicle.service';
-import { Component, OnInit } from '@angular/core';
-import { Vehicle, KeyValuePair } from './../../models/vehicle';
+import { VehicleService } from '../../services/vehicle.service';
+import { Component, OnInit, ComponentFactoryResolver } from '@angular/core';
+import { Vehicle, KeyValuePair } from '../../models/vehicle';
 
 @Component({
   templateUrl: './vehicle-list.component.html'
