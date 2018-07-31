@@ -16,7 +16,7 @@ namespace vega.Persistence
             this.vegaDbContext = vegaDbContext;
 
         }
-
+  
         public async Task<List<StateStatus>> GetStateStatusList () {
             return await vegaDbContext.StateStatus.ToListAsync();
         } 

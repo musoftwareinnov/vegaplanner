@@ -52,7 +52,8 @@ namespace vega.Persistence
                                     .Include(t => t.PlanningAppStates)
                                         .ThenInclude(s => s.state) 
                                     .Include(t => t.PlanningAppStates)
-                                        .ThenInclude(a => a.StateStatus) 
+                                        .ThenInclude(a => a.StateStatus)
+                                    .Include(c => c.Customer)
                                     .SingleOrDefaultAsync();
 
             }

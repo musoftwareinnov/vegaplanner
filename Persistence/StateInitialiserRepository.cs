@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 namespace vega.Persistence
 {
     public class StateInitialiserRepository : IStateInitialiserRepository
-    {
+    {   
             private readonly VegaDbContext vegaDbContext;
         public StateInitialiserRepository(VegaDbContext vegaDbContext)
         {

@@ -1,6 +1,6 @@
 <h2>Planning Applications</h2>
 <p>
-  <a [routerLink]="['/vehicles/new']" class="btn btn-primary">New Planning App</a>
+  <a [routerLink]="['/planningapps/new']" class="btn btn-primary">New Planning App</a>
 </p>
 
 <div class="well">
@@ -12,19 +12,6 @@
     </select>  
   </div>
 </div>
-<!-- <div>
-    <label for="model">Model</label>
-    <select id="model" class="form-control" [(ngModel)]="query.modelId" name="modelId" required #model="ngModel" (change)="onFilterChange()">
-      <option value=""></option>
-      <option *ngFor="let m of models" value="{{ m.id }}">{{ m.name }}</option>
-    </select>  
-  </div>
-  <button class="btn btn-default" (click)="resetFilter()">Reset</button>
-</div> --> 
-
-<!-- <div style="overflow-x:auto;">  //Used to scroll 
-  <table></table> -->
-
   
 <head>
   <style>
@@ -37,16 +24,22 @@
       text-align: left;
       padding: 8px;
   }
-  
-  tr:nth-child(even) {background-color: #f2f2f2;}
+  .highlightOverdue{
+  background: rgb(245, 165, 165);
+  } 
+
+  .highlightDue{
+  background: rgb(226, 225, 159); 
+  } 
+  /* tr:nth-child(even) {background-color: #f2f2f2;} */
   </style>
 </head>
 
 <table class="table">
   <thead>
     <tr>
-      <th>Id</th>
-      <th>CustomerId</th>
+      <th>App Id</th>
+      <th>Customer</th>
       <th>Name</th>
       <th>State</th>
       <th>State Status</th>
@@ -61,7 +54,7 @@
       <a [routerLink]="['/vehicles/', v.id]">View</a>
     </td>
   </tr> -->
-  <tr *ngFor="let v of queryResult.items">
+  <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'" [class.highlightDue]="v.currentStateStatus == 'Due'">
       <td>{{ v.id }}</td>
       <td>{{ v.customerId}}</td>
       <td>{{ v.name }}</td>

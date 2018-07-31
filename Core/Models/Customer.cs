@@ -25,12 +25,13 @@ namespace vega.Core.Models
         public string EmailAddress { get; set; }
 
         [Required]
-        public int TelephoneHome { get; set; }
+        [StringLength(255)]
+        public string TelephoneHome { get; set; }
 
         [Required]
-        public int TelephoneMobile { get; set; }
+        [StringLength(255)]
+        public string TelephoneMobile { get; set; }
 
-        [Required]
         [StringLength(1024)]
         public string Notes { get; set; }
         public ICollection<PlanningApp> planningApps { get; set; }

@@ -14,6 +14,8 @@ namespace vega.Core.Models
         // public int PlanningAppStatusId { get; set; }
         // public PlanningAppStatus PlanningAppStatus { get; set; }
         public int CustomerId { get; set; }
+
+        public Customer Customer { get; set; }
         
         public int StateInitialiserId { get; set; }
 

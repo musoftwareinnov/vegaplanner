@@ -7,7 +7,7 @@ namespace vega.Controllers.Resources
     public class PlanningAppResource
     {
         public int Id { get; set; }
-        public int CustomerId { get; set; }
+        public PlanningCustomerResource Customer { get; set; }
         public string Name { get; set; }
         public string BusinessDate { get; set; }
         public string PlanningStatus { get; set; }

@@ -16,6 +16,7 @@ namespace vega.Persistence
         public DbSet<StateInitialiser> StateInitialisers { get; set; }
         public DbSet<PlanningApp> PlanningApps { get; set; }
         public DbSet<StateStatus> StateStatus { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         public VegaDbContext(DbContextOptions<VegaDbContext> options) : base (options)
         {

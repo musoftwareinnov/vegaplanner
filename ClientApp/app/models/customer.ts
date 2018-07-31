@@ -11,7 +11,7 @@ export interface Customer {
     telephoneHome: string; 
     telephoneMobile: string; 
     notes: string;
-    planningApplications: PlanningApp[];
+    //planningApplications: PlanningApp[];
 }
 
 export interface CustomerSelect {

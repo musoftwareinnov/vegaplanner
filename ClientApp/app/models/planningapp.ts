@@ -1,6 +1,8 @@
+import { Customer } from './customer';
 export interface PlanningApp {
     id: number; 
-    customerId: number;
+    // customerId: number;
+    customer: Customer;
     name: string;
     businessDate: string;
     planningStatus: string;

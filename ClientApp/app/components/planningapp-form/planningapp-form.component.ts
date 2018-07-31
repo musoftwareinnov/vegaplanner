@@ -1,3 +1,4 @@
+import { Customer } from './../../models/customer';
 import * as _ from 'underscore';
 import { ProgressService } from '../../services/progress.service';
 import { ChangePlanningAppState, PlanningApp } from '../../models/planningapp';
@@ -30,7 +31,19 @@ export class PlanningAppFormComponent implements OnInit {
 
   planningApp: PlanningApp = {
     id: 0,
-    customerId: 0,
+    // customerId: 0,
+    customer: {
+      id: 0, 
+      firstName: "",
+      lastName: "",
+      address1: "",
+      address2: "",
+      postcode: "",
+      emailAddress: "",
+      telephoneHome: "",
+      telephoneMobile:"",
+      notes: "",
+    },
     name: "",
     businessDate: "",
     planningStatus:  "",
@@ -53,25 +66,6 @@ export class PlanningAppFormComponent implements OnInit {
     private planningAppService: PlanningAppService) { 
 
     route.params.subscribe(p => { this.planningApp.id = +p['id'] || 0}); }
-    //                               });
-    
-    //                                }
-    // route.params.subscribe(
-    //                       p => {
-    //                         this.planningApp.id = +p['id'] || 0;
-    //                         this.planningAppService.getPlanningApp(this.planningApp.id)
-    //                         .subscribe(
-    //                           v => this.planningApp = v,
-    //                           err => {
-    //                             if (err.status == 404) {
-    //                               this.router.navigate(['/planningapps']);
-    //                               return; 
-    //                             }
-    //                         });
-    //                       });
-    //}
-
-
     
   ngOnInit() {
     //this.photoServices.getPhotos(this.planningApp.id)
@@ -100,7 +94,7 @@ export class PlanningAppFormComponent implements OnInit {
         planningApp => {
           this.toastyService.success({
             title: 'Success', 
-            msg: 'Application moved to next state : ' + this.planningApp.nextState,
+            msg: 'New State : ' + this.planningApp.nextState,
             theme: 'bootstrap',
             showClose: true,
             timeout: 5000
@@ -109,50 +103,6 @@ export class PlanningAppFormComponent implements OnInit {
           //this.router.navigate(['/planningapps/26']);
         });
   }
-
-
-
-  //   var sources = [  
-  //     // this.vehicleService.getMakes(),
-  //     // this.vehicleService.getFeatures(),
-  //   ];
-
-  //   if (this.planningApp.id)
-  //   {
-  //     console.warn("plamnning App");
-  //     console.warn(this.planningApp.id);
-  //     sources.push(this.planningAppService.getPlanningApp(this.planningApp.id));
-
-  //   }
-  //   Observable.forkJoin(sources).subscribe(data => {
-  //     // this.makes = data[0];
-  //     // this.features = data[1];
-
-  //     if (this.planningApp.id) {
-  //       this.setPlanningApp(data[2]);
-  //       this.populateModels();
-  //     }
-  //   }, err => {
-  //     if (err.status == 404)
-  //       this.router.navigate(['/home']);
-  //   });
-  //   // this.vehicleService.getMakes().subscribe(makes =>  this.makes = makes);
-  //   // this.vehicleService.getFeatures().subscribe(features => this.features = features)
-  // }
-
-  // private setPlanningApp(v:PlanningApp) {
-  //   this.planningApp.id = v.id;
-  //   this.planningApp.customerId = v.customerId
-  //   this.planningApp.name = v.name
-  //   // this.planningApp.businessDate = v.businessDate
-  //   // this.planningApp.planningStatus = v.planningStatus
-  //   // this.planningApp.currentStateStatus = v.currentStateStatus
-  //   // this.planningApp.currentState = v.currentState
-  //   // this.planningApp.expectedStateCompletionDate = v.expectedStateCompletionDate
-  //   // this.planningApp.nextState = v.nextState
-  //   // this.planningApp.completionDate = v.completionDate
-  //   console.warn(v.name);
-  //}
 
   onMakeChange() {
     // this.populateModels();
