@@ -9,7 +9,7 @@ namespace vega.Controllers.Resources
         public ICollection<KeyValuePairResource> Models { get; set; }
 
         public MakeResource()
-        {
+        {  
             Models  = new Collection<KeyValuePairResource>();
         }
     }

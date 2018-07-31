@@ -32,7 +32,7 @@ namespace vega.Persistence
                                 .SingleOrDefaultAsync();
 
             //Important to keep order of states as they can be added and removed - 
-            //EF core cant do Include(t => t.States.Orderby)
+            //EF Core cant do Include(t => t.States.Orderby)
             var orderedStates = customer.planningApps.OrderBy(o => o.Id);
 
             return customer;
