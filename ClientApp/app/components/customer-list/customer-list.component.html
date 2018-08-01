@@ -1,3 +1,62 @@
+<h2>Customers</h2>
 <p>
-  customer-list works!
+  <a [routerLink]="['/customers/new']" class="btn btn-primary">New Customer</a>
 </p>
+
+<div class="well">
+  <div class="form-group">
+    <label for="Planning Status">Customer Search</label>
+    <select id="planningStatus" class="form-control" [(ngModel)]="query.makeId" (change)="onFilterChange()">
+      <option value=""></option>
+      <option *ngFor="let m of statuses" value="{{ m.id }}">{{ m.name }}</option>
+    </select>  
+  </div>
+</div>
+  
+<head>
+  <style>
+  table {
+      border-collapse: collapse;
+      width: 100%;
+  }
+  
+  th, td {
+      text-align: left;
+      padding: 8px;
+  }
+
+  tr:nth-child(even) {background-color: #f2f2f2;}
+  </style>
+</head>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Address1</th>
+      <th>Address2</th>
+      <th>PostCode</th>
+      <th>Email</th>
+      <th>Home No</th>
+      <th>Mobile No</th>
+    </tr>
+  </thead>
+
+  <tr *ngFor="let v of queryResult.items">
+      <td>{{ v.firstName}}</td>
+      <td>{{ v.lastName }}</td>
+      <td>{{ v.address1 }}</td>
+      <td>{{ v.address2 }}</td>
+      <td>{{ v.postcode }}</td>
+      <td>{{ v.emailAddress }}</td>
+      <td>{{ v.telephoneHome }}</td>
+      <td>{{ v.telephoneMobile }}</td>
+      <td>
+        <a [routerLink]="['/customers/', v.id]">View</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- <pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination> -->
+<pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>

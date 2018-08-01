@@ -151,6 +151,15 @@
                   </div>
 
                 <div class="form-group">
+                  <label class="control-label col-sm-1" for="lastName">Last Name</label>
+                  <div class="col-sm-3">
+                    <input id="lastName" type="text" disabled="disabled" class="form-control" [(ngModel)]="planningApp.customer.lastName" name="lastName">
+                  </div>
+                  <div class="col-sm-8">
+                  </div>
+                </div>
+
+                <div class="form-group">
                     <label class="control-label col-sm-1" for="address1">Address1</label>
                     <div class="col-sm-6">
                       <input id="address1" type="text" disabled="disabled" class="form-control" [(ngModel)]="planningApp.customer.address1" name="address1">

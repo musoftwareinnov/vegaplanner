@@ -15,6 +15,7 @@ namespace vega.Controllers.Resources
         public string TelephoneHome { get; set; }
         public string TelephoneMobile { get; set; }
         public string Notes { get; set; }
+        public string NameSummary { get; set;}
         public ICollection<PlanningAppSummaryResource> planningApps { get; set; }
     }
 }

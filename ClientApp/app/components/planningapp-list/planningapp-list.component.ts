@@ -1,6 +1,5 @@
 import { PlanningAppService } from '../../services/planningapp.service';
 import { Component, OnInit } from '@angular/core';
-import { PlanningAppSummary } from '../../models/planningappsummary';
 
 @Component({
   templateUrl: './planningapp-list.component.html'
@@ -30,8 +29,6 @@ export class PlanningAppListComponent implements OnInit {
   private populatePlanningAppSummary() {
     this.PlanningAppService.getPlanningAppSummary(this.query)
       .subscribe(result => this.queryResult = result);
-
-
   }
 
   onPageChange(page:any) {

@@ -17,12 +17,6 @@ namespace vega.Controllers.Resources
         public string ExpectedStateCompletionDate { get; set; }
         public string CompletionDate { get; set; }
 
-        // public ICollection<KeyValuePairResource> states { get; set; }
-        // public PlanningAppResource()
-        // {
-        //      = new Collection<KeyValuePairResource>();
-        // }
-
         public ICollection<PlanningAppStateResource> PlanningAppStates { get; set; }
 
         public PlanningAppResource()

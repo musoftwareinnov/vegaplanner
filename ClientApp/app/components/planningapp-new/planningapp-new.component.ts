@@ -7,6 +7,7 @@ import { PlanningAppService } from '../../services/planningapp.service';
 import { ToastyService } from 'ng2-toasty';
 
 import { ActivatedRoute, Router } from '@angular/router';
+import { CustomerService } from '../../services/customer.service';
 
 @Component({
   selector: 'app-planningapp-new',
@@ -14,23 +15,28 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./planningapp-new.component.css']
 })
 export class PlanningAppNewComponent implements OnInit {
+  query: any = {
+    pageSize: 0
+  };
+  customerSelect:any[] = [];
+
   planningAppGenerator: PlanningAppGenerator = {
     customerId: 0,
     stateInitialiserId: 0,
     name: ''
   };
-  customerSelect: CustomerSelect[] =  [ {
-        id: 1,
-        customerNameLong: 'Test Customer',
-        postcode: 'TR4 9PF'
-      },
-      {
-        id: 2,
-        customerNameLong: 'Test Customer 2',
-        postcode: 'BR1 3DE'
-      }
-    ];
-
+  // customerSelect: CustomerSelect[] =  [ {
+  //       id: 1,
+  //       customerNameLong: 'Test Customer',
+  //       postcode: 'TR4 9PF'
+  //     },
+  //     {
+  //       id: 2,
+  //       customerNameLong: 'Test Customer 2',
+  //       postcode: 'BR1 3DE'
+  //     }
+  //   ];
+  
   stateGeneratorSelect: StateGeneratorSelect[] = [
     {
       id: 1,
@@ -44,11 +50,14 @@ export class PlanningAppNewComponent implements OnInit {
 
   constructor(private PlanningAppService: PlanningAppService,
               private toastyService: ToastyService,
+              private customerService: CustomerService,
               private router: Router) { }
 
   ngOnInit() {
-
+    this.customerService.getCustomers(this.query)
+      .subscribe(customerSelect => this.customerSelect = customerSelect);
   }
+
   onGeneratorChange(){
 
   }

@@ -1,0 +1,89 @@
+<h1>Customer Form</h1>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#customerDetail" aria-controls="customerDetail" role="tab" data-toggle="tab">Customer Details</a></li>
+    <li role="presentation"><a href="#planningApps" aria-controls="planningApps" role="tab" data-toggle="tab">Planning Applications</a></li>
+</ul>
+
+<div class="tab-content" *ngIf="customer">
+    <!-- Planning tab -->
+    <div role="tabpanel" class="tab-pane active" id="customerDetail">
+    <h4>Please enter customer details</h4>
+    <div class="well">
+    <form class="form-horizontal">
+        
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="firstName">First Name</label>
+            <div class="col-sm-3">
+            <input id="firstName" type="text" class="form-control" [(ngModel)]="customer.firstName" name="firstName" required #firstName="ngModel">
+            <div class="alert alert-danger" *ngIf="firstName.touched && !firstName.valid">Please specify First Name.</div>
+            </div>
+            <div class="col-sm-8">
+            </div>
+        </div>
+
+        <div class="form-group">
+        <label class="control-label col-sm-1" for="lastName">Last Name</label>
+        <div class="col-sm-3">
+            <input id="lastName" type="text" class="form-control" [(ngModel)]="customer.lastName" name="lastName" required #lastName="ngModel">
+        </div>
+        <div class="col-sm-8">
+        </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="address1">Address1</label>
+            <div class="col-sm-6">
+            <input id="address1" type="text" class="form-control" [(ngModel)]="customer.address1" name="address1" required #address1="ngModel">
+            </div>
+            <div class="col-sm-5">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="address1">Address2</label>
+            <div class="col-sm-6">
+            <input id="address2" type="text" class="form-control" [(ngModel)]="customer.address2" name="address2" required #address2="ngModel">
+            </div>
+            <div class="col-sm-5">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="address1">Postcode</label>
+            <div class="col-sm-2">
+            <input id="postcode" type="text" class="form-control" [(ngModel)]="customer.postcode" name="postcode" required #postcode="ngModel">
+            </div>
+            <div class="col-sm-9">
+            </div>
+        </div>  
+
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="emailAddress">Email</label>
+            <div class="col-sm-3">
+            <input id="emailAddress" type="text" class="form-control" [(ngModel)]="customer.emailAddress" name="emailAddress" required #emailAddress="ngModel">
+            </div>
+            <div class="col-sm-8">
+            </div> 
+        </div>
+    
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="telephoneHome">Home No</label>
+            <div class="col-sm-3">
+            <input id="telephoneHome" type="text" class="form-control" [(ngModel)]="customer.telephoneHome" name="telephoneHome" required #telephoneHome="ngModel">
+            </div>
+            <div class="col-sm-8">
+            </div>
+        </div>   
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="telephoneMobile">Mobile No</label>
+            <div class="col-sm-3">
+            <input id="telephoneMobile" type="text" class="form-control" [(ngModel)]="customer.telephoneMobile" name="telephoneMobile" required #telephoneMobile="ngModel">
+            </div>
+            <div class="col-sm-8">
+            </div>
+        </div>      
+    </form>
+    <div>
+</div>
+</div>

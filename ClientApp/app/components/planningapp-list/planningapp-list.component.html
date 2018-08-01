@@ -56,7 +56,7 @@
   </tr> -->
   <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'" [class.highlightDue]="v.currentStateStatus == 'Due'">
       <td>{{ v.id }}</td>
-      <td>{{ v.customerId}}</td>
+      <td>{{ v.customerName}}</td>
       <td>{{ v.name }}</td>
       <td>{{ v.currentStateStatus }}</td>
       <td>{{ v.currentState }}</td>

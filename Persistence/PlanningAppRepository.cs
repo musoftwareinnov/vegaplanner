@@ -72,6 +72,7 @@ namespace vega.Persistence
                                     .ThenInclude(a => a.StateStatus)
                                 .Include(t => t.PlanningAppStates)
                                     .ThenInclude(s => s.state)
+                                .Include(c => c.Customer)
                                 .AsQueryable();
 
             //TODO Later!!!! Use IQuerable for Customer lookup

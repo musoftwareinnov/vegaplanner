@@ -41,5 +41,30 @@ namespace vega.Controllers
 
             return Ok(result);
         }
+
+        // [HttpGet]
+        // public async Task<IActionResult> GetCustomersSummary()     
+        // {
+        //     ICollection<Customer> customer=null;
+
+        //     customer = await customerRepository.GetCustomers();
+
+        //     if (customer == null)
+        //         return NotFound();
+
+        //     var result = mapper.Map<ICollection<Customer>, ICollection<CustomerSelectResource>>(customer);
+
+        //     return Ok(result);
+        // }
+
+        [HttpGet]
+        public async Task<QueryResultResource<CustomerResource>> GetCustomers(CustomerQueryResource filterResource)     
+        {
+            var filter = mapper.Map<CustomerQueryResource, CustomerQuery>(filterResource);
+
+            var queryResult = await customerRepository.GetCustomers(filter);
+
+            return mapper.Map<QueryResult<Customer>, QueryResultResource<CustomerResource>>(queryResult);             
+        }
     }
 }

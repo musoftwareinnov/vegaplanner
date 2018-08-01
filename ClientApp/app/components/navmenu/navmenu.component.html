@@ -33,6 +33,11 @@
                         </a>
                     </li>
                 <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
+                    <a [routerLink]="['/customers/new']">
+                        <span class='glyphicon glyphicon-plus'></span> Add Customer
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
                         <a [routerLink]="['/stateinitialisers']">
                             <span class='glyphicon glyphicon-home'></span> State Initialisers
                         </a>

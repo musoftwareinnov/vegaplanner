@@ -9,11 +9,11 @@ export class VehicleListComponent implements OnInit {
   //vehicles: Vehicle[] = [];
   private readonly PAGE_SIZE = 10; 
   queryResult: any = {};
-  makes: any[] = [];
+ makes: any[] = []; 
   models: KeyValuePair[] = [];
   query: any = {
     pageSize: this.PAGE_SIZE
-  };
+  }; 
 
   constructor(private VehicleService: VehicleService) { }
 

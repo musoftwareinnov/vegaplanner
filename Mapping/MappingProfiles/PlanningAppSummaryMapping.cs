@@ -22,8 +22,11 @@ namespace vega.Mapping.MappingProfiles
                     opt => opt.MapFrom(ps => ps.CurrentPlanningStatus.Name))
                 .ForMember(psr => psr.Name, 
                     opt => opt.MapFrom(ps => ps.Name))
+                .ForMember(psr => psr.CustomerName,
+                    opt => opt.MapFrom(ps => ps.Customer.FirstName + ' ' + ps.Customer.LastName))
                 .ForMember(psr => psr.CompletionDate, 
                     opt => opt.MapFrom(ps => ps.CompletionDate().SettingDateFormat())); 
+
         } 
     }
 }

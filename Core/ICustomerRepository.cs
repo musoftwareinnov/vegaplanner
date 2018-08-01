@@ -6,8 +6,7 @@ namespace vega.Core
 {
     public interface ICustomerRepository
     {
-        Task<Customer> GetCustomer(int id);
-
-        Task<ICollection<Customer>> GetCustomers();
+        Task<Customer> GetCustomer(int id, bool includeRelated = true);
+        Task<QueryResult<Customer>> GetCustomers(CustomerQuery queryObj);
     }
 }

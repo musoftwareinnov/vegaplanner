@@ -18,10 +18,12 @@ import { PlanningAppListComponent } from './components/planningapp-list/planning
 import { PlanningAppFormComponent } from './components/planningapp-form/planningapp-form.component';
 import { StateInitialiserListComponent } from './components/stateinitialiser-list/stateinitialiser-list.component';
 import { CustomerListComponent } from './components/customer-list/customer-list.component';
+import { CustomerFormComponent } from './components/customer-form/customer-form.component';
 
 import { VehicleService } from './services/vehicle.service';
 import { PlanningAppService } from './services/planningapp.service';
 import { PhotoService } from './services/photo.service';
+import { CustomerService } from './services/customer.service';
 import { AppErrorHandler } from './app.error.handler';
   
 @NgModule({
@@ -38,6 +40,7 @@ import { AppErrorHandler } from './app.error.handler';
         PlanningAppFormComponent,
         StateInitialiserListComponent,
         CustomerListComponent,
+        CustomerFormComponent,
         PaginationComponent,
     ],
     imports: [
@@ -58,6 +61,7 @@ import { AppErrorHandler } from './app.error.handler';
             { path: 'planningapps/:id', component: PlanningAppFormComponent },
             { path: 'stateinitialisers', component: StateInitialiserListComponent },
             { path: 'customers', component: CustomerListComponent },
+            { path: 'customers/new', component: CustomerFormComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ],
@@ -68,7 +72,8 @@ import { AppErrorHandler } from './app.error.handler';
         VehicleService,
         PlanningAppService,
         PhotoService,
-        ProgressService
+        ProgressService,
+        CustomerService
     ]
 })
 export class AppModuleShared {

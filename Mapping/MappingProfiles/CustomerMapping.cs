@@ -12,8 +12,24 @@ namespace vega.Mapping.MappingProfiles
             CreateMap<PlanningCustomerResource, Customer>();
             CreateMap<Customer, PlanningCustomerResource>();
 
-            CreateMap<Customer, CustomerResource>();
+            CreateMap<Customer, CustomerResource>()
+                    .ForMember(psr => psr.NameSummary,
+                    opt => opt.MapFrom(ps =>  ps.FirstName   
+                                            + ' ' + ps.LastName 
+                                            + ", " + ps.Address1
+                                            + ' ' + ps.Address2
+                                            + ", " + ps.Postcode ));
+                                            
             CreateMap<CustomerResource, Customer>();
+
+            CreateMap<Customer, CustomerSelectResource>()
+                .ForMember(psr => psr.Name,
+                    opt => opt.MapFrom(ps =>  ps.FirstName   
+                                            + ' ' + ps.LastName 
+                                            + ", " + ps.Address1
+                                            + ' ' + ps.Address2
+                                            + ", " + ps.Postcode ));
+                                           
         }
     }
 }

@@ -6,7 +6,7 @@
       <label for="customer">Select Customer</label>
       <select id="customer" class="form-control" [(ngModel)]="planningAppGenerator.customerId" name = "customer" required #customer="ngModel">
         <option value=""></option>
-        <option *ngFor="let m of customerSelect" value="{{m.id}}">{{ m.customerNameLong }}</option>
+        <option *ngFor="let m of customerSelect.items" value="{{m.id}}">{{ m.nameSummary }}</option>
       </select>
       <div class="alert alert-danger" *ngIf="customer.touched && !customer.valid">Please specify customer.</div>
     </div>
