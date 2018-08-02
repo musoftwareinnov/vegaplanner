@@ -1,3 +1,4 @@
+import { PlanningApp } from './../../models/planningapp';
 import { Component, OnInit } from '@angular/core';
 import { Customer } from '../../models/customer';
 import { CustomerService } from '../../services/customer.service';
@@ -29,13 +30,43 @@ export class CustomerFormComponent implements OnInit {
     private toastyService: ToastyService,
     private customerService: CustomerService) { 
 
-      // route.params.subscribe(p => { this.customer.id = +p['id'] || 0})
+    route.params.subscribe(p => { this.customer.id = +p['id'] || 0})
     }
 
   ngOnInit() {
-    console.warn(this.customer);
-    // if (this.customer.id)
-    //     this.customerService.getCustomer(this.customer.id);
+
+    if (this.customer.id)
+        this.customerService.getCustomer(this.customer.id)
+        .subscribe(
+          v => this.customer = v,
+          err => {
+            if (err.status == 404) {
+              this.router.navigate(['/customers']);
+              return; 
+            }
+        });
+        //remove planning applications
   }
 
+  submit() {
+
+    console.warn("Submit -> "  + this.customer.id);
+    var result$ = (this.customer.id) ? this.customerService.update(this.customer) : this.customerService.create(this.customer); 
+
+
+    result$.subscribe(
+
+      customer => {
+      this.toastyService.success({
+        title: 'Success', 
+        msg: 'Customer was sucessfully saved.',
+        theme: 'bootstrap',
+        showClose: true,
+        timeout: 5000
+      })
+  
+      // this.router.navigate(['/customers/', customer.id])
+      this.router.navigate(['/customers'])
+    });
+  }
 }

@@ -1,97 +1,18 @@
-<h1>Planning Application</h1>
+<h1>Planning Application : {{ planningApp.id }}</h1>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active"><a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Application Details</a></li>
-  <li role="presentation"><a href="#states" aria-controls="states" role="tab" data-toggle="tab">Application States</a></li>
-  <li role="presentation"><a href="#customer" aria-controls="customer" role="tab" data-toggle="tab">Customer Details</a></li>
-  <li role="presentation"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Drawings</a></li>
+  <li role="presentation" class="active"><a href="#states" aria-controls="states" role="tab" data-toggle="tab">Application States</a></li>
+  <li role="presentation"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Application Details</a></li>
+  <li role="presentation"><a href="#customer" aria-controls="customer" role="tab" data-toggle="tab">Customer Details</a></li> 
+  <li role="presentation"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Drawings</a></li> 
 </ul>
 
   <!-- Tab panes -->
 <div class="tab-content" *ngIf="planningApp">
   <!-- Planning tab -->
-  <div role="tabpanel" class="tab-pane active" id="basic">
-    <div class="well">
-      <form class="form-horizontal" #f1="ngForm" (submit)="submit()">
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="planningStatus">Status</label>
-          <div class="col-sm-3">
-            <input id="planningStatus" type="text" class="form-control" [(ngModel)]="planningApp.planningStatus" name="planningStatus">
-          </div>
-          <div class="col-sm-7">
-          </div>
-        </div> 
-
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="planningStatus">Completion Date</label>
-          <div class="col-sm-3">
-            <input id="completionDate" type="text"  class="form-control" [(ngModel)]="planningApp.completionDate" name="completionDate">
-          </div>
-          <div class="col-sm-7">
-          </div>
-        </div> 
-
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="planningStatus">Description</label>
-          <div class="col-sm-6">
-            <input id="applicationName" type="text"  class="form-control" [(ngModel)]="planningApp.applicationName" name="applicationName">
-          </div>
-          <div class="col-sm-4">
-          </div>
-        </div> 
-
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="planningStatus">Current Status</label>
-          <div class="col-sm-3">
-            <input id="currentStateStatus" type="text" class="form-control" [(ngModel)]="planningApp.currentStateStatus" name="currentStateStatus">
-          </div>
-          <div class="col-sm-7">
-          </div>
-        </div> 
-
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="planningStatus">Current State</label>
-          <div class="col-sm-3">
-            <input id="currentState" type="text"  class="form-control" [(ngModel)]="planningApp.currentState" name="currentState">
-          </div>
-          <div class="col-sm-7">
-          </div>
-        </div> 
-
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="planningStatus">Due By</label>
-          <div class="col-sm-3">
-            <input id="expectedStateCompletionDate" type="text" class="form-control" [(ngModel)]="planningApp.expectedStateCompletionDate" name="expectedStateCompletionDate">
-          </div>
-          <div class="col-sm-7">
-          </div>
-        </div>  
-
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="planningStatus">Next State</label>
-          <div class="col-sm-3">
-            <input id="nextState" type="text" class="form-control" [(ngModel)]="planningApp.nextState" name="nextState">
-          </div>
-          <div class="col-sm-7">
-          </div>
-        </div> 
-
-        <div class="form-group">
-            <label class="control-label col-sm-2"></label>
-            <div class="col-sm-3">
-                <button class="btn btn-primary" >Next State</button>          
-           </div>
-            <div class="col-sm-7">
-            </div>
-          </div> 
-
-
-      </form>
-    </div>
-  </div>
-  <!-- State table -->
-  <div role="tabpanel" class="tab-pane" id="states">
+   <!-- State table -->
+  <div role="tabpanel" class="tab-pane active" id="states">
     <head>
         <style>
         table {
@@ -132,10 +53,89 @@
           </td> -->
         </tr>
       </tbody>
-      <div></div>
     </table>
+    <form class="form-horizontal" #f="ngForm" (submit)="submit()">
+        <div class="form-group">
+            <label class="control-label col-sm-10"></label>
+            <div class="col-sm-1">
+                <button class="btn btn-primary" >Complete</button>          
+            </div>
+              <div class="col-sm-1">
+            </div>
+          </div> 
+    </form>
   </div>
   </div>
+
+  <div role="tabpanel" class="tab-pane" id="details">
+    <div class="well">
+      <form class="form-horizontal" #f1="ngForm" (submit)="submit()">
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="planningStatus">Status</label>
+          <div class="col-sm-3">
+            <input id="planningStatus" type="text" class="form-control" [(ngModel)]="planningApp.planningStatus" name="planningStatus">
+          </div>
+            <div class="col-sm-7">
+          </div>
+        </div> 
+  
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="planningStatus">Completion Date</label>
+          <div class="col-sm-3">
+            <input id="completionDate" type="text"  class="form-control" [(ngModel)]="planningApp.completionDate" name="completionDate">
+          </div>
+            <div class="col-sm-7">
+          </div>
+        </div> 
+  
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="planningStatus">Description</label>
+          <div class="col-sm-6">
+            <input id="applicationName" type="text"  class="form-control" [(ngModel)]="planningApp.applicationName" name="applicationName">
+          </div>
+            <div class="col-sm-4">
+          </div>
+        </div> 
+  
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="planningStatus">Current Status</label>
+          <div class="col-sm-3">
+            <input id="currentStateStatus" type="text" class="form-control" [(ngModel)]="planningApp.currentStateStatus" name="currentStateStatus">
+          </div>
+            <div class="col-sm-7">
+          </div>
+        </div> 
+  
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="planningStatus">Current State</label>
+          <div class="col-sm-3">
+            <input id="currentState" type="text"  class="form-control" [(ngModel)]="planningApp.currentState" name="currentState">
+          </div>
+            <div class="col-sm-7">
+          </div>
+        </div> 
+  
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="planningStatus">Due By</label>
+          <div class="col-sm-3">
+            <input id="expectedStateCompletionDate" type="text" class="form-control" [(ngModel)]="planningApp.expectedStateCompletionDate" name="expectedStateCompletionDate">
+          </div>
+            <div class="col-sm-7">
+          </div>
+        </div>  
+  
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="planningStatus">Complete</label>
+          <div class="col-sm-3">
+            <input id="nextState" type="text" class="form-control" [(ngModel)]="planningApp.nextState" name="nextState">
+          </div>
+            <div class="col-sm-7">
+          </div>
+        </div> 
+      </form>
+    </div>
+  </div>
+  
   <!-- Customer tab -->
   <div role="tabpanel" class="tab-pane" id="customer">
       <div class="well">
@@ -215,13 +215,13 @@
   </div>
   <!-- Drawings tab -->
   <div role="tabpanel" class="tab-pane" id="photos">
-      <h2>Photos</h2>
-      <input type="file" (change)="uploadPhoto()" #fileInput> 
-      <div class="progress" *ngIf="progress && progress.percentage < 100">
-        <div class="progress-bar" [style.width]="progress.percentage + '%'"> 
-          <span class="sr-only">{{ progress.percentage }}% Complete</span>
-        </div>
+    <h2>Photos</h2>
+    <input type="file" (change)="uploadPhoto()" #fileInput> 
+    <div class="progress" *ngIf="progress && progress.percentage < 100">
+      <div class="progress-bar" [style.width]="progress.percentage + '%'"> 
+        <span class="sr-only">{{ progress.percentage }}% Complete</span>
       </div>
-      <img *ngFor="let photo of photos" src="/uploads/{{ photo.fileName }}" class="img-thumbnail">
     </div>
+    <img *ngFor="let photo of photos" src="/uploads/{{ photo.fileName }}" class="img-thumbnail">
+  </div>
 </div>

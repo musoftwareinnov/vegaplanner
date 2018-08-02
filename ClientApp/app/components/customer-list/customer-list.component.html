@@ -53,10 +53,12 @@
       <td>{{ v.telephoneHome }}</td>
       <td>{{ v.telephoneMobile }}</td>
       <td>
-        <a [routerLink]="['/customers/', v.id]">View</a>
+        <a [routerLink]="['/customers/edit/', v.id]">Edit</a>
       </td>
+      <td>
+          <a [routerLink]="['/customers/planningapps/', v.id]">Applications</a>
+        </td>
     </tr>
   </tbody>
 </table>
-<!-- <pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination> -->
 <pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>

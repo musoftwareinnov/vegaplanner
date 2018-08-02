@@ -1,4 +1,4 @@
-<h2>Planning Applications</h2>
+<h2>Customer Planning Applications</h2>
 <p>
   <a [routerLink]="['/planningapps/new']" class="btn btn-primary">New Planning App</a>
 </p>
@@ -39,7 +39,6 @@
   <thead>
     <tr>
       <th>App Id</th>
-      <th>Customer</th>
       <th>Description</th>
       <th>Status</th>
       <th>State</th>
@@ -51,7 +50,6 @@
 
   <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'" [class.highlightDue]="v.currentStateStatus == 'Due'">
       <td>{{ v.id }}</td>
-      <td>{{ v.customerName}}</td>
       <td>{{ v.name }}</td>
       <td>{{ v.currentStateStatus }}</td>
       <td>{{ v.currentState }}</td>

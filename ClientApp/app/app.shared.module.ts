@@ -19,6 +19,8 @@ import { PlanningAppFormComponent } from './components/planningapp-form/planning
 import { StateInitialiserListComponent } from './components/stateinitialiser-list/stateinitialiser-list.component';
 import { CustomerListComponent } from './components/customer-list/customer-list.component';
 import { CustomerFormComponent } from './components/customer-form/customer-form.component';
+import { CustomerPlanningAppListComponent } from './components/customerplanningapp-list/customerplanningapp-list.component';
+
 
 import { VehicleService } from './services/vehicle.service';
 import { PlanningAppService } from './services/planningapp.service';
@@ -41,6 +43,7 @@ import { AppErrorHandler } from './app.error.handler';
         StateInitialiserListComponent,
         CustomerListComponent,
         CustomerFormComponent,
+        CustomerPlanningAppListComponent,
         PaginationComponent,
     ],
     imports: [
@@ -62,6 +65,8 @@ import { AppErrorHandler } from './app.error.handler';
             { path: 'stateinitialisers', component: StateInitialiserListComponent },
             { path: 'customers', component: CustomerListComponent },
             { path: 'customers/new', component: CustomerFormComponent },
+            { path: 'customers/edit/:id', component: CustomerFormComponent },
+            { path: 'customers/planningapps/:id', component: CustomerPlanningAppListComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ],

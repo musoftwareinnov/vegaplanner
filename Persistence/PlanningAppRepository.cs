@@ -77,6 +77,9 @@ namespace vega.Persistence
 
             //TODO Later!!!! Use IQuerable for Customer lookup
 
+            if(queryObj.CustomerId > 0)
+                query = query.Where(c => c.Customer.Id == queryObj.CustomerId);
+ 
             if(queryObj.PlanningAppType==null) {
                 queryObj.PlanningAppType = StatusList.AppInProgress;
             }

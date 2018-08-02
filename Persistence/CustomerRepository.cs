@@ -54,5 +54,17 @@ namespace vega.Persistence
             result.Items = await query.ToListAsync();
             return result;
         }
+
+        public void Add(Customer customer)
+        {
+            vegaDbContext.Add(customer);
+
+        }
+
+        public void Update(Customer customer)
+        {
+            vegaDbContext.Update(customer);
+
+        }
     }
 }

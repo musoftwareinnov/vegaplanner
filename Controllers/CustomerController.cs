@@ -27,7 +27,7 @@ namespace vega.Controllers
             this.customerRepository = customerRepository;
             this.mapper = mapper;
         }
-
+   
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCustomer(int id)   
@@ -42,21 +42,6 @@ namespace vega.Controllers
             return Ok(result);
         }
 
-        // [HttpGet]
-        // public async Task<IActionResult> GetCustomersSummary()     
-        // {
-        //     ICollection<Customer> customer=null;
-
-        //     customer = await customerRepository.GetCustomers();
-
-        //     if (customer == null)
-        //         return NotFound();
-
-        //     var result = mapper.Map<ICollection<Customer>, ICollection<CustomerSelectResource>>(customer);
-
-        //     return Ok(result);
-        // }
-
         [HttpGet]
         public async Task<QueryResultResource<CustomerResource>> GetCustomers(CustomerQueryResource filterResource)     
         {
@@ -65,6 +50,44 @@ namespace vega.Controllers
             var queryResult = await customerRepository.GetCustomers(filter);
 
             return mapper.Map<QueryResult<Customer>, QueryResultResource<CustomerResource>>(queryResult);             
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCustomer([FromBody] CustomerResource customerResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var customer = mapper.Map<CustomerResource, Customer>(customerResource);
+
+            customerRepository.Add(customer);
+
+            await unitOfWork.CompleteAsync();
+
+            customer = await customerRepository.GetCustomer(customer.Id);
+
+            var result = mapper.Map<Customer, CustomerResource>(customer);
+
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCustomer([FromBody] CustomerResource customerResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var customer = mapper.Map<CustomerResource, Customer>(customerResource);
+
+            customerRepository.Update(customer);
+
+            await unitOfWork.CompleteAsync();
+
+            customer = await customerRepository.GetCustomer(customer.Id);
+
+            var result = mapper.Map<Customer, CustomerResource>(customer);
+
+            return Ok(result);
         }
     }
 }

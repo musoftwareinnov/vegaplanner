@@ -8,5 +8,8 @@ namespace vega.Core
     {
         Task<Customer> GetCustomer(int id, bool includeRelated = true);
         Task<QueryResult<Customer>> GetCustomers(CustomerQuery queryObj);
+        void Add(Customer customer);
+
+        void Update(Customer customer);
     }
 }

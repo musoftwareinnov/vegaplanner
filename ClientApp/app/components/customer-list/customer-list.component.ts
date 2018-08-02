@@ -24,4 +24,13 @@ export class CustomerListComponent implements OnInit {
       .subscribe(result => this.queryResult = result);
   }
 
+  onPageChange(page:any) {
+    this.query.page = page; 
+    this.populateCustomers();
+  }
+
+  onFilterChange() {
+    this.query.page = 1; 
+    this.populateCustomers();
+  }
 }

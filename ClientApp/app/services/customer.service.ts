@@ -17,6 +17,18 @@ export class CustomerService {
       .map(res => res.json());
   }
 
+  create(customer:any) {
+    customer.id=0;
+    return this.http.post(this.customersEndpoint, customer)
+      .map(res => res.json());
+  }
+
+  update(customer:any) {
+    customer.planningApps = null; //Ignore planning applications - TODO create api with no app options
+    return this.http.put(this.customersEndpoint + '/' + customer.id, customer)
+      .map(res => res.json());
+  }
+
   toQueryString(obj:any) {
     var parts = [];
     for (var property in obj) {
