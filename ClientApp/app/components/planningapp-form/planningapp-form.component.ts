@@ -11,6 +11,7 @@ import { ViewChild, ElementRef, NgZone } from '@angular/core';
 import 'rxjs/add/Observable/forkJoin';
 import { Observable } from 'rxjs/Observable';
 import { ToastyService } from 'ng2-toasty';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-planingapp-form',
@@ -56,6 +57,8 @@ export class PlanningAppFormComponent implements OnInit {
     method: 1
   };
 
+  interval: any = {};
+
   constructor(
     private route: ActivatedRoute,
     private zone: NgZone,
@@ -63,7 +66,8 @@ export class PlanningAppFormComponent implements OnInit {
     private toastyService: ToastyService,
     private progressService: ProgressService,
     private photoServices: PhotoService,
-    private planningAppService: PlanningAppService) { 
+    private planningAppService: PlanningAppService,
+    private location: Location) { 
 
     route.params.subscribe(p => { this.planningApp.id = +p['id'] || 0}); }
     
@@ -81,7 +85,33 @@ export class PlanningAppFormComponent implements OnInit {
           return; 
         }
     });
+
+    this.refreshData();
+    this.interval = setInterval(() => { 
+        this.refreshData(); 
+    }, 3000);
   }
+
+  refreshData() {
+    this.populatePlanningAppSummary();
+  }
+
+  private populatePlanningAppSummary() {
+    this.planningAppService.getPlanningApp(this.planningApp.id)
+    .subscribe(
+      v => this.planningApp = v,
+      err => {
+        if (err.status == 404) {
+          this.router.navigate(['/planningapps']);
+          return; 
+        }
+    });
+  }
+
+  //Not used - but useful - just refreshData data intead of whole page as better user experience
+  load() {
+    location.reload()
+    }
 
   submit() {
     //var result$ = (this.planningApp.id) ? this.planningAppService.update(this.vehicle) : this.vehicleService.create(this.vehicle); 
@@ -102,6 +132,7 @@ export class PlanningAppFormComponent implements OnInit {
           this.router.navigate(['/planningapps/', this.planningApp.id])
           //this.router.navigate(['/planningapps/26']);
         });
+    //location.reload();
   }
 
   onMakeChange() {
