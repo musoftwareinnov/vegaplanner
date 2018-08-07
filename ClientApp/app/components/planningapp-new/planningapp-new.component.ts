@@ -8,6 +8,7 @@ import { ToastyService } from 'ng2-toasty';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../../services/customer.service';
+import { StateInitialiserService } from '../../services/stateinitialiser.service';
 
 @Component({
   selector: 'app-planningapp-new',
@@ -19,43 +20,29 @@ export class PlanningAppNewComponent implements OnInit {
     pageSize: 0
   };
   customerSelect:any[] = [];
+  stateGeneratorSelect:any[] = [];
 
   planningAppGenerator: PlanningAppGenerator = {
     customerId: 0,
     stateInitialiserId: 0,
     name: ''
   };
-  // customerSelect: CustomerSelect[] =  [ {
-  //       id: 1,
-  //       customerNameLong: 'Test Customer',
-  //       postcode: 'TR4 9PF'
-  //     },
-  //     {
-  //       id: 2,
-  //       customerNameLong: 'Test Customer 2',
-  //       postcode: 'BR1 3DE'
-  //     }
-  //   ];
-  
-  stateGeneratorSelect: StateGeneratorSelect[] = [
-    {
-      id: 1,
-      name: 'General State Generator'
-    },
-    {
-      id: 2,
-      name: 'Add Building Regs Generator'
-    },
-  ]
 
   constructor(private PlanningAppService: PlanningAppService,
               private toastyService: ToastyService,
               private customerService: CustomerService,
+              private stateInitialiserService: StateInitialiserService,
               private router: Router) { }
 
   ngOnInit() {
+
+    //TODO: Join merge for performance???
     this.customerService.getCustomers(this.query)
       .subscribe(customerSelect => this.customerSelect = customerSelect);
+
+    this.stateInitialiserService.getStateInitialiserList(this.query)
+      .subscribe(stateGeneratorSelect => this.stateGeneratorSelect = stateGeneratorSelect);
+
   }
 
   onGeneratorChange(){

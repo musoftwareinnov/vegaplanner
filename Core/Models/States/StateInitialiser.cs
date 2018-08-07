@@ -9,6 +9,7 @@ namespace vega.Core.Models
 {  
     public class StateInitialiser : IdNameProperty
     {  
+        public string Description { get; set; }
         public List<StateInitialiserState> States { get; set; }
         public StateInitialiser()
         {  

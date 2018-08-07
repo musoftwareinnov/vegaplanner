@@ -16,7 +16,7 @@
       <label for="generator">State Generator</label>
       <select id="stateGenerator" class="form-control" (change)="onGeneratorChange()" [(ngModel)]="planningAppGenerator.stateInitialiserId" name="stateGeneratorId" required #stateGenerator="ngModel">
         <option value=""></option>
-        <option *ngFor="let m of stateGeneratorSelect" value="{{ m.id }}">{{ m.name }}</option>
+        <option *ngFor="let m of stateGeneratorSelect.items" value="{{ m.id }}">{{ m.name }}</option>
       </select>
       <div class="alert alert-danger" *ngIf="stateGenerator.touched && !stateGenerator.valid">Please specify Generator.</div>  
     </div>

@@ -36,7 +36,7 @@ namespace vega.Persistence
             var initialStatus = vegaDbContext.StateStatus.Where(s => s.Name == stateStatusSettings.STATE_ON_TIME).SingleOrDefault();
             var initialStatusList  = vegaDbContext.StateStatus.ToList();
             //TODO!!!!!! Move out of repository!!!!
-            planningApp.GeneratePlanningStates(orderedStates, initialStatusList);
+            planningApp = planningApp.GeneratePlanningStates(orderedStates, initialStatusList);
             vegaDbContext.Add(planningApp);   
         }
 
@@ -44,21 +44,22 @@ namespace vega.Persistence
         {
             if(!includeRelated) {
                 return await vegaDbContext.PlanningApps.FindAsync(id);
-            }
+            }  
             else {
-                return await vegaDbContext.PlanningApps
+                var sortStates =  vegaDbContext.PlanningApps
                                 .Where(s => s.Id == id)
-                                    .Include(b => b.CurrentPlanningStatus) 
+                                    .Include(b => b.CurrentPlanningStatus)
                                     .Include(t => t.PlanningAppStates)
                                         .ThenInclude(s => s.state) 
                                     .Include(t => t.PlanningAppStates)
                                         .ThenInclude(a => a.StateStatus)
                                     .Include(c => c.Customer)
-                                    .SingleOrDefaultAsync();
+                                    .SingleOrDefault();
 
-            }
-
-            
+                //sort planing states using 
+                sortStates.PlanningAppStates = sortStates.PlanningAppStates.OrderBy(o => o.state.OrderId).ToList();
+                return sortStates;
+            }            
         }
 
         public QueryResult<PlanningApp> GetPlanningApps(PlanningAppQuery queryObj)

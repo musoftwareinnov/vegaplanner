@@ -1,6 +1,5 @@
-namespace vega.Controllers.Resources
+namespace vega.Controllers.Resources.StateInitialser
 {
-
     public class StateInitialiserStateResource
     {
         public int Id { get; set; }

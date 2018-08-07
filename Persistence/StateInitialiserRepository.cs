@@ -22,24 +22,46 @@ namespace vega.Persistence
         }
 
         public async Task<StateInitialiser> GetStateInitialiser(int id)
-        {
+        {   
             var stateInitialiser =  await vegaDbContext.StateInitialisers
                             .Where(s => s.Id == id)
                                 .Include(t => t.States)
                                 .SingleOrDefaultAsync();
-
+       
             //Important to keep order of states as they can be added and removed - 
             //EF core cant do Include(t => t.States.Orderby)
             var orderedStates = stateInitialiser.States.OrderBy(o => o.OrderId); 
+
             stateInitialiser.States = orderedStates.ToList();
+
+            StateInitialiserState startState = new StateInitialiserState();
+            startState.CompletionTime=0;
+            startState.OrderId=0;
+            startState.Name="START";
+
+            stateInitialiser.States.Insert(0, startState);
 
             return stateInitialiser;
         }
 
-        public async Task<ICollection<StateInitialiser>> GetStateInitialisers()
+        public async Task<QueryResult<StateInitialiser>>  GetStateInitialisers(StateInitialiserQuery queryObj)
         {
-                return  await vegaDbContext.StateInitialisers.ToListAsync();
-          
+            var result = new QueryResult<StateInitialiser>();
+
+            var query = vegaDbContext.StateInitialisers.AsQueryable();
+
+            result.TotalItems =  query.Count();
+            query = query.ApplyPaging(queryObj);
+
+            result.Items = await query.ToListAsync();
+
+            return result;          
+        }
+
+        public void Add(StateInitialiser stateInitialiser)
+        {
+            vegaDbContext.Add(stateInitialiser);
+
         }
     }
 }

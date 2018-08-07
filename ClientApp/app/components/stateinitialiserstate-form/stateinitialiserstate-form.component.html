@@ -1,0 +1,42 @@
+<div *ngIf="stateInitialiserState.id==0" class="form-group">
+    <h3>Create New State</h3>
+  </div>
+<div *ngIf="stateInitialiserState.id>0" class="form-group">
+      <h3>Update State</h3>
+</div>
+
+<form #f="ngForm" (submit)="submit()">
+  <div class="well">
+
+      <!-- <div *ngIf="stateInitialiserState.id==0" class="form-group">
+          <label for="prevStateName">Insert After State </label>
+          <input id="prevStateName" type="text" disabled="disabled" class="form-control" [(ngModel)]="prevStateName" name="prevStateName" required #orderId="ngModel">
+      </div> -->
+
+      <div class="form-group">
+          <label for="name">Name</label>
+          <input id="name" type="text" class="form-control" [(ngModel)]="stateInitialiserState.name" name="name" required #name="ngModel">
+      </div>
+      <!-- <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Please enter state name.</div> -->
+
+      <div *ngIf="stateInitialiserState.id>0" class="form-group">
+          <label for="orderId">OrderBy</label>
+          <input id="orderId" type="text" disabled="disabled" class="form-control" [(ngModel)]="stateInitialiserState.orderId" name="orderId" required #orderId="ngModel">
+      </div>
+
+      <div class="form-group">
+          <label for="completionTime">Completion Time</label>
+          <input id="completionTime" type="text" class="form-control" [(ngModel)]="stateInitialiserState.completionTime" name="completionTime" required #completionTime="ngModel">
+      </div>
+      <div class="alert alert-danger" *ngIf="completionTime.touched && !completionTime.valid || completionTime == 0">Please enter completion time (days).</div>
+ 
+      <div class="form-group">
+          <label for="alertToCompletionTime">Alert</label>
+          <input id="alertToCompletionTime" type="text" class="form-control" [(ngModel)]="stateInitialiserState.alertToCompletionTime" name="alertToCompletionTime" required #alertCompletionTime="ngModel">
+      </div>
+      <!-- <div class="alert alert-danger" *ngIf="alertToCompletionTime.touched && !alertToCompletionTime.valid">Please enter Alert in days.</div> -->
+
+
+    <button class="btn btn-primary" [disabled]="!f.valid">Save State</button>
+  </div>
+</form>

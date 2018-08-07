@@ -13,20 +13,24 @@ using Microsoft.Extensions.Options;
 namespace vega.Persistence
 {
     public class StateInitialiserStateRepository : IStateInitialiserStateRepository
-    {
+    {   
         private readonly VegaDbContext vegaDbContext;
         public StateInitialiserStateRepository(VegaDbContext vegaDbContext)
         {
-            this.vegaDbContext = vegaDbContext;
+            this.vegaDbContext = vegaDbContext;  
         }
         public void AddBeginning(StateInitialiserState stateInitialiserState ) {
             var stateInitialiser = GetStateInitialiser(stateInitialiserState.StateInitialiserId);
 
-            stateInitialiserState.OrderId = stateInitialiser.States.Min(o => o.OrderId);
-            //increment order for all states after
-            stateInitialiser.States.ForEach(s => s.OrderId += 1);
-            //updates sort orders
-            vegaDbContext.Update(stateInitialiser);
+            if(stateInitialiser.States.Count > 0) {
+                stateInitialiserState.OrderId = stateInitialiser.States.Min(o => o.OrderId);
+                //increment order for all states after
+                stateInitialiser.States.ForEach(s => s.OrderId += 1);
+                //updates sort orders
+                vegaDbContext.Update(stateInitialiser);
+            }   
+            else 
+                stateInitialiserState.OrderId=1;
             //insert new state
             vegaDbContext.Add(stateInitialiserState);
         }
@@ -50,6 +54,18 @@ namespace vega.Persistence
                 .Where(si => si.Id == id)        
                 .Include(s => s.States)
                 .SingleOrDefault();
+        }
+
+        public async Task<StateInitialiserState>  GetStateInitialiserState(int id) {
+                return await this.vegaDbContext.StateInitialiserState
+                    .Where(si => si.Id == id)        
+                    .SingleOrDefaultAsync();
+        }
+
+        public void Update(StateInitialiserState stateInitialiserState)
+        {
+            vegaDbContext.Update(stateInitialiserState);
+
         }
     }
 }

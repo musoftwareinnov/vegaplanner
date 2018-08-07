@@ -1,6 +1,7 @@
 using System.Linq;
 using AutoMapper;
 using vega.Controllers.Resources;
+using vega.Controllers.Resources.StateInitialser;
 using vega.Core.Models;
 using vega.Core.Models.States;
 
@@ -10,7 +11,10 @@ namespace vega.Mapping.MappingProfiles
     {
         public StateInitialiserMapping() {
                 CreateMap<StateInitialiser, StateInitialiserResource>();
+                CreateMap<StateInitialiserSaveResource, StateInitialiser>();
                 CreateMap<SaveStateInitialiserStateResource, StateInitialiserState>();
+                CreateMap<StateInitialiserStateResource, StateInitialiserState>();
+                CreateMap<StateInitialiserState, StateInitialiserStateResource>();
         }
     }
 }

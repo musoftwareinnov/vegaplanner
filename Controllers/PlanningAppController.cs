@@ -72,7 +72,7 @@ namespace vega.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPlanningApp(int id)
         {
-            
+                
             var planningApp = await repository.GetPlanningApp(id, includeRelated: true);
 
             if (planningApp == null)
@@ -117,6 +117,8 @@ namespace vega.Controllers
 
             var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
             result.BusinessDate = CurrentDate.SettingDateFormat();
+
+            planningApp = await repository.GetPlanningApp(id, includeRelated: true);
             return Ok(result);
         }
 

@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace vega.Core.Models.Generic
-{
+{ 
     public class IdNameProperty
     {
         public int Id { get; set; }

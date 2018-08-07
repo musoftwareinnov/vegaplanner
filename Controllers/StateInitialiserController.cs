@@ -6,6 +6,8 @@ using vega.Controllers.Resources;
 using vega.Core;
 using vega.Core.Models;
 using vega.Core.Models.States;
+using vega.Controllers.Resources.StateInitialser;
+using System;
 
 namespace vega.Controllers
 {
@@ -20,7 +22,28 @@ namespace vega.Controllers
             this.unitOfWork = unitOfWork;
             this.stateRepository = stateRepository;
             this.mapper = mapper;
+        }  
+
+        [HttpPost]
+        public async Task<IActionResult> CreateStateInitialiser([FromBody] StateInitialiserSaveResource resource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var stateInitialiser = mapper.Map<StateInitialiserSaveResource, StateInitialiser>(resource);
+
+            stateInitialiser.LastUpdate = DateTime.Now;
+            stateRepository.Add(stateInitialiser);
+
+            await unitOfWork.CompleteAsync();
+
+            stateInitialiser = await stateRepository.GetStateInitialiser(stateInitialiser.Id);
+
+            var result = mapper.Map<StateInitialiser, StateInitialiserResource>(stateInitialiser);
+
+            return Ok(result);
         }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStateInitialiser(int id)   
@@ -36,23 +59,13 @@ namespace vega.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetStateInitialisers()   
+        public async Task<QueryResultResource<StateInitialiserResource>> GetPlanningApps(StateInitialiserQueryResource filterResource)
         {
-            var stateInitialiser = await stateRepository.GetStateInitialisers();
+            var filter = mapper.Map<StateInitialiserQueryResource, StateInitialiserQuery>(filterResource);
+            
+            var queryResult = await stateRepository.GetStateInitialisers(filter);
 
-            if (stateInitialiser == null)
-                return NotFound();
-
-            var result = mapper.Map<ICollection<StateInitialiser>, ICollection<StateInitialiserResource>>(stateInitialiser);
-
-            return Ok(result);
+            return mapper.Map<QueryResult<StateInitialiser>, QueryResultResource<StateInitialiserResource>>(queryResult);
         }
-
-        // [HttpPost]
-        // public async Task<IActionResult> CreateNewState([FromBody] SaveVehicleResource vehicleResource)
-        // {
-        //     if (!ModelState.IsValid)
-        //         return BadRequest(ModelState);
-        // }
     }
 }

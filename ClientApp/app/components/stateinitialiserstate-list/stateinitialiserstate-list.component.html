@@ -1,0 +1,45 @@
+<h2>Generator State List</h2>
+<!-- <p>
+  <a [routerLink]="['/stateinitialisers/new']" class="btn btn-primary">New Generator</a>
+</p> -->
+
+<head>
+    <style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+    
+    tr:nth-child(even) {background-color: #f2f2f2;}
+    </style>
+</head>
+
+<div class="well">
+    <table class="table">
+    <thead>
+        <tr>
+        <th>Name</th>
+        <th>State Duration</th>
+        <th>Alert</th>
+        </tr>
+    </thead>
+    <tr *ngFor="let v of stateInitialiser.states">
+        <td>{{ v.name}}</td>
+        <td>{{ v.completionTime}}</td>
+        <td>{{ v.alertToCompletionTime}} </td>
+        <td>
+            <a *ngIf="v.id>0" [routerLink]="['/stateinitialiserstate/', v.id]" [queryParams]="{ orderId: v.orderId }">Edit</a>
+        </td>
+        <td>
+            <a [routerLink]="['/stateinitialiserstate/', 0]" [queryParams]="{ orderId: v.orderId, initialiserId: stateInitialiser.id }">Insert</a>
+        </td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+

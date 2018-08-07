@@ -55,7 +55,7 @@ namespace vega.Persistence
                 .Include(v => v.Features)
                     .ThenInclude(vf => vf.Feature)
                 .AsQueryable();
-
+ 
             if (queryObj.MakeId.HasValue)
                 query = query.Where(v => v.Model.MakeId == queryObj.MakeId);
 

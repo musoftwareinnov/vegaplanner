@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace vega.Controllers.Resources
+namespace vega.Controllers.Resources.StateInitialser
 {
     public class StateInitialiserResource
     {

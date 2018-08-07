@@ -22,7 +22,6 @@ namespace vega.Controllers
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
         private readonly IVehicleRepository repository;
-
         private readonly PhotoSettings photoSettings;
 
         private IPhotoRepository photoRepository;

@@ -28,7 +28,7 @@ namespace vega.Core.Models
    
         public PlanningAppState()
         {
-             
+                 
         }
         /* Helper Methods  */
         public int CompleteState(DateTime completionDate, List<StateStatus> stateStatusList) 

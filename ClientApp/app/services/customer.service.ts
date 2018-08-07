@@ -38,5 +38,5 @@ export class CustomerService {
     }
 
     return parts.join('&');
-}
+  }
 }

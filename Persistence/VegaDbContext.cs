@@ -6,7 +6,7 @@ namespace vega.Persistence
 {
     public class VegaDbContext : DbContext
     {
-
+   
         public DbSet<Make> Makes { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<Contact> Contacts { get; set; }
@@ -14,7 +14,9 @@ namespace vega.Persistence
         public DbSet<Model> Models { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<StateInitialiser> StateInitialisers { get; set; }
+        public DbSet<StateInitialiserState> StateInitialiserState { get; set; }
         public DbSet<PlanningApp> PlanningApps { get; set; }
+        //public DbSet<PlanningAppState> PlanningAppStates { get; set; }
         public DbSet<StateStatus> StateStatus { get; set; }
         public DbSet<Customer> Customers { get; set; }
 

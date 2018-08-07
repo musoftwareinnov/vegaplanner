@@ -1,1 +1,40 @@
+<h2>State Generators</h2>
+<p>
+  <a [routerLink]="['/stateinitialisers/new']" class="btn btn-primary">New Generator</a>
+</p>
 
+<head>
+    <style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+    
+    tr:nth-child(even) {background-color: #f2f2f2;}
+    </style>
+</head>
+
+<div class="well">
+    <table class="table">
+    <thead>
+        <tr>
+        <th>Name</th>
+        <th>Description</th>
+        </tr>
+    </thead>
+    <tr *ngFor="let v of queryResult.items">
+        <td>{{ v.name }}</td>
+        <td>{{ v.description}}</td>
+        <td>
+            <a [routerLink]="['/stateinitialisers/', v.id]">View</a>
+        </td>
+        </tr>
+    </tbody>
+    </table>
+    <pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>
+</div>

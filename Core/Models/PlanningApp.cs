@@ -36,7 +36,7 @@ namespace vega.Core.Models
 
         }
 
-        public void GeneratePlanningStates(IOrderedEnumerable<StateInitialiserState> stateInitialisers, IEnumerable<StateStatus> stateStatus) 
+        public PlanningApp GeneratePlanningStates(IOrderedEnumerable<StateInitialiserState> stateInitialisers, IEnumerable<StateStatus> stateStatus) 
         {
             var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
 
@@ -63,6 +63,7 @@ namespace vega.Core.Models
             //Set overall Status to InProgress
             CurrentPlanningStatus = stateStatus.Where(s => s.Name == StatusList.AppInProgress).SingleOrDefault();
         
+            return this;
         }
 
         public void NextState(List<StateStatus> statusList)
@@ -71,21 +72,22 @@ namespace vega.Core.Models
             if(!Completed()) {
                 var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
 
-                var current = Current();    
-                if(!isLastState(current)) {
+                var prevState = Current(); //Store reference to current state
+
+                if(!isLastState(prevState)) {
                         Next().CurrentState = true;   //move to next state
-                }                      
-                current.CompleteState(currentDate, statusList );  
+                }  
+                prevState.CompleteState(currentDate, statusList ); //Close out previouse state
                 //If Overran then roll all future completion dates by business days overdue
-                if(currentDate > current.DueByDate) {   
-                    var daysDiff = current.DueByDate.GetBusinessDays(currentDate, new List<DateTime>());           
-                    RollForwardDueByDates(daysDiff);  
-                }                  
+                if(currentDate > prevState.DueByDate) {   
+                    var daysDiff = prevState.DueByDate.GetBusinessDays(currentDate, new List<DateTime>());           
+                    RollForwardDueByDates(daysDiff, prevState);  
+                }  
+               
             }
             if(Completed()) {
                 CurrentPlanningStatus = statusList.Where(s => s.Name == StatusList.Complete).SingleOrDefault();
             }
-
         }
 
         public void PrevState(List<StateStatus> statusList)
@@ -101,7 +103,7 @@ namespace vega.Core.Models
                     rewindState();
 
                     if(daysDiff > 0)  {
-                        var statesToUpdate = RollbackDueByDates(daysDiff);   
+                        var statesToUpdate = RollbackDueByDates(daysDiff, current);   
                     }   
                 }
             }
@@ -118,19 +120,35 @@ namespace vega.Core.Models
             //set current non active
             current.CurrentState = false;
         } 
-        private void RollForwardDueByDates(int daysDiff)
+        private void RollForwardDueByDates(int daysDiff, PlanningAppState prevState)
         {
             if(!Completed()) {
+
+                var dueDate = prevState.DueByDate;
+                var test = PlanningAppStates
+                        .Where(s => s.DueByDate >= prevState.DueByDate).ToList();
+
                 PlanningAppStates
-                        .Where(s => s.DueByDate >= Current().DueByDate)
+                        .Where(s => s.DueByDate >= prevState.DueByDate)
                         .Select(c => {c.DueByDate = c.DueByDate.AddBusinessDays(daysDiff); return c;})
                         .ToList();  
             }
+            // if(!Completed()) {
+
+            //     var dueDate = Current().DueByDate;
+            //     var test = PlanningAppStates
+            //             .Where(s => s.DueByDate >= Current().DueByDate).ToList();
+
+            //     PlanningAppStates
+            //             .Where(s => s.DueByDate >= Current().DueByDate)
+            //             .Select(c => {c.DueByDate = c.DueByDate.AddBusinessDays(daysDiff); return c;})
+            //             .ToList();  
+            // }
         }
-        private List<PlanningAppState> RollbackDueByDates(int daysDiff)
+        private List<PlanningAppState> RollbackDueByDates(int daysDiff, PlanningAppState current)
         {
             return PlanningAppStates
-                    .Where(s => s.DueByDate > Current().DueByDate)
+                    .Where(s => s.DueByDate > current.DueByDate)
                     .Select(c => {c.DueByDate = c.DueByDate.AddBusinessDays(-daysDiff); return c;})
                     .ToList();  
         }

@@ -9,6 +9,7 @@ using vega.Core.Models;
 using vega.Core;
 using vega.Core.Models.States;
 using vega.Persistence;
+using vega.Controllers.Resources.StateInitialser;
 
 namespace vega.Controllers
 {
@@ -17,13 +18,13 @@ namespace vega.Controllers
     {
         public StateInitialiserStateController(IMapper mapper, IStateInitialiserStateRepository repository, IUnitOfWork unitOfWork)
         {
-            Mapper = mapper;
-            Repository = repository;
+            this.mapper = mapper;
+            this.repository = repository;
             UnitOfWork = unitOfWork;
         }
 
-        public IMapper Mapper { get; }
-        public IStateInitialiserStateRepository Repository { get; }
+        public IMapper mapper { get; }
+        public IStateInitialiserStateRepository repository { get; }
         public IUnitOfWork UnitOfWork { get; }
 
         [HttpPost]
@@ -40,18 +41,52 @@ namespace vega.Controllers
                 return BadRequest(ModelState);
             }
 
-            var stateInitialiserState = Mapper.Map<SaveStateInitialiserStateResource, StateInitialiserState>(stateInitialiserResource);
+            var stateInitialiserState = mapper.Map<SaveStateInitialiserStateResource, StateInitialiserState>(stateInitialiserResource);
 
-            if(stateInitialiserResource.InsertAfterStateOrderId == 0) {
-                //Add to last state
-                Repository.AddBeginning(stateInitialiserState);
-            }
+            if(stateInitialiserResource.OrderId == 0) 
+                repository.AddBeginning(stateInitialiserState);
             else 
-                Repository.AddAfter(stateInitialiserState, stateInitialiserResource.InsertAfterStateOrderId) ;
+                repository.AddAfter(stateInitialiserState, stateInitialiserResource.OrderId) ;
 
             await UnitOfWork.CompleteAsync();
 
-            return Ok();
+            stateInitialiserState = await repository.GetStateInitialiserState(stateInitialiserState.Id);
+            var result = mapper.Map<StateInitialiserState, StateInitialiserStateResource>(stateInitialiserState);
+
+            return Ok(result);
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetStateInitialiserState(int id)
+        {
+            var stateInitialiserState = await repository.GetStateInitialiserState(id);
+
+            if (stateInitialiserState == null)
+                return NotFound();
+
+            var result = mapper.Map<StateInitialiserState, StateInitialiserStateResource>(stateInitialiserState);
+
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateStateInitialiserState([FromBody] StateInitialiserStateResource stateInitialiserStateResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var stateInitialiserState = mapper.Map<StateInitialiserStateResource, StateInitialiserState>(stateInitialiserStateResource);
+
+            repository.Update(stateInitialiserState);
+
+            await UnitOfWork.CompleteAsync();
+
+            stateInitialiserState = await repository.GetStateInitialiserState(stateInitialiserState.Id);
+
+            var result = mapper.Map<StateInitialiserState, StateInitialiserStateResource>(stateInitialiserState);
+
+            return Ok(result);
         }
     }
 }
