@@ -15,13 +15,18 @@ namespace vega.Persistence
     public class PlanningAppRepository : IPlanningAppRepository
     {
         private readonly VegaDbContext vegaDbContext;
-        public PlanningAppRepository(VegaDbContext vegaDbContext, IOptionsSnapshot<StateStatusSettings> options)
+        public PlanningAppRepository(VegaDbContext vegaDbContext, 
+                                     IStateStatusRepository stateStatusRepository,
+                                     IOptionsSnapshot<StateStatusSettings> options)
         {
             this.vegaDbContext = vegaDbContext;
+            this.stateStatusRepository = stateStatusRepository;
             stateStatusSettings = options.Value;
         }
 
         public StateStatusSettings stateStatusSettings { get; }
+
+        private IStateStatusRepository stateStatusRepository { get; set; }
 
         public void Add(PlanningApp planningApp)
         {
@@ -76,8 +81,6 @@ namespace vega.Persistence
                                 .Include(c => c.Customer)
                                 .AsQueryable();
 
-            //TODO Later!!!! Use IQuerable for Customer lookup
-
             if(queryObj.CustomerId > 0)
                 query = query.Where(c => c.Customer.Id == queryObj.CustomerId);
  
@@ -96,11 +99,17 @@ namespace vega.Persistence
 
             if(queryObj.PlanningAppType == StatusList.AppInProgress) {
                 List<String> statusList = new List<String>();
-                if(queryObj.PlanningAppStatusType == null)
+
+                if(queryObj.StateStatus > 0) {
+                        var stateStatus = stateStatusRepository.GetStateStatus(queryObj.StateStatus);
+                        statusList.Add(stateStatus.Name);
+                }
+                else if(queryObj.PlanningAppStatusType == null)
                     statusList.AddRange(new List<String> { StatusList.Overdue, StatusList.Due, StatusList.OnTime} );
                 else 
                     statusList.Add(queryObj.PlanningAppStatusType);
 
+                //Generate the list
                 List<PlanningApp> planningAppList = new List<PlanningApp>();
                 foreach ( var status in statusList) {
                     planningAppList.AddRange(queryList.Where(p => p.Current().DynamicStateStatus() == status)
@@ -116,7 +125,6 @@ namespace vega.Persistence
             result.TotalItems =  query.Count();
             query = query.ApplyPaging(queryObj);
 
-            //result.Items = await query.ToListAsync();
             result.Items = query.ToList();
             return result;
         }

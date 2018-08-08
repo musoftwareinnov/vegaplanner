@@ -48,7 +48,6 @@
     <table class="table">   
       <thead>
         <tr>
-          <th>Id></th>
           <th>State Name</th>
           <th>Due By Date</th>
           <th>Date Completed</th>
@@ -56,8 +55,7 @@
         </tr>
       </thead>
       <tr *ngFor="let v of planningApp.planningAppStates" [ngClass] = "{'highlight' : v.currentState == true}">
-          <td>{{ v.id}}</td>
-        <td>{{ v.stateName}}</td>
+          <td>{{ v.stateName}}</td>
           <td>{{ v.dueByDate }}</td>
           <td>{{ v.dateCompleted }}</td>
           <td>{{ v.stateStatus }}</td>

@@ -5,9 +5,9 @@ import { BrowserXhr } from '@angular/http';
 @Injectable()
 export class ProgressService {
 
-  private uploadProgress: Subject<any>;   //Subject Inherits from Observable - can add
+  private uploadProgress: Subject<any> = new Subject();   //Subject Inherits from Observable - can add
   //downloadProgress: Subject<any> = new Subject();  //Not Used
- 
+  
   startTracking() {
     this.uploadProgress = new Subject();
     return this.uploadProgress;

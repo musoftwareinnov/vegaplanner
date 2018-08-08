@@ -1,3 +1,5 @@
+import { StateStatusService } from './../../services/statestatus.service';
+import { StateStatus } from './../../models/statestatus';
 import { PlanningAppService } from '../../services/planningapp.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,14 +10,19 @@ export class PlanningAppListComponent implements OnInit {
   private readonly PAGE_SIZE = 10; 
   queryResult: any = {};
   query: any = {
-    pageSize: this.PAGE_SIZE
+    pageSize: this.PAGE_SIZE,
+    stateStatus: {}
   };
   interval: any = {};
 
-  constructor(private PlanningAppService: PlanningAppService) { }
+  stateStatuses: StateStatus[] = [];
+
+  constructor(private PlanningAppService: PlanningAppService,
+              private StateStatusService: StateStatusService) { }
 
   ngOnInit() {
     this.populatePlanningAppSummary();
+    this.loadStatuses();
     // this.refreshData();
     // this.interval = setInterval(() => { 
     //     this.refreshData(); 
@@ -25,6 +32,11 @@ export class PlanningAppListComponent implements OnInit {
   // refreshData() {
   //   this.populatePlanningAppSummary();
   // }
+
+  private loadStatuses() {
+    this.StateStatusService.getStateStatuses(1)
+      .subscribe(result => this.stateStatuses = result);
+  }
 
   private populatePlanningAppSummary() {
     this.PlanningAppService.getPlanningAppSummary(this.query)
@@ -36,8 +48,8 @@ export class PlanningAppListComponent implements OnInit {
     this.populatePlanningAppSummary();
   }
 
-  onFilterChange() {
-    this.query.page = 1; 
+  onStateFilterChange() {
+    console.warn("state = " + this.query.stateStatus);
     this.populatePlanningAppSummary();
   }
 }
