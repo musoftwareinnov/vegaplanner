@@ -19,6 +19,7 @@ namespace vega.Mapping.MappingProfiles
                     opt => opt.MapFrom(ps => ps.state.Name))
                 .ForMember(psr => psr.DueByDate,
                     opt => opt.MapFrom(ps => ps.DueByDate.SettingDateFormat())) //TODO Get from settings
+                    //opt => opt.MapFrom(ps => ps.DueByDate.SettingDateFormat())) //TODO Get from settings
                 .ForMember(psr => psr.DateCompleted,
                     opt => opt.MapFrom(ps => ps.CompletionDate == null ? "" : ps.CompletionDate.Value.ToLocalTime().SettingDateFormat()))
                 .ForMember(psr => psr.StateStatus,

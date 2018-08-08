@@ -10,5 +10,6 @@ namespace vega.Core.Models
         public int Page { get; set; }
         public int PageSize { get; set; }
         public bool isSummary { get; set; }
+        public string SearchCriteria { get; set; }
     }
 }

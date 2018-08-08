@@ -36,6 +36,7 @@ namespace vega
             services.Configure<DateSettings>(Configuration.GetSection("DateSettings"));
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
+            services.AddScoped<IDrawingRepository, DrawingRepository>();           
 
             //Add new repository here
             services.AddScoped<IStateInitialiserStateRepository, StateInitialiserStateRepository>();

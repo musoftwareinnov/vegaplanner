@@ -40,7 +40,7 @@ namespace vega.Controllers
             var result = mapper.Map<Customer, CustomerResource>(customer);
 
             return Ok(result);
-        }
+        } 
 
         [HttpGet]
         public async Task<QueryResultResource<CustomerResource>> GetCustomers(CustomerQueryResource filterResource)     

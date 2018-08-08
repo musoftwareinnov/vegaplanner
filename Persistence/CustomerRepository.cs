@@ -48,6 +48,9 @@ namespace vega.Persistence
                                 .OrderBy(c => c.LastName)
                                 .AsQueryable();
 
+            if(queryObj.SearchCriteria != null)
+                    query = query.Where(c => c.SearchCriteria.Contains(queryObj.SearchCriteria));
+
             result.TotalItems =  query.Count();
             query = query.ApplyPaging(queryObj);
 

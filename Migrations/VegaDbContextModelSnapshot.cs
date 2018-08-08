@@ -50,6 +50,8 @@ namespace vega.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
+                    b.Property<string>("SearchCriteria");
+
                     b.Property<string>("TelephoneHome")
                         .IsRequired()
                         .HasMaxLength(255);
@@ -61,6 +63,24 @@ namespace vega.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("vega.Core.Models.Drawing", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<int>("PlanningAppId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlanningAppId");
+
+                    b.ToTable("Drawings");
                 });
 
             modelBuilder.Entity("vega.Core.Models.Feature", b =>
@@ -272,6 +292,14 @@ namespace vega.Migrations
                     b.HasIndex("FeatureId");
 
                     b.ToTable("VehicleFeatures");
+                });
+
+            modelBuilder.Entity("vega.Core.Models.Drawing", b =>
+                {
+                    b.HasOne("vega.Core.Models.PlanningApp")
+                        .WithMany("Drawings")
+                        .HasForeignKey("PlanningAppId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("vega.Core.Models.Model", b =>

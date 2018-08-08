@@ -12,7 +12,7 @@ using vega.Extensions.DateTime;
 using Microsoft.Extensions.Options;
 using vega.Core.Models.Settings;
 using vega.Core.Utils;
-
+  
 namespace vega.Controllers
 {
     [Route("/api/planningapps")]
@@ -94,7 +94,7 @@ namespace vega.Controllers
 
             if (planningApp == null)
                 return NotFound();
-
+  
             //Add possibility of override for testing
             // if(planningResource.CurrentStateCompletionDate != null)
             //     currentDate = planningResource.CurrentStateCompletionDate.ParseInputDate();

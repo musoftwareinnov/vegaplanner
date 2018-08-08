@@ -5,7 +5,7 @@
   <li role="presentation" class="active"><a href="#states" aria-controls="states" role="tab" data-toggle="tab">Application States</a></li>
   <li role="presentation"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Application Details</a></li>
   <li role="presentation"><a href="#customer" aria-controls="customer" role="tab" data-toggle="tab">Customer Details</a></li> 
-  <li role="presentation"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Drawings</a></li> 
+  <li role="presentation"><a href="#drawings" aria-controls="photos" role="tab" data-toggle="tab">Drawings</a></li> 
 </ul>
 
   <!-- Tab panes -->
@@ -33,17 +33,18 @@
     </head>
     
     <h3>Planning Application States</h3>
-    <form class="form-horizontal" #f="ngForm" (submit)="submit()">
-      <div class="form-group">
-          <label class="control-label col-sm-11"></label>
-          <div class="col-sm-1">
-              <button class="btn btn-primary" >Complete</button>          
-          </div>
-            <div class="col-sm-1">
-          </div>
-        </div> 
-  </form>
+
     <div class="well">
+        <form class="form-horizontal" #f="ngForm" (submit)="submit()">
+            <div class="form-group">
+                <label class="control-label col-sm-11"></label>
+                <div class="col-sm-1">
+                    <button class="btn btn-primary" >Complete</button>          
+                </div>
+                  <div class="col-sm-1">
+                </div>
+              </div> 
+        </form>
     <table class="table">   
       <thead>
         <tr>
@@ -226,14 +227,14 @@
       </div>
   </div>
   <!-- Drawings tab -->
-  <div role="tabpanel" class="tab-pane" id="photos">
-    <h2>Photos</h2>
-    <input type="file" (change)="uploadPhoto()" #fileInput> 
+  <div role="tabpanel" class="tab-pane" id="drawings">
+    <h2>Drawings</h2>
+    <input type="file" (change)="uploadDrawings()" #fileInput> 
     <div class="progress" *ngIf="progress && progress.percentage < 100">
       <div class="progress-bar" [style.width]="progress.percentage + '%'"> 
         <span class="sr-only">{{ progress.percentage }}% Complete</span>
       </div>
     </div>
-    <img *ngFor="let photo of photos" src="/uploads/{{ photo.fileName }}" class="img-thumbnail">
+    <img *ngFor="let drawing of drawings" src="/uploads/{{ drawing.fileName }}" class="img-thumbnail">
   </div>
 </div>

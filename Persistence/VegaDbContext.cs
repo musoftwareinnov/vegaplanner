@@ -16,7 +16,7 @@ namespace vega.Persistence
         public DbSet<StateInitialiser> StateInitialisers { get; set; }
         public DbSet<StateInitialiserState> StateInitialiserState { get; set; }
         public DbSet<PlanningApp> PlanningApps { get; set; }
-        //public DbSet<PlanningAppState> PlanningAppStates { get; set; }
+        public DbSet<Drawing> Drawings { get; set; }
         public DbSet<StateStatus> StateStatus { get; set; }
         public DbSet<Customer> Customers { get; set; }
 

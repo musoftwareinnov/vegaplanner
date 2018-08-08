@@ -5,11 +5,13 @@
 
 <div class="well">
   <div class="form-group">
-    <label for="Planning Status">Customer Search</label>
-    <select id="planningStatus" class="form-control" [(ngModel)]="query.makeId" (change)="onFilterChange()">
-      <option value=""></option>
-      <option *ngFor="let m of statuses" value="{{ m.id }}">{{ m.name }}</option>
-    </select>  
+      <label class="control-label col-sm-1" >Search</label>
+
+      <input id="searchCriteria" (input)="onSearchChange($event.target.value)" type="text" class="form-control" [(ngModel)]="query.searchCriteria" name="searchCritera">
+      <div class="col-sm-6">
+      </div>
+      <div class="col-sm-3">
+        </div>
   </div>
 </div>
   

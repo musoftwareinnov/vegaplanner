@@ -31,6 +31,7 @@ import { StateInitialiserService } from './services/stateinitialiser.service';
 import { StateInitialiserStateService } from './services/stateinitialiserstate.service';
 import { CustomerService } from './services/customer.service';
 import { AppErrorHandler } from './app.error.handler';
+import { DrawingService } from './services/drawing.service';
 
 @NgModule({
     declarations: [
@@ -85,6 +86,7 @@ import { AppErrorHandler } from './app.error.handler';
         VehicleService,
         PlanningAppService,
         PhotoService,
+        DrawingService,
         ProgressService,
         CustomerService,
         StateInitialiserService,

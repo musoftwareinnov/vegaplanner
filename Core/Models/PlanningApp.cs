@@ -24,16 +24,14 @@ namespace vega.Core.Models
         public int CurrentPlanningStatusId { get; set; }
         public StateStatus CurrentPlanningStatus { get; set; }
 
-        // public int NextStateId { get; set; }
-        // public PlanningAppState NextPlanningState { get; set; }
-        //public DateTime CurrentStateCompletionDate { get; set; }
-
         public IList<PlanningAppState> PlanningAppStates { get; set; }
+
+        public ICollection<Drawing> Drawings { get; set; }
 
         public PlanningApp()
         {
             PlanningAppStates = new List<PlanningAppState>();
-
+            Drawings = new Collection<Drawing>();
         }
 
         public PlanningApp GeneratePlanningStates(IOrderedEnumerable<StateInitialiserState> stateInitialisers, IEnumerable<StateStatus> stateStatus) 

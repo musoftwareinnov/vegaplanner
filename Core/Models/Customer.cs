@@ -32,6 +32,8 @@ namespace vega.Core.Models
         [StringLength(255)]
         public string TelephoneMobile { get; set; }
 
+        public string SearchCriteria { get; set; }
+
         [StringLength(1024)]
         public string Notes { get; set; }
         public ICollection<PlanningApp> planningApps { get; set; }

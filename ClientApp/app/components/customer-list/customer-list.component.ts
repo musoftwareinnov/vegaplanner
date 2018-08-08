@@ -7,16 +7,25 @@ import { CustomerService } from '../../services/customer.service';
   styleUrls: ['./customer-list.component.css']
 })
 export class CustomerListComponent implements OnInit {
+
   private readonly PAGE_SIZE = 10; 
   queryResult: any = {};
   query: any = {
-    pageSize: this.PAGE_SIZE
+    pageSize: this.PAGE_SIZE,
+    searchCriteria: "",
+    sortBy:""
   };
 
   constructor(private customerService: CustomerService) { }
 
   ngOnInit() {
     this.populateCustomers();
+  }
+
+  onSearchChange(searchValue : string ) {;
+    this.query.searchCriteria = searchValue;
+    this.customerService.getCustomers(this.query)
+    .subscribe(result => this.queryResult = result);
   }
 
   private populateCustomers() {

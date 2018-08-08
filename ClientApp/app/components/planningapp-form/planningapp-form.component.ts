@@ -4,7 +4,7 @@ import { ProgressService } from '../../services/progress.service';
 import { ChangePlanningAppState, PlanningApp } from '../../models/planningapp';
 import { INITIAL_CONFIG } from '@angular/platform-server';
 import { PlanningAppService } from '../../services/planningapp.service';
-import { PhotoService } from '../../services/photo.service';
+import { DrawingService } from '../../services/drawing.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewChild, ElementRef, NgZone } from '@angular/core';
@@ -21,8 +21,9 @@ import { Location } from '@angular/common';
 export class PlanningAppFormComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
 
+  private readonly COMPLETE = 'Complete';
   vehicleId: number = 0; 
-  photos: any[] = [];
+  drawings: any[] = [];
   progress: any;
 
   savePlanningApp: ChangePlanningAppState = {
@@ -65,16 +66,15 @@ export class PlanningAppFormComponent implements OnInit {
     private router: Router,
     private toastyService: ToastyService,
     private progressService: ProgressService,
-    private photoServices: PhotoService,
+    private drawingServices: DrawingService,
     private planningAppService: PlanningAppService,
     private location: Location) { 
 
     route.params.subscribe(p => { this.planningApp.id = +p['id'] || 0}); }
     
   ngOnInit() {
-    //this.photoServices.getPhotos(this.planningApp.id)
-    this.photoServices.getPhotos(1)
-      .subscribe(photos => this.photos = photos);
+    this.drawingServices.getDrawings(this.planningApp.id)
+      .subscribe(drawings => this.drawings = drawings);
 
     this.planningAppService.getPlanningApp(this.planningApp.id)
     .subscribe(
@@ -86,10 +86,10 @@ export class PlanningAppFormComponent implements OnInit {
         }
     });
 
-    this.refreshData();
-    this.interval = setInterval(() => { 
-        this.refreshData(); 
-    }, 3000);
+    // this.refreshData();
+    // this.interval = setInterval(() => { 
+    //     this.refreshData(); 
+    // }, 5000);
   }
 
   refreshData() {
@@ -120,6 +120,10 @@ export class PlanningAppFormComponent implements OnInit {
     this.savePlanningApp.id = this.planningApp.id;
     console.warn( this.savePlanningApp);
     var result$ = this.planningAppService.nextState(this.savePlanningApp )
+
+    if(this.planningApp.nextState == null)
+        this.planningApp.nextState = this.COMPLETE;
+
     result$.subscribe(
         planningApp => {
           this.toastyService.success({
@@ -162,14 +166,14 @@ export class PlanningAppFormComponent implements OnInit {
     // }
   }
 
-  uploadPhoto() {
+  uploadDrawings() {
 
     if(this.fileInput) {
       var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
 
       if(nativeElement.files != null)
       {
-        console.log(this.fileInput)
+        console.warn(this.fileInput)
         this.progressService.startTracking()
           .subscribe(progress => {
             console.log(progress);
@@ -180,10 +184,9 @@ export class PlanningAppFormComponent implements OnInit {
           undefined,
           () => { this.progress = null });
 
-        //this.photoServices.upload(this.planningApp.id, nativeElement.files[0])
-        this.photoServices.upload(1, nativeElement.files[0])
-          .subscribe(photo => {
-              this.photos.push(photo)
+        this.drawingServices.upload(this.planningApp.id, nativeElement.files[0])
+          .subscribe(drawings => {
+              this.drawings.push(drawings)
           });
       }
     }

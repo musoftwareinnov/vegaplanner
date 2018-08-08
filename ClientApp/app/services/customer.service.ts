@@ -8,6 +8,7 @@ export class CustomerService {
   constructor(private http: Http) { }
 
   getCustomers(filter:any)  {
+    console.warn("Filter " + this.toQueryString(filter));
     return this.http.get(this.customersEndpoint  + '?' + this.toQueryString(filter))
       .map(res => res.json());
   }

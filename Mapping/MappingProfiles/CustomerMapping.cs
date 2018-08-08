@@ -20,7 +20,16 @@ namespace vega.Mapping.MappingProfiles
                                             + ' ' + ps.Address2
                                             + ", " + ps.Postcode ));
                                             
-            CreateMap<CustomerResource, Customer>();
+            CreateMap<CustomerResource, Customer>()
+                .ForMember(psr => psr.SearchCriteria,
+                    opt => opt.MapFrom(ps =>  ps.FirstName   
+                                            + ' ' + ps.LastName 
+                                            + ' ' + ps.Address1
+                                            + ' ' + ps.Address2
+                                            + ' ' + ps.Postcode
+                                            + ' ' + ps.EmailAddress
+                                            + ' ' + ps.TelephoneHome
+                                            + ' ' + ps.TelephoneMobile));
 
             CreateMap<Customer, CustomerSelectResource>()
                 .ForMember(psr => psr.Name,
