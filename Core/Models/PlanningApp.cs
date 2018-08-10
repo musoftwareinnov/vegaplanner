@@ -64,6 +64,58 @@ namespace vega.Core.Models
             return this;
         }
 
+       public PlanningApp ReGeneratePlanningStates(StateInitialiserState newStateInitialiser, IEnumerable<StateStatus> stateStatus) 
+        {
+
+            if(!Completed()) {
+                var currentState = Current();
+                if(newStateInitialiser.OrderId > currentState.state.OrderId) {
+
+                    //Remove states after current state
+                    var states = this.PlanningAppStates.ToList();
+
+
+                    PlanningAppState newState = new PlanningAppState();
+                    newState.state = newStateInitialiser;
+                    newState.CurrentState = false;
+                    newState.StateStatus = stateStatus.Where(s => s.Name == StatusList.OnTime).SingleOrDefault();
+                    newState.CompletionDate = null;
+                    newState.DueByDate = DateTime.Now;
+                    PlanningAppStates.Add(newState);
+
+                    // states.Where(s => s.state.OrderId >= currentState.state.OrderId)
+                    //         .ToList()
+                    //         .ForEach(v => v.)
+                    // states.RemoveAll(s => s.state.OrderId > currentState.state.OrderId);
+                }
+            }
+
+            //Get Current State
+            // if(!Completed()) {
+            //     var currentState = Current();
+
+            //     if(newState.orderby > currentState.orderBy)
+            //     {
+            //         //We can move all states forward by one - regenerate
+            //         //this.PlanningAppStates.Remove(this.PlanningAppStates.Where(p => p.state.OrderId == 2))
+
+            //         var states = this.PlanningAppStates.AsQueryable();
+            //         states
+                    
+                        
+            //         }(p => p.state.OrderId == 2)
+            //     }
+            //     if(currentState.state.OrderId
+
+            //     //Get 
+
+
+
+            // }
+            return this;
+        }
+
+
         public void NextState(List<StateStatus> statusList)
         {
 

@@ -129,6 +129,18 @@ namespace vega.Persistence
             return result;
         }
 
+        public List<PlanningApp> GetPlanningAppsUsingGenerator(int generatorId, bool inProgress = true)
+        {
+            return  vegaDbContext.PlanningApps
+                                .Where(p => p.StateInitialiserId == generatorId && p.CurrentPlanningStatus.Name == "InProgress")
+                                .Include(b => b.CurrentPlanningStatus) 
+                                .Include(t => t.PlanningAppStates)
+                                    .ThenInclude(a => a.StateStatus)
+                                .Include(t => t.PlanningAppStates)
+                                    .ThenInclude(s => s.state)
+                                .ToList();
+        }
+
         //private List<PlanningApp> buildPlanningAppList()
         public PlanningApp UpdatePlanningApp(PlanningApp planningApp)
         {

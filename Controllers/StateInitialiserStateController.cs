@@ -16,8 +16,15 @@ namespace vega.Controllers
     [Route("/api/stateinitialiserstates")]
     public class StateInitialiserStateController : Controller
     {
-        public StateInitialiserStateController(IMapper mapper, IStateInitialiserStateRepository repository, IUnitOfWork unitOfWork)
+        private readonly IPlanningAppRepository planningAppRepository;
+        public StateInitialiserStateController(IMapper mapper, 
+                                                IStateInitialiserStateRepository repository, 
+                                                IPlanningAppRepository planningAppRepository, 
+                                                IStateStatusRepository stateStatusRepository,
+                                                IUnitOfWork unitOfWork)
         {
+            this.planningAppRepository = planningAppRepository;
+            this.stateStatusRepository = stateStatusRepository;
             this.mapper = mapper;
             this.repository = repository;
             UnitOfWork = unitOfWork;
@@ -25,6 +32,7 @@ namespace vega.Controllers
 
         public IMapper mapper { get; }
         public IStateInitialiserStateRepository repository { get; }
+        public IStateStatusRepository stateStatusRepository { get; }
         public IUnitOfWork UnitOfWork { get; }
 
         [HttpPost]
@@ -36,17 +44,25 @@ namespace vega.Controllers
             if (stateInitialiserResource == null)
                 return NotFound();
 
-            if(stateInitialiserResource.StateInitialiserId == 0) {//Business Validation Check
+            if (stateInitialiserResource.StateInitialiserId == 0)
+            {//Business Validation Check
                 ModelState.AddModelError("InitialiserId", "InitialiserId not valid");
                 return BadRequest(ModelState);
             }
 
             var stateInitialiserState = mapper.Map<SaveStateInitialiserStateResource, StateInitialiserState>(stateInitialiserResource);
 
-            if(stateInitialiserResource.OrderId == 0) 
+            if (stateInitialiserResource.OrderId == 0)
                 repository.AddBeginning(stateInitialiserState);
-            else 
-                repository.AddAfter(stateInitialiserState, stateInitialiserResource.OrderId) ;
+            else
+                repository.AddAfter(stateInitialiserState, stateInitialiserResource.OrderId);
+
+            //Get all planning apps that use this state initialiser
+            var apps =  planningAppRepository.GetPlanningAppsUsingGenerator(stateInitialiserState.StateInitialiserId, inProgress:true);
+
+
+            var statusLists = await stateStatusRepository.GetStateStatusList();
+            apps.ForEach(p => p.ReGeneratePlanningStates(stateInitialiserState, statusLists));
 
             await UnitOfWork.CompleteAsync();
 

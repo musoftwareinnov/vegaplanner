@@ -46,7 +46,7 @@ namespace vega.Controllers
         public async Task<QueryResultResource<CustomerResource>> GetCustomers(CustomerQueryResource filterResource)     
         {
             var filter = mapper.Map<CustomerQueryResource, CustomerQuery>(filterResource);
-
+            
             var queryResult = await customerRepository.GetCustomers(filter);
 
             return mapper.Map<QueryResult<Customer>, QueryResultResource<CustomerResource>>(queryResult);             

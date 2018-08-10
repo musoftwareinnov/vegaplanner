@@ -11,5 +11,7 @@ namespace vega.Core
         Task<PlanningApp> GetPlanningApp(int id, bool includeRelated = true);
         QueryResult<PlanningApp> GetPlanningApps(PlanningAppQuery queryObj);
         PlanningApp UpdatePlanningApp(PlanningApp planningApp);
+    
+        List<PlanningApp> GetPlanningAppsUsingGenerator(int generatorId, bool inProgress = true);
     }
 }
