@@ -16,7 +16,7 @@ namespace vega.Core.Utils
         {
                 if(_instance == null) {
                     _instance = new CurrentDateSingleton();
-                    _instance.currentDate = currentDate;
+                    _instance.currentDate = currentDate.Date; //Strip out time section
                 }
 
                 return _instance;

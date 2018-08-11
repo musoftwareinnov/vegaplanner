@@ -49,7 +49,7 @@ namespace vega.Controllers
                 ModelState.AddModelError("InitialiserId", "InitialiserId not valid");
                 return BadRequest(ModelState);
             }
-
+     
             var stateInitialiserState = mapper.Map<SaveStateInitialiserStateResource, StateInitialiserState>(stateInitialiserResource);
 
             if (stateInitialiserResource.OrderId == 0)
@@ -62,7 +62,7 @@ namespace vega.Controllers
 
 
             var statusLists = await stateStatusRepository.GetStateStatusList();
-            apps.ForEach(p => p.ReGeneratePlanningStates(stateInitialiserState, statusLists));
+            apps.ForEach(p => p.InsertNewPlanningState(stateInitialiserState, statusLists));
 
             await UnitOfWork.CompleteAsync();
 

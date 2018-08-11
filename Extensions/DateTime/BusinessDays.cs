@@ -17,7 +17,7 @@ namespace vega.Extensions.DateTime
                                 : ((int)source.DayOfWeek + 6) % 7;
 
             switch (dayOfWeek)
-            {
+            {   
                 case 6:
                     businessDays--;
                     break;
@@ -32,7 +32,7 @@ namespace vega.Extensions.DateTime
         {
             if(System.DateTime.Compare(finishDateExclusive, current ) <= 0)
                 return 0;
-
+ 
             Func<int, bool> isWorkingDay = days =>
             {
                 var currentDate = current.AddDays(days);

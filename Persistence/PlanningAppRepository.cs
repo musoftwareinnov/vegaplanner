@@ -124,7 +124,7 @@ namespace vega.Persistence
 
             result.TotalItems =  query.Count();
             query = query.ApplyPaging(queryObj);
-
+ 
             result.Items = query.ToList();
             return result;
         }

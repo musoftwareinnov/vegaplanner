@@ -48,7 +48,7 @@ namespace vega.Controllers
             var filter = mapper.Map<CustomerQueryResource, CustomerQuery>(filterResource);
             
             var queryResult = await customerRepository.GetCustomers(filter);
-
+    
             return mapper.Map<QueryResult<Customer>, QueryResultResource<CustomerResource>>(queryResult);             
         }
 
@@ -57,7 +57,7 @@ namespace vega.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
+ 
             var customer = mapper.Map<CustomerResource, Customer>(customerResource);
 
             customerRepository.Add(customer);

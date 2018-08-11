@@ -15,7 +15,7 @@ namespace vega.Persistence
         {
             this.vegaDbContext = vegaDbContext;
         }
-
+   
         public async Task<Customer> GetCustomer(int id, bool includeRelated = true)
         {
             if(includeRelated) {
@@ -38,7 +38,7 @@ namespace vega.Persistence
             else {
                 return await vegaDbContext.Customers.FindAsync(id);
             }
-        }
+        } 
         public async Task<QueryResult<Customer>> GetCustomers(CustomerQuery queryObj)
         {
             var result = new QueryResult<Customer>();
