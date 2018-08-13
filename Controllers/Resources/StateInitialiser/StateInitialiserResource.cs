@@ -4,7 +4,6 @@ namespace vega.Controllers.Resources.StateInitialser
 {
     public class StateInitialiserResource
     {
-
         public int Id { get; set; }
         public string Name { get; set; }
 

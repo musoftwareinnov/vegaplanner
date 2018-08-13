@@ -50,10 +50,22 @@ namespace vega.Persistence
             vegaDbContext.Add(stateInitialiserState);
         }
         private StateInitialiser GetStateInitialiser(int id) {
-            return this.vegaDbContext.StateInitialisers
-                .Where(si => si.Id == id)        
-                .Include(s => s.States)
-                .SingleOrDefault();
+
+            //if(includeDeleted)
+                return this.vegaDbContext.StateInitialisers
+                    .Where(si => si.Id == id)        
+                    .Include(s => s.States)
+                    .SingleOrDefault();
+            // else {
+            //     var states =  this.vegaDbContext.StateInitialisers
+            //         .Where(si => si.Id == id)        
+            //         .Include(s => s.States)
+            //         .SingleOrDefault();
+                
+            //     var includeDelete = states.States.Where(s => s.isDeleted == true).ToList();
+            //     states.States = includeDelete;
+            //     return states;
+            // }
         }
 
         public async Task<StateInitialiserState>  GetStateInitialiserState(int id) {

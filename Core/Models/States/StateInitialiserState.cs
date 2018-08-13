@@ -11,6 +11,8 @@ namespace vega.Core.Models.States
         public int AlertToCompletionTime { get; set; }   //Days
 
         public int StateInitialiserId { get; set; }
+
+        public bool isDeleted { get; set; }
         public StateInitialiser stateInitialiser;
     }
 }

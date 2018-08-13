@@ -36,14 +36,14 @@ namespace vega
             services.Configure<DateSettings>(Configuration.GetSection("DateSettings"));
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
-            services.AddScoped<IDrawingRepository, DrawingRepository>();           
-
+          
             //Add new repository here
             services.AddScoped<IStateInitialiserStateRepository, StateInitialiserStateRepository>();
             services.AddScoped<IStateInitialiserRepository, StateInitialiserRepository>();
             services.AddScoped<IPlanningAppRepository, PlanningAppRepository>();
             services.AddScoped<IStateStatusRepository, StateStatusRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IDrawingRepository, DrawingRepository>(); 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper();
             services.AddDbContext<VegaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));

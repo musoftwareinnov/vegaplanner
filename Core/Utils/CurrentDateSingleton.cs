@@ -9,7 +9,7 @@ namespace vega.Core.Utils
    
         CurrentDateSingleton() 
         { 
-         
+           
         }
 
         public static CurrentDateSingleton setDate(DateTime currentDate)

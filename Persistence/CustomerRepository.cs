@@ -15,7 +15,7 @@ namespace vega.Persistence
         {
             this.vegaDbContext = vegaDbContext;
         }
-   
+     
         public async Task<Customer> GetCustomer(int id, bool includeRelated = true)
         {
             if(includeRelated) {

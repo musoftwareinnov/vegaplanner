@@ -22,4 +22,9 @@ export class StateInitialiserStateService {
     return this.http.post(this.stateInitialiserstateEndpoint,stateInitialiserState)
       .map(res => res.json());
   }
+
+  delete(id:any) {
+    return this.http.delete(this.stateInitialiserstateEndpoint + '/' + id)
+      .map(res => res.json());
+  }
 }

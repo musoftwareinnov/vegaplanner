@@ -1,0 +1,16 @@
+Done.   StateInitialiserState -> On Update of Days to Compeletion update all planning apps using it (PUT)
+                      -> Delete, do not remove, but soft delete if old planning apps are linked to it
+
+Concurrency -> prevent two people from working on the same app at the same time -> 
+                        need to ad user data - grey out 'Complete' button
+
+Spreadsheet -> write out planing apps to spreadsheet
+
+Logging -> On completion of state write to log User, old state, new state.
+           On completions of planning app -> send text, email etc
+
+Environmnent -> read config files based on environment settings
+
+Archive PLanning apps
+
+Terminate PLanning apps

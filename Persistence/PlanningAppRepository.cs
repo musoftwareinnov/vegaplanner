@@ -27,7 +27,7 @@ namespace vega.Persistence
         public StateStatusSettings stateStatusSettings { get; }
 
         private IStateStatusRepository stateStatusRepository { get; set; }
-
+ 
         public void Add(PlanningApp planningApp)
         {
             var stateInitialiser = vegaDbContext.StateInitialisers

@@ -18,28 +18,22 @@ namespace vega.Persistence
         public StateInitialiserRepository(VegaDbContext vegaDbContext)
         {
             this.vegaDbContext = vegaDbContext;
-
         }
 
-        public async Task<StateInitialiser> GetStateInitialiser(int id)
+        public async Task<StateInitialiser> GetStateInitialiser(int id, bool includeDeleted=false)
         {   
             var stateInitialiser =  await vegaDbContext.StateInitialisers
                             .Where(s => s.Id == id)
                                 .Include(t => t.States)
                                 .SingleOrDefaultAsync();
-       
-            //Important to keep order of states as they can be added and removed - 
-            //EF core cant do Include(t => t.States.Orderby)
-            var orderedStates = stateInitialiser.States.OrderBy(o => o.OrderId); 
+        
+            IOrderedEnumerable<StateInitialiserState> orderedStates;
+            if(includeDeleted) 
+                orderedStates =  stateInitialiser.States.OrderBy(o => o.OrderId);
+            else 
+                orderedStates =  stateInitialiser.States.Where(s => s.isDeleted == includeDeleted).OrderBy(o => o.OrderId);
 
             stateInitialiser.States = orderedStates.ToList();
-
-            StateInitialiserState startState = new StateInitialiserState();
-            startState.CompletionTime=0;
-            startState.OrderId=0;
-            startState.Name="START";
-
-            stateInitialiser.States.Insert(0, startState);
 
             return stateInitialiser;
         }

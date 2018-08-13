@@ -87,6 +87,20 @@ namespace vega.Core.Models
             return this;
         }
 
+        public void RemovePlanningState(StateInitialiserState stateInitialiserState) 
+        {
+            if(!Completed()) {
+                var currentState = Current();
+                if(stateInitialiserState.OrderId > currentState.state.OrderId) {
+                        var planningStateToRemove = this.PlanningAppStates.Where(s => s.state.Id == stateInitialiserState.Id).SingleOrDefault();
+                        if(planningStateToRemove != null) {
+                            this.PlanningAppStates.Remove(planningStateToRemove);
+                            generateDueByDates();
+                        }
+                }
+            }  
+        }   
+
         public void generateDueByDates()
         {
             if(!Completed()) {

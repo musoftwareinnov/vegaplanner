@@ -81,4 +81,11 @@ export class StateInitialiserStateFormComponent implements OnInit {
       this.router.navigate(['/stateinitialisers']);
     });
   }
+
+  delete() {
+    if (confirm("Are you sure?")) {
+      this.stateInitialiserStateService.delete(this.stateInitialiserState.id)
+        .subscribe(x => { this.router.navigate(['/stateinitialisers'])});
+    }
+  }
 }

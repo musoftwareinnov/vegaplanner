@@ -44,11 +44,17 @@ namespace vega.Controllers
             return Ok(result);
         }
 
-
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetStateInitialiser(int id)   
+        public async Task<IActionResult> GetStateInitialiser(int id, [FromQuery] bool includeDeleted)   
         {
-            var stateInitialiser = await stateRepository.GetStateInitialiser(id);
+            var stateInitialiser = await stateRepository.GetStateInitialiser(id, includeDeleted);
+
+            //create beginning state so user can add new states afterwards : BIT HACKY!!!
+            StateInitialiserState startState = new StateInitialiserState();
+            startState.CompletionTime=0;
+            startState.OrderId=0;
+            startState.Name="START";
+            stateInitialiser.States.Insert(0, startState);
 
             if (stateInitialiser == null)
                 return NotFound();

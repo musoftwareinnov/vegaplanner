@@ -17,6 +17,7 @@ import { PlanningAppNewComponent } from './components/planningapp-new/planningap
 import { PlanningAppListComponent } from './components/planningapp-list/planningapp-list.component';
 import { PlanningAppFormComponent } from './components/planningapp-form/planningapp-form.component';
 import { StateInitialiserListComponent } from './components/stateinitialiser-list/stateinitialiser-list.component';
+import { StateInitialiserFormComponent } from './components/stateinitialiser-form/stateinitialiser-form.component';
 import { StateInitialiserStateListComponent } from './components/stateinitialiserstate-list/stateinitialiserstate-list.component';
 import { StateInitialiserStateFormComponent } from './components/stateinitialiserstate-form/stateinitialiserstate-form.component';
 import { CustomerListComponent } from './components/customer-list/customer-list.component';
@@ -47,6 +48,7 @@ import { StateStatusService } from './services/statestatus.service';
         PlanningAppListComponent,
         PlanningAppFormComponent,
         StateInitialiserListComponent,
+        StateInitialiserFormComponent,
         StateInitialiserStateListComponent,
         StateInitialiserStateFormComponent,
         CustomerListComponent,
@@ -71,6 +73,7 @@ import { StateStatusService } from './services/statestatus.service';
             { path: 'planningapps', component: PlanningAppListComponent },
             { path: 'planningapps/:id', component: PlanningAppFormComponent },
             { path: 'stateinitialisers', component: StateInitialiserListComponent },
+            { path: 'stateinitialisers/new', component: StateInitialiserFormComponent },
             { path: 'stateinitialisers/:id', component: StateInitialiserStateListComponent },
             { path: 'stateinitialiserstate/:id', component: StateInitialiserStateFormComponent },
             { path: 'customers', component: CustomerListComponent },

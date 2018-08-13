@@ -6,7 +6,7 @@ namespace vega.Core
 {
     public interface IStateInitialiserRepository
     {
-        Task<StateInitialiser> GetStateInitialiser(int id);
+        Task<StateInitialiser> GetStateInitialiser(int id, bool includeDeleted=false);
         Task<QueryResult<StateInitialiser>>  GetStateInitialisers(StateInitialiserQuery queryObj);
         void Add(StateInitialiser StateInitialiser);
 

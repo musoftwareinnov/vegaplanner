@@ -38,5 +38,6 @@
 
 
     <button class="btn btn-primary" [disabled]="!f.valid">Save State</button>
+    <button *ngIf="stateInitialiserState.id" class="btn btn-danger" type="button" (click)="delete()">Delete</button>
   </div>
 </form>

@@ -86,10 +86,10 @@ export class PlanningAppFormComponent implements OnInit {
         }
     });
 
-    // this.refreshData();
-    // this.interval = setInterval(() => { 
-    //     this.refreshData(); 
-    // }, 5000);
+    this.refreshData();
+    this.interval = setInterval(() => { 
+        this.refreshData(); 
+    }, 5000);
   }
 
   refreshData() {

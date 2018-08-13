@@ -17,22 +17,10 @@ export class StateInitialiserService {
       .map(res => res.json());
   }
 
-//   getCustomer(id: number)  {
-//     return this.http.get(this.customersEndpoint + '/' + id)
-//       .map(res => res.json());
-//   }
-
-//   create(customer:any) {
-//     customer.id=0;
-//     return this.http.post(this.customersEndpoint, customer)
-//       .map(res => res.json());
-//   }
-
-//   update(customer:any) {
-//     customer.planningApps = null; //Ignore planning applications - TODO create api with no app options
-//     return this.http.put(this.customersEndpoint + '/' + customer.id, customer)
-//       .map(res => res.json());
-//   }
+  create(stateInitialiser:any) {
+    return this.http.post(this.stateInitialiserEndpoint, stateInitialiser)
+      .map(res => res.json());
+  }
 
   toQueryString(obj:any) {
     var parts = [];

@@ -8,6 +8,6 @@ namespace vega.Controllers.Resources.StateInitialser
         public int CompletionTime { get; set; }          //Days
         public int AlertToCompletionTime { get; set; }   //Days
         public int StateInitialiserId { get; set; }
-
+        public bool isDeleted { get; set; }
     }
 }

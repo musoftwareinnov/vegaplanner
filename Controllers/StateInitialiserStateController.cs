@@ -60,7 +60,6 @@ namespace vega.Controllers
             //Get all planning apps that use this state initialiser
             var apps =  planningAppRepository.GetPlanningAppsUsingGenerator(stateInitialiserState.StateInitialiserId, inProgress:true);
 
-
             var statusLists = await stateStatusRepository.GetStateStatusList();
             apps.ForEach(p => p.InsertNewPlanningState(stateInitialiserState, statusLists));
 
@@ -93,8 +92,13 @@ namespace vega.Controllers
                 return BadRequest(ModelState);
 
             var stateInitialiserState = mapper.Map<StateInitialiserStateResource, StateInitialiserState>(stateInitialiserStateResource);
-
             repository.Update(stateInitialiserState);
+
+
+
+            //update states from all current planning applications
+            var apps =  planningAppRepository.GetPlanningAppsUsingGenerator(stateInitialiserState.StateInitialiserId, inProgress:true);
+            apps.ForEach(p => p.generateDueByDates());
 
             await UnitOfWork.CompleteAsync();
 
@@ -103,6 +107,28 @@ namespace vega.Controllers
             var result = mapper.Map<StateInitialiserState, StateInitialiserStateResource>(stateInitialiserState);
 
             return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteStateInitialiserState(int id)
+        {
+            var stateInitialiserState = await repository.GetStateInitialiserState(id);
+
+            if (stateInitialiserState == null)
+                return NotFound();
+
+            stateInitialiserState.isDeleted = true;
+
+            repository.Update(stateInitialiserState);
+
+            //remove state from all current planning applications
+            var apps =  planningAppRepository.GetPlanningAppsUsingGenerator(stateInitialiserState.StateInitialiserId, inProgress:true);
+
+            apps.ForEach(p => p.RemovePlanningState(stateInitialiserState));
+
+            await UnitOfWork.CompleteAsync();
+
+            return Ok(id);
         }
     }
 }

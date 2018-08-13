@@ -1,0 +1,22 @@
+<div class="form-group">
+  <h3>Create New Generator</h3>
+</div>
+
+<form #f="ngForm" (submit)="submit()">
+<div class="well">
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" type="text" class="form-control" [(ngModel)]="stateInitialiser.name" name="name" required #name="ngModel">
+    </div>
+    <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Please enter generator name.</div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input id="description" type="text" class="form-control" [(ngModel)]="stateInitialiser.description" name="description" required #description="ngModel">
+    </div>
+    <div class="alert alert-danger" *ngIf="description.touched && !description.valid">Please enter generator description.</div>
+
+  <button class="btn btn-primary" [disabled]="!f.valid">Save Generator</button>
+</div>
+</form>

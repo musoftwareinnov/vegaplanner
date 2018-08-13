@@ -1,7 +1,4 @@
 <h2>Generator State List</h2>
-<!-- <p>
-  <a [routerLink]="['/stateinitialisers/new']" class="btn btn-primary">New Generator</a>
-</p> -->
 
 <head>
     <style>
@@ -18,6 +15,11 @@
     tr:nth-child(even) {background-color: #f2f2f2;}
     </style>
 </head>
+
+<div class="form-group">
+    <label for="name">Generator Name</label>
+    <input id="name" type="text" class="form-control" [disabled]="true" [(ngModel)]="stateInitialiser.name" name="name" >
+</div>
 
 <div class="well">
     <table class="table">
