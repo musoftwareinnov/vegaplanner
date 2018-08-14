@@ -21,23 +21,27 @@ namespace vega.Controllers
         private readonly IMapper mapper;
         private readonly IPlanningAppRepository repository;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IStateInitialiserRepository stateInitialiserRepository;
+
         public IStateStatusRepository statusListRepository { get; }
         public DateSettings dateSettings { get; set; }
 
         public DateTime CurrentDate { get; set; }
         private readonly int NextState = 1;
         private readonly int PrevState = 2;
-        private readonly int RollbackState = 3;
+
         public PlanningAppController(IMapper mapper, 
                                      IPlanningAppRepository repository, 
                                      IUnitOfWork unitOfWork,
                                      IStateStatusRepository statusListRepository,
+                                     IStateInitialiserRepository stateInitialiserRepository,
                                      IOptionsSnapshot<DateSettings> options)
         {
             this.unitOfWork = unitOfWork;
             this.repository = repository;
             this.mapper = mapper;
             this.statusListRepository = statusListRepository;
+            this.stateInitialiserRepository = stateInitialiserRepository;
             dateSettings = options.Value;
 
             //TODO: refactor out of controller
@@ -58,13 +62,21 @@ namespace vega.Controllers
                 return BadRequest(ModelState);
 
             var planningApp = mapper.Map<CreatePlanningAppResource, PlanningApp>(planningResource);
-            repository.Add(planningApp);
 
-            await unitOfWork.CompleteAsync();
+            var stateInitialiser = await stateInitialiserRepository.GetStateInitialiser(planningApp.StateInitialiserId, includeDeleted: false);
+            
+            PlanningAppResource result = null;
 
-            planningApp = await repository.GetPlanningApp(planningApp.Id, includeRelated: true);
-            var result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
-            result.BusinessDate = CurrentDate.SettingDateFormat();
+            if(stateInitialiser.States.Count > 0)
+            {
+                repository.Add(planningApp, stateInitialiser);
+
+                await unitOfWork.CompleteAsync();
+
+                planningApp = await repository.GetPlanningApp(planningApp.Id, includeRelated: true);
+                result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
+                result.BusinessDate = CurrentDate.SettingDateFormat();
+            }
 
             return Ok(result);
         }
@@ -109,8 +121,8 @@ namespace vega.Controllers
                 {
                 ModelState.AddModelError("Update Planning App", "Invalid Instuction Method Id: " + planningResource.method);
                     return BadRequest(ModelState);
-                }  
-  
+                }     
+      
             //Save to database
             repository.UpdatePlanningApp(planningApp);
             await unitOfWork.CompleteAsync();

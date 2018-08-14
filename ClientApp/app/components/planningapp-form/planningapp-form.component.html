@@ -35,7 +35,7 @@
     <h3>Planning Application States</h3>
 
     <div class="well">
-        <form class="form-horizontal" #f="ngForm" (submit)="submit()">
+        <!-- <form class="form-horizontal" #f="ngForm" (submit)="submit()">
             <div class="form-group">
                 <label class="control-label col-sm-11"></label>
                 <div class="col-sm-1">
@@ -44,7 +44,14 @@
                   <div class="col-sm-1">
                 </div>
               </div> 
-        </form>
+        </form> -->
+        <label class="control-label col-sm-11"></label>
+        <div class="col-sm-1">
+          <button  *ngIf="planningApp.planningStatus=='Complete'" class="btn btn-success" type="button" (click)="archive()">Archive</button>          
+        </div>
+          <div class="col-sm-1">
+        </div>
+
     <table class="table">   
       <thead>
         <tr>
@@ -65,16 +72,12 @@
         </tr>
       </tbody>
     </table>
-    <form class="form-horizontal" #f="ngForm" (submit)="submit()">
-        <div class="form-group">
-            <label class="control-label col-sm-11"></label>
-            <div class="col-sm-1">
-                <button class="btn btn-primary" >Complete</button>          
-            </div>
-              <div class="col-sm-1">
-            </div>
-          </div> 
-    </form>
+    <label class="control-label col-sm-11"></label>
+    <div class="col-sm-1">
+      <button  *ngIf="planningApp.planningStatus!='Complete'" class="btn btn-success" type="button" (click)="archive()">Complete</button>          
+    </div>
+      <div class="col-sm-1">
+    </div>
   </div>
   </div>
 

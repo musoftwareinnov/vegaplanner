@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace vega.Migrations
 {
-    public partial class InitialSchema : Migration
+    public partial class InitialModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,6 +22,7 @@ namespace vega.Migrations
                     LastName = table.Column<string>(maxLength: 255, nullable: false),
                     Notes = table.Column<string>(maxLength: 1024, nullable: true),
                     Postcode = table.Column<string>(maxLength: 255, nullable: false),
+                    SearchCriteria = table.Column<string>(nullable: true),
                     TelephoneHome = table.Column<string>(maxLength: 255, nullable: false),
                     TelephoneMobile = table.Column<string>(maxLength: 255, nullable: false)
                 },
@@ -116,7 +117,8 @@ namespace vega.Migrations
                     LastUpdate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     OrderId = table.Column<int>(nullable: false),
-                    StateInitialiserId = table.Column<int>(nullable: false)
+                    StateInitialiserId = table.Column<int>(nullable: false),
+                    isDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,6 +187,26 @@ namespace vega.Migrations
                         name: "FK_Vehicles_Models_ModelId",
                         column: x => x.ModelId,
                         principalTable: "Models",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Drawings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FileName = table.Column<string>(maxLength: 255, nullable: false),
+                    PlanningAppId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Drawings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Drawings_PlanningApps_PlanningAppId",
+                        column: x => x.PlanningAppId,
+                        principalTable: "PlanningApps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -270,6 +292,11 @@ namespace vega.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Drawings_PlanningAppId",
+                table: "Drawings",
+                column: "PlanningAppId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Models_MakeId",
                 table: "Models",
                 column: "MakeId");
@@ -327,6 +354,9 @@ namespace vega.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Drawings");
+
             migrationBuilder.DropTable(
                 name: "Photos");
 

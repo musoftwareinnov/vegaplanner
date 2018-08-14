@@ -71,6 +71,7 @@ import { StateStatusService } from './services/statestatus.service';
             { path: 'vehicles', component: VehicleListComponent },
             { path: 'planningapps/new', component: PlanningAppNewComponent },
             { path: 'planningapps', component: PlanningAppListComponent },
+            { path: 'planningapps/all', component: PlanningAppListComponent },
             { path: 'planningapps/:id', component: PlanningAppFormComponent },
             { path: 'stateinitialisers', component: StateInitialiserListComponent },
             { path: 'stateinitialisers/new', component: StateInitialiserFormComponent },

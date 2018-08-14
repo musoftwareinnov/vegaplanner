@@ -8,14 +8,18 @@ import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router
   styleUrls: ['./customerplanningapp-list.component.css']
 })
 export class CustomerPlanningAppListComponent implements OnInit {
-  //private customerId = 0;
+
+  //Query Results
   private readonly PAGE_SIZE = 10; 
   queryResult: any = {};
   query: any = {
     pageSize: this.PAGE_SIZE,
-    customerId: 0
+    customerId: 0,
+    planningAppType: "All"    //Get all applications for customer
   };
   interval: any = {};
+  statusSelected: string = "";
+  planningStatus: string[] = [];
 
   constructor(
   private route: ActivatedRoute,
@@ -26,6 +30,14 @@ export class CustomerPlanningAppListComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    //Add status list drop down (may bring from server)
+    this.planningStatus.push('All');
+    this.planningStatus.push('InProgress');
+    this.planningStatus.push('Complete');
+    this.planningStatus.push('Archived');
+    this.planningStatus.push('Terminated');
+
     this.populatePlanningAppSummary();
     this.refreshData();
     this.interval = setInterval(() => { 
@@ -38,7 +50,6 @@ export class CustomerPlanningAppListComponent implements OnInit {
   }
 
   private populatePlanningAppSummary() {
-    console.warn("QUERY ID = " + this.query.customerId);
     this.PlanningAppService.getPlanningAppSummary(this.query)
       .subscribe(result => this.queryResult = result);
   }
@@ -50,6 +61,8 @@ export class CustomerPlanningAppListComponent implements OnInit {
 
   onFilterChange() {
     this.query.page = 1; 
+    this.query.planningAppType = this.statusSelected;
+    
     this.populatePlanningAppSummary();
   }
 }

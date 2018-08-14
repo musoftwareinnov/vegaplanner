@@ -23,7 +23,7 @@ namespace vega.Core.Models
 
         public int CurrentPlanningStatusId { get; set; }
         public StateStatus CurrentPlanningStatus { get; set; }
-
+ 
         public IList<PlanningAppState> PlanningAppStates { get; set; }
 
         public ICollection<Drawing> Drawings { get; set; }
@@ -34,7 +34,7 @@ namespace vega.Core.Models
             Drawings = new Collection<Drawing>();
         }
 
-        public PlanningApp GeneratePlanningStates(IOrderedEnumerable<StateInitialiserState> stateInitialisers, IEnumerable<StateStatus> stateStatus) 
+        public PlanningApp GeneratePlanningStates(List<StateInitialiserState> stateInitialisers, IEnumerable<StateStatus> stateStatus) 
         {
             var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
 

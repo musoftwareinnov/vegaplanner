@@ -23,15 +23,15 @@ export class PlanningAppListComponent implements OnInit {
   ngOnInit() {
     this.populatePlanningAppSummary();
     this.loadStatuses();
-    this.refreshData();
-    this.interval = setInterval(() => { 
-        this.refreshData(); 
-    }, 5000);
+    // this.refreshData();
+    // this.interval = setInterval(() => { 
+    //     this.refreshData(); 
+    // }, 5000);
   }
 
-  refreshData() {
-    this.populatePlanningAppSummary();
-  }
+  // refreshData() {
+  //   this.populatePlanningAppSummary();
+  // }
 
   private loadStatuses() {
     this.StateStatusService.getStateStatuses(1)

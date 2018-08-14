@@ -134,7 +134,6 @@ export class PlanningAppFormComponent implements OnInit {
             timeout: 5000
           })     
           this.router.navigate(['/planningapps/', this.planningApp.id])
-          //this.router.navigate(['/planningapps/26']);
         });
     //location.reload();
   }

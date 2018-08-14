@@ -6,9 +6,9 @@
 <div class="well">
   <div class="form-group">
     <label for="Planning Status">Planning Status</label>
-    <select id="planningStatus" class="form-control" [(ngModel)]="query.makeId" (change)="onFilterChange()">
+    <select id="statusSelected" class="form-control" [(ngModel)]="statusSelected" (change)="onFilterChange()">
       <option value=""></option>
-      <option *ngFor="let m of statuses" value="{{ m.id }}">{{ m.name }}</option>
+      <option *ngFor="let m of planningStatus" value="{{ m}}">{{ m }}</option>
     </select>  
   </div>
 </div>
@@ -51,7 +51,7 @@
   <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'" [class.highlightDue]="v.currentStateStatus == 'Due'">
       <td>{{ v.id }}</td>
       <td>{{ v.name }}</td>
-      <td>{{ v.currentStateStatus }}</td>
+      <td>{{ v.planningStatus }}</td>
       <td>{{ v.currentState }}</td>
       <td>{{ v.expectedStateCompletionDate }}</td>
       <td>{{ v.nextState }}</td>

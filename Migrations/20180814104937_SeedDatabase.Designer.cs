@@ -11,8 +11,8 @@ using vega.Persistence;
 namespace vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    [Migration("20180808093649_AddDrawings")]
-    partial class AddDrawings
+    [Migration("20180814104937_SeedDatabase")]
+    partial class SeedDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -240,6 +240,8 @@ namespace vega.Migrations
                     b.Property<int>("OrderId");
 
                     b.Property<int>("StateInitialiserId");
+
+                    b.Property<bool>("isDeleted");
 
                     b.HasKey("Id");
 

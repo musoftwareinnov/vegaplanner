@@ -14,3 +14,7 @@ Environmnent -> read config files based on environment settings
 Archive PLanning apps
 
 Terminate PLanning apps
+
+BUG - Do not allow all states to be deleted!!!!!!
+
+        (Skip/Take) without OrderBy

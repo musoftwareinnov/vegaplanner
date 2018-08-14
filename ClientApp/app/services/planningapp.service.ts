@@ -16,7 +16,6 @@ export class PlanningAppService {
   }
 
   getPlanningApp(id:any) {
-    console.warn("plamnning App id:" + id);
     return this.http.get(this.planningappsEndpoint + '/' + id)
       .map(res => res.json());
   }

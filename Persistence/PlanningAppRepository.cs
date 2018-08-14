@@ -15,12 +15,16 @@ namespace vega.Persistence
     public class PlanningAppRepository : IPlanningAppRepository
     {
         private readonly VegaDbContext vegaDbContext;
+        private readonly IStateInitialiserRepository stateInitialiserRepository;
+
         public PlanningAppRepository(VegaDbContext vegaDbContext, 
                                      IStateStatusRepository stateStatusRepository,
+                                     IStateInitialiserRepository stateInitialiserRepository,
                                      IOptionsSnapshot<StateStatusSettings> options)
         {
             this.vegaDbContext = vegaDbContext;
             this.stateStatusRepository = stateStatusRepository;
+            this.stateInitialiserRepository = stateInitialiserRepository;
             stateStatusSettings = options.Value;
         }
 
@@ -28,20 +32,20 @@ namespace vega.Persistence
 
         private IStateStatusRepository stateStatusRepository { get; set; }
  
-        public void Add(PlanningApp planningApp)
+        public void Add(PlanningApp planningApp, StateInitialiser stateInitialiser)
         {
-            var stateInitialiser = vegaDbContext.StateInitialisers
-                            .Where(s => s.Id == planningApp.StateInitialiserId)
-                                .Include(t => t.States)
-                                .SingleOrDefault();
 
-            //Important to keep order of states as they can be added and removed - 
-            //EF core cant do Include(t => t.States.Orderby)
-            var orderedStates = stateInitialiser.States.OrderBy(o => o.OrderId); 
+            //var stateInitialiser = await stateInitialiserRepository.GetStateInitialiser(planningApp.StateInitialiserId, includeDeleted: false);
+
+            // var stateInitialiser = vegaDbContext.StateInitialisers
+            //                 .Where(s => s.Id == planningApp.StateInitialiserId)
+            //                     .Include(t => t.States)
+            //                     .SingleOrDefault();
+
             var initialStatus = vegaDbContext.StateStatus.Where(s => s.Name == stateStatusSettings.STATE_ON_TIME).SingleOrDefault();
             var initialStatusList  = vegaDbContext.StateStatus.ToList();
-            //TODO!!!!!! Move out of repository!!!!
-            planningApp = planningApp.GeneratePlanningStates(orderedStates, initialStatusList);
+            
+            planningApp = planningApp.GeneratePlanningStates(stateInitialiser.States, initialStatusList);
             vegaDbContext.Add(planningApp);   
         }
 
@@ -95,9 +99,9 @@ namespace vega.Persistence
                 [StatusList.AppTerminated] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppTerminated
             };
 
-            var queryList = query.Where(planningStatusSelectorMap[queryObj.PlanningAppType]).ToList();
-
             if(queryObj.PlanningAppType == StatusList.AppInProgress) {
+                var queryList = query.Where(planningStatusSelectorMap[queryObj.PlanningAppType]).ToList();
+
                 List<String> statusList = new List<String>();
 
                 if(queryObj.StateStatus > 0) {
@@ -119,8 +123,10 @@ namespace vega.Persistence
                 query = planningAppList.AsQueryable();
             }
             else 
-                query = queryList.AsQueryable();
-            
+                {
+                if(queryObj.PlanningAppType != "All") 
+                    query = query.AsQueryable().Where(p => p.CurrentPlanningStatus.Name == queryObj.PlanningAppType);
+                }
 
             result.TotalItems =  query.Count();
             query = query.ApplyPaging(queryObj);
