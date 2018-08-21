@@ -53,6 +53,7 @@ export class PlanningAppFormComponent implements OnInit {
     currentState:  "",
     expectedStateCompletionDate:  "",
     nextState:  "",
+    generator: "",
     completionDate:  "",
     planningAppStates: [],
     method: 1
