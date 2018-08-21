@@ -34,18 +34,17 @@ export class CustomerFormComponent implements OnInit {
     }
 
   ngOnInit() {
-
+    
     if (this.customer.id)
         this.customerService.getCustomer(this.customer.id)
         .subscribe(
-          v => this.customer = v,
+          customer => this.customer = customer,
           err => {
             if (err.status == 404) {
               this.router.navigate(['/customers']);
               return; 
             }
         });
-        //remove planning applications
   }
 
   submit() {

@@ -28,6 +28,33 @@ export class PlanningAppNewComponent implements OnInit {
     name: ''
   };
 
+  planningApp: PlanningApp = {
+    id: 0,
+    customer: {
+      id: 0, 
+      firstName: "",
+      lastName: "",
+      address1: "",
+      address2: "",
+      postcode: "",
+      emailAddress: "",
+      telephoneHome: "",
+      telephoneMobile:"",
+      notes: "",
+    },
+    name: "",
+    businessDate: "",
+    planningStatus:  "",
+    currentStateStatus: "",
+    currentState:  "",
+    expectedStateCompletionDate:  "",
+    nextState:  "",
+    completionDate:  "",
+    generator: "",
+    planningAppStates: [],
+    method: 1
+  };
+
   constructor(private PlanningAppService: PlanningAppService,
               private toastyService: ToastyService,
               private customerService: CustomerService,
@@ -49,7 +76,7 @@ export class PlanningAppNewComponent implements OnInit {
 
   }
   
-  submit() {   
+  submit() {  
     console.warn(this.planningAppGenerator)
     this.PlanningAppService.generatePlanningApp(this.planningAppGenerator).subscribe(
     planningApp => {

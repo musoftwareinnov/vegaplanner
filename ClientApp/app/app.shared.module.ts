@@ -2,7 +2,8 @@ import { BrowserXhrWithProgress, ProgressService } from './services/progress.ser
 import { NgModule, ErrorHandler } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpModule, BrowserXhr } from '@angular/http';
+import { BrowserXhr } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ToastyModule } from 'ng2-toasty';
 
@@ -62,7 +63,7 @@ import { StateStatusService } from './services/statestatus.service';
     ],
     imports: [
         CommonModule,
-        HttpModule,
+        HttpClientModule,
         FormsModule,
         // BrowserAnimationsModule,
         // MatCheckboxModule,

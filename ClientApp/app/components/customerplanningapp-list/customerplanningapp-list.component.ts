@@ -1,6 +1,5 @@
 import { CustomerService } from './../../services/customer.service';
 import { PlanningAppService } from '../../services/planningapp.service';
-//import { CustomerService } from '../../services/customer.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
 import { Customer } from '../../models/customer';
