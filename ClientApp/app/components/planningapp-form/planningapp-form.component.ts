@@ -9,15 +9,17 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewChild, ElementRef, NgZone } from '@angular/core';
 import 'rxjs/add/Observable/forkJoin';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ToastyService } from 'ng2-toasty';
 import { Location } from '@angular/common';
+import { StateAction } from '../../constants';
 
 @Component({
   selector: 'app-planingapp-form',
   templateUrl: './planningapp-form.component.html',
   styleUrls: ['./planningapp-form.component.css']
 })
+
 export class PlanningAppFormComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
 
@@ -28,7 +30,8 @@ export class PlanningAppFormComponent implements OnInit {
 
   savePlanningApp: ChangePlanningAppState = {
     id: 0,
-    method: 1   //default to next state
+    method: StateAction.Prev  //default to next state
+
   };
 
   planningApp: PlanningApp = {
@@ -53,8 +56,8 @@ export class PlanningAppFormComponent implements OnInit {
     currentState:  "",
     expectedStateCompletionDate:  "",
     nextState:  "",
-    generator: "",
     completionDate:  "",
+    generator: "",
     planningAppStates: [],
     method: 1
   };
@@ -117,9 +120,7 @@ export class PlanningAppFormComponent implements OnInit {
   submit() {
     //var result$ = (this.planningApp.id) ? this.planningAppService.update(this.vehicle) : this.vehicleService.create(this.vehicle); 
 
-    this.savePlanningApp.method = 1;
     this.savePlanningApp.id = this.planningApp.id;
-    console.warn( this.savePlanningApp);
     var result$ = this.planningAppService.nextState(this.savePlanningApp )
 
     if(this.planningApp.nextState == null)
@@ -136,34 +137,34 @@ export class PlanningAppFormComponent implements OnInit {
           })     
           this.router.navigate(['/planningapps/', this.planningApp.id])
         });
-    //location.reload();
-  }
-
-  onMakeChange() {
-    // this.populateModels();
-    // delete this.vehicle.modelId;
-  }
-
-  private populateModels() {
-    // var selectedMake = this.makes.find(m => m.id == this.vehicle.makeId);
-    // this.models = selectedMake ? selectedMake.models : [];
-  }
-
-  onFeatureToggle(featureId: any, $event: any) {
-    // if($event.target.checked)
-    //   this.vehicle.features.push(featureId);
-    // else {
-    //   var index = this.vehicle.features.indexOf(featureId);
-    //   this.vehicle.features.splice(index, 1);
-    // }
-  
   }
   
-  delete() {
-    // if (confirm("Are you sure?")) {
-    //   this.planningAppService.delete(this.vehicle.id)
-    //     .subscribe(x => { this.router.navigate(['/home'])});
-    // }
+  archive() {
+    if (confirm("Archiving Not Installed, extra module")) {
+        
+    }
+  }
+
+  terminate() {
+    if (confirm("Confirm : Terminate Planning App")) {
+      this.savePlanningApp.id = this.planningApp.id;
+      var result$ = this.planningAppService.terminate(this.savePlanningApp )
+  
+      if(this.planningApp.nextState == null)
+          this.planningApp.nextState = this.COMPLETE;
+  
+      result$.subscribe(
+          planningApp => {
+            this.toastyService.success({
+              title: 'Success', 
+              msg: 'Planning App : ' + this.planningApp.id + " Terminated",
+              theme: 'bootstrap',
+              showClose: true,
+              timeout: 5000
+            })     
+            this.router.navigate(['/planningapps/', this.planningApp.id])
+          });
+    }
   }
 
   uploadDrawings() {
