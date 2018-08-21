@@ -27,10 +27,14 @@
   .highlightOverdue{
   background: rgb(245, 165, 165);
   } 
-
   .highlightDue{
   background: rgb(226, 225, 159); 
   } 
+  .highlightInProgress{
+  background: rgb(159, 219, 135); 
+  } 
+
+
   /* tr:nth-child(even) {background-color: #f2f2f2;} */
   </style>
 </head>
@@ -48,7 +52,7 @@
     </tr>
   </thead>
 
-  <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'" [class.highlightDue]="v.currentStateStatus == 'Due'">
+  <tr *ngFor="let v of queryResult.items" [class.highlightInProgress]="v.planningStatus == 'InProgress'" >
       <td>{{ v.id }}</td>
       <td>{{ v.name }}</td>
       <td>{{ v.planningStatus }}</td>

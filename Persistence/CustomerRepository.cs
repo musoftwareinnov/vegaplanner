@@ -17,7 +17,7 @@ namespace vega.Persistence
         }
      
         public async Task<Customer> GetCustomer(int id, bool includeRelated = true)
-        {
+        { 
             if(includeRelated) {
                 var customer = await vegaDbContext.Customers
                                 .Include(t => t.planningApps)

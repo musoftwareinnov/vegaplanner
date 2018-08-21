@@ -1,6 +1,9 @@
+import { CustomerService } from './../../services/customer.service';
 import { PlanningAppService } from '../../services/planningapp.service';
+//import { CustomerService } from '../../services/customer.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
+import { Customer } from '../../models/customer';
 
 @Component({
   selector: 'app-customerplanningapp-list',
@@ -20,11 +23,14 @@ export class CustomerPlanningAppListComponent implements OnInit {
   interval: any = {};
   statusSelected: string = "";
   planningStatus: string[] = [];
+  customer: any = {};
+
 
   constructor(
   private route: ActivatedRoute,
   private router: Router,
-  private PlanningAppService: PlanningAppService) { 
+  private PlanningAppService: PlanningAppService,
+  private CustomerService: CustomerService) { 
 
     route.params.subscribe(p => { this.query.customerId = +p['id'] || 0})
   }
@@ -39,6 +45,7 @@ export class CustomerPlanningAppListComponent implements OnInit {
     this.planningStatus.push('Terminated');
 
     this.populatePlanningAppSummary();
+    this.populateCustomer();
     this.refreshData();
     this.interval = setInterval(() => { 
         this.refreshData(); 
@@ -52,6 +59,11 @@ export class CustomerPlanningAppListComponent implements OnInit {
   private populatePlanningAppSummary() {
     this.PlanningAppService.getPlanningAppSummary(this.query)
       .subscribe(result => this.queryResult = result);
+  }
+
+  private populateCustomer() {
+    this.CustomerService.getCustomer(this.query.customerId)
+      .subscribe(result => this.customer = result);
   }
 
   onPageChange(page:any) {

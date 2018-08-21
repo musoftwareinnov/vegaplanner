@@ -17,6 +17,8 @@ namespace vega.Core.Models
         public StateInitialiserState state { get; set; }
         public DateTime DueByDate { get; set; }
 
+        public bool userModifiedDate { get; set; }
+
         public DateTime? CompletionDate { get; set; }
 
         public int StateStatusId { get; set; }

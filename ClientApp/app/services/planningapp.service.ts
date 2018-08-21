@@ -3,6 +3,7 @@ import { PlanningAppSummary } from '../models/planningappsummary';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { StateAction } from '../constants';
 
 @Injectable()
 export class PlanningAppService {
@@ -21,7 +22,14 @@ export class PlanningAppService {
   }
 
   nextState(changePlanningAppState: ChangePlanningAppState) {
-    changePlanningAppState.method = 1;  //move to next state
+    changePlanningAppState.method = StateAction.Next;  //move to next state
+    console.warn(changePlanningAppState);
+    return this.http.put(this.planningappsEndpoint + '/' + changePlanningAppState.id, changePlanningAppState)
+      .map(res => res.json());
+  }
+
+  terminate(changePlanningAppState: ChangePlanningAppState) {
+    changePlanningAppState.method = StateAction.Terminate;  //move to next state
     console.warn(changePlanningAppState);
     return this.http.put(this.planningappsEndpoint + '/' + changePlanningAppState.id, changePlanningAppState)
       .map(res => res.json());

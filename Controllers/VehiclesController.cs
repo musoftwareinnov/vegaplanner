@@ -12,7 +12,7 @@ namespace vega.Controllers
     [Route("/api/vehicles")]
     public class VehiclesController : Controller
     {
-        private readonly IMapper mapper;
+        private readonly IMapper mapper;   
         private readonly IVehicleRepository repository;
         private readonly IUnitOfWork unitOfWork;
         public VehiclesController(IMapper mapper, IVehicleRepository repository, IUnitOfWork unitOfWork)
@@ -110,7 +110,7 @@ namespace vega.Controllers
 
             return Ok(result);
         }
-
+  
         [HttpGet]
     public async Task<QueryResultResource<VehicleResource>> GetVehicles(VehicleQueryResource filterResource)
         {

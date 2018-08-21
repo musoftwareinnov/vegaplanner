@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule, BrowserXhr } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { ToastyModule } from 'ng2-toasty';
+
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
@@ -24,7 +25,6 @@ import { CustomerListComponent } from './components/customer-list/customer-list.
 import { CustomerFormComponent } from './components/customer-form/customer-form.component';
 import { CustomerPlanningAppListComponent } from './components/customerplanningapp-list/customerplanningapp-list.component';
 
-
 import { VehicleService } from './services/vehicle.service';
 import { PlanningAppService } from './services/planningapp.service';
 import { PhotoService } from './services/photo.service';
@@ -34,6 +34,10 @@ import { CustomerService } from './services/customer.service';
 import { AppErrorHandler } from './app.error.handler';
 import { DrawingService } from './services/drawing.service';
 import { StateStatusService } from './services/statestatus.service';
+
+// Material Design Modules
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import {MatRadioGroup} from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -60,6 +64,9 @@ import { StateStatusService } from './services/statestatus.service';
         CommonModule,
         HttpModule,
         FormsModule,
+        // BrowserAnimationsModule,
+        // MatCheckboxModule,
+        // MatRadioGroup,
         ToastyModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },

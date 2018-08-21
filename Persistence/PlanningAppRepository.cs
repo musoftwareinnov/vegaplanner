@@ -63,6 +63,7 @@ namespace vega.Persistence
                                     .Include(t => t.PlanningAppStates)
                                         .ThenInclude(a => a.StateStatus)
                                     .Include(c => c.Customer)
+                                    .Include(g => g.StateInitialiser)
                                     .SingleOrDefault();
 
                 //sort planing states using 

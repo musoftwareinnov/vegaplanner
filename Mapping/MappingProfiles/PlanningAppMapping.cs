@@ -23,6 +23,8 @@ namespace vega.Mapping.MappingProfiles
                     opt => opt.MapFrom(ps => ps.CurrentPlanningStatus.Name))
                 .ForMember(psr => psr.Name, 
                     opt => opt.MapFrom(ps => ps.Name))
+                .ForMember(psr => psr.Generator, 
+                    opt => opt.MapFrom(ps => ps.StateInitialiser.Name))
                 .ForMember(psr => psr.CompletionDate, 
                     opt => opt.MapFrom(ps => ps.CompletionDate().SettingDateFormat())); 
             

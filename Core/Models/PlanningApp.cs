@@ -170,6 +170,11 @@ namespace vega.Core.Models
                 }
             }
         }
+
+        public void Terminate(List<StateStatus> statusList)
+        {   
+            CurrentPlanningStatus = statusList.Where(p => p.Name == StatusList.AppTerminated).SingleOrDefault();
+        }
      
         private void rewindState()
         {
@@ -223,10 +228,6 @@ namespace vega.Core.Models
         {
 
                 return PlanningAppStates.Where(s => s.CurrentState == true).SingleOrDefault();
-        }
-
-        public string PlanningStatus() {
-            return Completed() ? "Completed" : "In Progress";  //TODO take from database
         }
 
         public DateTime CompletionDate() {

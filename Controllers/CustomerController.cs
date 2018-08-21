@@ -30,15 +30,17 @@ namespace vega.Controllers
    
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCustomer(int id)   
+        public async Task<IActionResult> GetCustomer(int id)  
         {
+            //var filter = mapper.Map<CustomerQueryResource, CustomerQuery>(filterResource);
+
             var customer = await customerRepository.GetCustomer(id);
 
             if (customer == null)
                 return NotFound();
 
             var result = mapper.Map<Customer, CustomerResource>(customer);
-
+ 
             return Ok(result);
         } 
 
@@ -86,8 +88,8 @@ namespace vega.Controllers
             customer = await customerRepository.GetCustomer(customer.Id);
 
             var result = mapper.Map<Customer, CustomerResource>(customer);
-
+ 
             return Ok(result);
-        }
+        } 
     }
 }

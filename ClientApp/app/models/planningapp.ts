@@ -1,7 +1,6 @@
 import { Customer } from './customer';
 export interface PlanningApp {
     id: number; 
-    // customerId: number;
     customer: Customer;
     name: string;
     businessDate: string;
@@ -11,6 +10,7 @@ export interface PlanningApp {
     expectedStateCompletionDate: string; 
     nextState: string; 
     completionDate: string; 
+    generator: string;
     planningAppStates: PlanningAppStates[];
     method: number;
   }

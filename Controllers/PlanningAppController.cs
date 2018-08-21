@@ -12,6 +12,7 @@ using vega.Extensions.DateTime;
 using Microsoft.Extensions.Options;
 using vega.Core.Models.Settings;
 using vega.Core.Utils;
+
   
 namespace vega.Controllers
 {
@@ -27,8 +28,7 @@ namespace vega.Controllers
         public DateSettings dateSettings { get; set; }
 
         public DateTime CurrentDate { get; set; }
-        private readonly int NextState = 1;
-        private readonly int PrevState = 2;
+
 
         public PlanningAppController(IMapper mapper, 
                                      IPlanningAppRepository repository, 
@@ -106,24 +106,22 @@ namespace vega.Controllers
 
             if (planningApp == null)
                 return NotFound();
-  
-            //Add possibility of override for testing
-            // if(planningResource.CurrentStateCompletionDate != null)
-            //     currentDate = planningResource.CurrentStateCompletionDate.ParseInputDate();
 
-            if(planningResource.method == NextState) {
+            //Inject Logger to say what changed state by which user
+            if(planningResource.method == (int) StateAction.NextState) {
                 planningApp.NextState(stateStatusList);
-                //Inject Logger to say what changed state by which user
             }
-            else if (planningResource.method == PrevState) 
+            else if (planningResource.method == (int) StateAction.PrevState) 
                 planningApp.PrevState(stateStatusList);
+
+            else if (planningResource.method == (int) StateAction.Terminate) 
+                planningApp.Terminate(stateStatusList);
             else 
                 {
                 ModelState.AddModelError("Update Planning App", "Invalid Instuction Method Id: " + planningResource.method);
                     return BadRequest(ModelState);
                 }     
       
-            //Save to database
             repository.UpdatePlanningApp(planningApp);
             await unitOfWork.CompleteAsync();
 
