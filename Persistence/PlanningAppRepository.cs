@@ -67,7 +67,9 @@ namespace vega.Persistence
                                     .SingleOrDefault();
 
                 //sort planing states using 
-                sortStates.PlanningAppStates = sortStates.PlanningAppStates.OrderBy(o => o.state.OrderId).ToList();
+                if(sortStates != null)
+                    sortStates.PlanningAppStates = sortStates.PlanningAppStates.OrderBy(o => o.state.OrderId).ToList();
+
                 return sortStates;
             }            
         }

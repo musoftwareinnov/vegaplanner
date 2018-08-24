@@ -19,6 +19,8 @@ namespace vega.Mapping.MappingProfiles
                     opt => opt.MapFrom(ps => ps.Next().state.Name))
                 .ForMember(psr => psr.ExpectedStateCompletionDate,
                     opt => opt.MapFrom(ps => ps.Current().DueByDate.SettingDateFormat()))
+                .ForMember(psr => psr.MinDueByDate,
+                    opt => opt.MapFrom(ps => ps.Prev().DueByDate.SettingDateFormat()))
                 .ForMember(psr => psr.PlanningStatus, 
                     opt => opt.MapFrom(ps => ps.CurrentPlanningStatus.Name))
                 .ForMember(psr => psr.Name, 
@@ -27,6 +29,7 @@ namespace vega.Mapping.MappingProfiles
                     opt => opt.MapFrom(ps => ps.StateInitialiser.Name))
                 .ForMember(psr => psr.CompletionDate, 
                     opt => opt.MapFrom(ps => ps.CompletionDate().SettingDateFormat())); 
+                    
             
             CreateMap<CreatePlanningAppResource, PlanningApp>();
         }

@@ -30,4 +30,5 @@ webpack -- run to update changes
   233  dotnet ef migrations update ApplyContraints
   234  dotnet ef database update ApplyContraints
 
+#usefull to regenerate when upgrading angular or removing/install packages
 npx webpack --config webpack.config.vendor.js

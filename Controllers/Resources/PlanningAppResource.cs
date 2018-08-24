@@ -14,6 +14,7 @@ namespace vega.Controllers.Resources
         public string CurrentStateStatus { get; set; }
         public string CurrentState { get; set; }
         public string NextState { get; set; }
+        public string MinDueByDate { get; set; } //Used for validation when user specifies a completion date
         public string ExpectedStateCompletionDate { get; set; }
         public string CompletionDate { get; set; }
         public string Generator { get; set; }

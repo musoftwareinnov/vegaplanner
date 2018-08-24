@@ -214,9 +214,12 @@ namespace vega.Core.Models
                 return null;
         }
 
-        private PlanningAppState Prev()
+        public PlanningAppState Prev()
         {   
+            if(!Completed() && !isFirstState(Current()))
                 return PlanningAppStates[PlanningAppStates.IndexOf(Current())-1]; 
+            else    
+                return null;
         }
 
         public bool Completed()
@@ -230,6 +233,13 @@ namespace vega.Core.Models
                 return PlanningAppStates.Where(s => s.CurrentState == true).SingleOrDefault();
         }
 
+        public DateTime MinDueByDate() {
+            if(Prev() != null)
+                return Prev().DueByDate;
+            else   
+                return CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+            
+        }
         public DateTime CompletionDate() {
             if(!Completed())
                 return LastState().DueByDate;

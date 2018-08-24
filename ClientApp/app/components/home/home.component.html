@@ -1,4 +1,82 @@
+<link rel="stylesheet" href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css">
+
+
+<div class="row">
+        <div class="col-xs-12 col-12 col-sm-4 form-group">
+          <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [outsideClick]="false">
+        </div>
+        <div class="col-xs-12 col-12 col-sm-8 form-group">
+          <input class="btn btn-success" type="button" (click)="dp.show()" value="Open">
+          <input class="btn btn-success" type="button" (click)="dp.hide()" value="Close">
+          <input class="btn btn-success" type="button" (click)="dp.toggle()" [attr.aria-expanded]="dp.isOpen" value="Toggle">
+        </div>
+      </div>
+
+
+<label>Date Effective</label> <input type="text" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" bsDatepicker>
+
+
+    <div class=form-group>
+        <label for="dateOfBirth">Date of Birth</label>
+        <input type="text" bsDatepicker name="dateOfBirth" id="dateOfBirth">
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-12 col-md-4 form-group">
+          <input type="text"
+                 class="form-control"
+                 #dp="bsDatepicker"
+                 bsDatepicker
+                 [bsValue]="bsValue">
+        </div>
+        <div class="col-xs-12 col-12 col-md-3 form-group">
+          <button class="btn btn-success" (click)="dp.toggle()" [attr.aria-expanded]="dp.isOpen">Date Picker</button>
+        </div>
+      </div>
+
+
+
+      <div>
+        <div class="card">
+          <pre class="card-block card-header">Selected date is: <em *ngIf="dt">{{ getDate() | date:'fullDate'}}</em></pre>
+        </div>
+        <h4>Inline</h4>
+        <div style="display:inline-block; min-height:290px;">
+                <datepicker [(ngModel)]="dt" [minDate]="minDate" [showWeeks]="true" [dateDisabled]="dateDisabled"></datepicker>
+              </div>
+
+
+        <hr />
+        <button type="button" class="btn btn-sm btn-info" (click)="today()">Today</button>
+        <button type="button" class="btn btn-sm btn-default btn-secondary" (click)="d20090824();">2009-08-24</button>
+        <button type="button" class="btn btn-sm btn-danger" (click)="clear()">Clear</button>
+        <button type="button" class="btn btn-sm btn-default btn-secondary" (click)="toggleMin()" tooltip="After today restriction">Min date</button>
+        <button type="button" class="btn btn-sm btn-default btn-secondary" (click)="disableTomorrow()">Disable Tomorrow</button>
+      </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-12 col-md-4 form-group">
+      <input type="text"
+             placeholder="Datepicker"
+             class="form-control"
+             bsDatepicker>
+    </div>
+    <div class="col-xs-12 col-12 col-md-4 form-group">
+      <input type="text"
+             placeholder="Daterangepicker"
+             class="form-control"
+             bsDaterangepicker>
+    </div>
+  </div>
+
+  
 <h1>Hello, world</h1>
+
+<p>
+        <a [routerLink]="['/planningapps/new']" class="btn btn-outline-primary">New Planning App</a>
+      </p>
+
+
 <p>Welcome to your new single-page application, built with:</p>
 <ul>
     <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>

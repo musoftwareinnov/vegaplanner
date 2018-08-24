@@ -8,7 +8,7 @@ import { DrawingService } from '../../services/drawing.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewChild, ElementRef, NgZone } from '@angular/core';
-import 'rxjs/add/Observable/forkJoin';
+//import 'rxjs/add/Observable/forkJoin';
 import { Observable } from 'rxjs';
 import { ToastyService } from 'ng2-toasty';
 import { Location } from '@angular/common';

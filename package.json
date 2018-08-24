@@ -26,7 +26,6 @@
     "aspnet-prerendering": "^3.0.1",
     "aspnet-webpack": "^2.0.1",
     "awesome-typescript-loader": "3.2.1",
-    "bootstrap": "3.3.7",
     "chai": "4.0.2",
     "css": "^2.2.3",
     "css-loader": "0.28.4",
@@ -50,6 +49,7 @@
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.10",
     "rxjs": "^5.5.11",
+    "string-replace-loader": "^2.1.1",
     "style-loader": "0.18.2",
     "to-string-loader": "1.1.5",
     "typescript": "2.4.2",
@@ -62,7 +62,12 @@
   },
   "dependencies": {
     "@types/underscore": "^1.8.8",
+    "bootstrap": "^3.3.7",
+    "css": "2.2.3",
     "font-awesome": "^4.7.0",
-    "ng2-toasty": "^4.0.3"
+    "moment": "^2.22.2",
+    "ng2-toasty": "^4.0.3",
+    "ngx-bootstrap": "^3.0.1",
+    "popper.js": "^1.14.4"
   }
 }

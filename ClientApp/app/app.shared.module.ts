@@ -6,6 +6,10 @@ import { BrowserXhr } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ToastyModule } from 'ng2-toasty';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { DatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -36,10 +40,6 @@ import { AppErrorHandler } from './app.error.handler';
 import { DrawingService } from './services/drawing.service';
 import { StateStatusService } from './services/statestatus.service';
 
-// Material Design Modules
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import {MatRadioGroup} from '@angular/material';
-
 @NgModule({
     declarations: [
         AppComponent,
@@ -61,13 +61,20 @@ import { StateStatusService } from './services/statestatus.service';
         CustomerPlanningAppListComponent,
         PaginationComponent,
     ],
+    exports: [
+        ButtonsModule,
+        AlertModule,
+        DatepickerModule,
+        BsDatepickerModule
+      ],
     imports: [
-        CommonModule,
+        CommonModule,    
         HttpClientModule,
         FormsModule,
-        // BrowserAnimationsModule,
-        // MatCheckboxModule,
-        // MatRadioGroup,
+        ButtonsModule.forRoot(),
+        AlertModule.forRoot(),
+        DatepickerModule.forRoot(),
+        BsDatepickerModule.forRoot(),
         ToastyModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },

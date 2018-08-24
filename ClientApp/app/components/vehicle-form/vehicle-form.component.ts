@@ -4,7 +4,7 @@ import { INITIAL_CONFIG } from '@angular/platform-server';
 import { VehicleService } from '../../services/vehicle.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import 'rxjs/add/Observable/forkJoin';
+//import 'rxjs/add/Observable/forkJoin';
 import { Observable } from 'rxjs/Observable';
 import { ToastyService } from 'ng2-toasty';
 
@@ -48,18 +48,18 @@ export class VehicleFormComponent implements OnInit {
     if (this.vehicle.id)
       sources.push(this.vehicleService.getVehicle(this.vehicle.id));
 
-    Observable.forkJoin(sources).subscribe(data => {
-      this.makes = data[0];
-      this.features = data[1];
+    // Observable.forkJoin(sources).subscribe(data => {
+    //   this.makes = data[0];
+    //   this.features = data[1];
 
-      if (this.vehicle.id) {
-        this.setVehicle(data[2]);
-        this.populateModels();
-      }
-    }, err => {
-      if (err.status == 404)
-        this.router.navigate(['/home']);
-    });
+    //   if (this.vehicle.id) {
+    //     this.setVehicle(data[2]);
+    //     this.populateModels();
+    //   }
+    // }, err => {
+    //   if (err.status == 404)
+    //     this.router.navigate(['/home']);
+    // });
   }
 
   private setVehicle(v:Vehicle) {
