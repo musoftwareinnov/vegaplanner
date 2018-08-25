@@ -58,6 +58,13 @@
         }
 
 
-
+        //OnDelete NoAction
+            migrationBuilder.AddForeignKey(
+                name: "FK_PlanningAppState_PlanningApps_PlanningAppId",
+                table: "PlanningAppState",
+                column: "PlanningAppId",
+                principalTable: "PlanningApps",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.NoAction);
 
 

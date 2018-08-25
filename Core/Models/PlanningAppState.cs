@@ -13,6 +13,8 @@ namespace vega.Core.Models
     {
 
         public int Id { get; set; }
+        public int PlanningAppId { get; set; }
+        public PlanningApp PlanningApp { get; set; }
         public int StateInitialiserStateId { get; set; }
         public StateInitialiserState state { get; set; }
         public DateTime DueByDate { get; set; }
@@ -26,7 +28,9 @@ namespace vega.Core.Models
    
         public bool CurrentState { get; set; }
         public StateStatusSettings Options { get; }
-
+        public bool CustomDurationSet { get; set; }
+        public int CustomDuration { get; set; }
+        public int AllowStateEdit { get; set; }
    
         public PlanningAppState()
         {
@@ -62,5 +66,44 @@ namespace vega.Core.Models
             }
             return StateStatus.Name;
         }
+
+        public void AggregateDueByDate(PlanningAppState planningAppState) {
+            this.DueByDate = planningAppState.DueByDate.AddBusinessDays(this.CompletionTime());
+        }
+        public void SetDueByDate() {
+            this.DueByDate = CurrentDateSingleton.setDate(DateTime.Now)
+                                .getCurrentDate().AddBusinessDays(this.CompletionTime());
+        }
+
+        public void UpdateCustomDueByDate(DateTime dueByDate)
+        {
+                        int daysDiff;
+            if (dueByDate > this.DueByDate)
+                daysDiff = this.DueByDate.GetBusinessDays(dueByDate, new List<DateTime>());
+            else
+                daysDiff = dueByDate.GetBusinessDays(this.DueByDate, new List<DateTime>()) * -1; //Move dates forward
+
+            if (daysDiff != 0)
+            {   //Date are different so customise
+                if (this.CustomDurationSet == true)
+                {
+                    this.CustomDuration += daysDiff;
+                }
+                else
+                {
+                    this.CustomDurationSet = true;
+                    this.CustomDuration = (this.state.CompletionTime + daysDiff);
+                }
+            }
+        }
+
+
+        public int CompletionTime() {
+            if(this.CustomDurationSet)
+                return CustomDuration;
+            else    
+                return state.CompletionTime;    
+        }
+
     }
 }

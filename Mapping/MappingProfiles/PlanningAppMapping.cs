@@ -16,11 +16,11 @@ namespace vega.Mapping.MappingProfiles
                 .ForMember(psr => psr.CurrentState,
                     opt => opt.MapFrom(ps => ps.Current().state.Name))
                 .ForMember(psr => psr.NextState,
-                    opt => opt.MapFrom(ps => ps.Next().state.Name))
+                    opt => opt.MapFrom(ps => ps.SeekNext().state.Name))
                 .ForMember(psr => psr.ExpectedStateCompletionDate,
                     opt => opt.MapFrom(ps => ps.Current().DueByDate.SettingDateFormat()))
                 .ForMember(psr => psr.MinDueByDate,
-                    opt => opt.MapFrom(ps => ps.Prev().DueByDate.SettingDateFormat()))
+                    opt => opt.MapFrom(ps => ps.SeekPrev().DueByDate.SettingDateFormat()))
                 .ForMember(psr => psr.PlanningStatus, 
                     opt => opt.MapFrom(ps => ps.CurrentPlanningStatus.Name))
                 .ForMember(psr => psr.Name, 

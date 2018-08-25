@@ -101,31 +101,33 @@ namespace vega.Core.Models
             }  
         }   
 
-        public void generateDueByDates()
+        public void generateDueByDates() 
         {
             if(!Completed()) {
 
                 //Important - put states in order before processing!!
                 PlanningAppStates = PlanningAppStates.OrderBy(s => s.state.OrderId).ToList();
-                var prevState = Current();
+                var prevState = new PlanningAppState();
+                var currState = Current();
                 var resetCurrent = Current();
 
-                while(!Completed()) {
-                    var nextState = Next();
-                    if(nextState != null) {
-                        prevState.CurrentState = false;
-                        nextState.DueByDate = prevState.DueByDate.AddBusinessDays(nextState.state.CompletionTime);
-                        nextState.CurrentState = true; //Make current
-                        prevState = nextState;
+                while(currState != null) {
+                    if(!isFirstState(currState)) {
+                        prevState = SeekPrev();
+                        currState.AggregateDueByDate(prevState);
                     }
-                    else
-                        prevState.CurrentState=false;
-                }
-                //Reset back to current state
-                resetCurrent.CurrentState = true;
+                    else 
+                        currState.SetDueByDate();
+                    
+                    currState = Next(currState);
+                }               
+                //Set original state 
+                SetCurrent(resetCurrent);
             }
         }
  
+  
+
         public void NextState(List<StateStatus> statusList)
         {
 
@@ -137,7 +139,7 @@ namespace vega.Core.Models
                 var prevState = Current(); //Store reference to current state
 
                 if(!isLastState(prevState)) {
-                        Next().CurrentState = true;   //move to next state
+                        SeekNext().CurrentState = true;   //move to next state
                 }  
                 prevState.CompleteState(currentDate, statusList ); //Close out previouse state
                 //If Overran then roll all future completion dates by business days overdue
@@ -159,7 +161,7 @@ namespace vega.Core.Models
             {
                 if(!isFirstState(current))
                 {
-                    var prevState = Prev();
+                    var prevState = SeekPrev();
                     //daysDiff is used to subtract the future DueByStates by days overrun, basically resetting
                     var daysDiff = prevState.DueByDate.GetBusinessDays(prevState.CompletionDate.Value, new List<DateTime>());
                     rewindState();
@@ -181,8 +183,8 @@ namespace vega.Core.Models
             var current = Current(); //Make a copy
  
             //Make previous state active
-            Prev().CompletionDate = null;
-            Prev().CurrentState = true;
+            SeekPrev().CompletionDate = null;
+            SeekPrev().CurrentState = true;
   
             //set current non active
             current.CurrentState = false;
@@ -206,7 +208,28 @@ namespace vega.Core.Models
 
         //****************/
         //Helper functions
-        public PlanningAppState Next()
+
+        public void SetCurrent(PlanningAppState planningAppState) {
+
+            foreach ( var state  in PlanningAppStates) {
+                state.CurrentState = false;
+            }
+            PlanningAppStates[PlanningAppStates.IndexOf(planningAppState)].CurrentState = true;
+        }
+
+        public PlanningAppState Next(PlanningAppState planningAppState)
+        {       
+            PlanningAppState nextState = new PlanningAppState();
+            if(!isLastState(planningAppState)) {
+                nextState = PlanningAppStates[PlanningAppStates.IndexOf(planningAppState)+1];
+                planningAppState.CurrentState = false;
+                nextState.CurrentState = true;
+                return nextState;
+            }
+            else    
+                return null;
+        }
+        public PlanningAppState SeekNext()
         {       
             if(!Completed() && !isLastState(Current()))
                 return PlanningAppStates[PlanningAppStates.IndexOf(Current())+1]; 
@@ -214,7 +237,7 @@ namespace vega.Core.Models
                 return null;
         }
 
-        public PlanningAppState Prev()
+        public PlanningAppState SeekPrev()
         {   
             if(!Completed() && !isFirstState(Current()))
                 return PlanningAppStates[PlanningAppStates.IndexOf(Current())-1]; 
@@ -234,17 +257,17 @@ namespace vega.Core.Models
         }
 
         public DateTime MinDueByDate() {
-            if(Prev() != null)
-                return Prev().DueByDate;
+            if(SeekPrev() != null)
+                return SeekPrev().DueByDate;
             else   
                 return CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
             
         }
         public DateTime CompletionDate() {
             if(!Completed())
-                return LastState().DueByDate;
+                return SeekLastState().DueByDate;
             else   
-                return LastState().CompletionDate.Value;
+                return SeekLastState().CompletionDate.Value;
         }
 
         private bool isLastState(PlanningAppState planningAppState)
@@ -257,7 +280,7 @@ namespace vega.Core.Models
                 return PlanningAppStates.IndexOf(planningAppState) == 0;
         }
 
-        private PlanningAppState LastState()
+        private PlanningAppState SeekLastState()
         {
                 return PlanningAppStates.Count() > 0 ? PlanningAppStates[PlanningAppStates.Count() - 1] : null;
                 

@@ -41,6 +41,7 @@ namespace vega
             services.AddScoped<IStateInitialiserStateRepository, StateInitialiserStateRepository>();
             services.AddScoped<IStateInitialiserRepository, StateInitialiserRepository>();
             services.AddScoped<IPlanningAppRepository, PlanningAppRepository>();
+            services.AddScoped<IPlanningAppStateRepository, PlanningAppStateRepository>();
             services.AddScoped<IStateStatusRepository, StateStatusRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IDrawingRepository, DrawingRepository>(); 

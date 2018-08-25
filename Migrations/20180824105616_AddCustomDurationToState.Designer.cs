@@ -11,9 +11,10 @@ using vega.Persistence;
 namespace vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    partial class VegaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180824105616_AddCustomDurationToState")]
+    partial class AddCustomDurationToState
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,7 +193,7 @@ namespace vega.Migrations
 
                     b.Property<DateTime>("DueByDate");
 
-                    b.Property<int>("PlanningAppId");
+                    b.Property<int?>("PlanningAppId");
 
                     b.Property<int>("StateInitialiserStateId");
 
@@ -348,10 +349,9 @@ namespace vega.Migrations
 
             modelBuilder.Entity("vega.Core.Models.PlanningAppState", b =>
                 {
-                    b.HasOne("vega.Core.Models.PlanningApp", "PlanningApp")
+                    b.HasOne("vega.Core.Models.PlanningApp")
                         .WithMany("PlanningAppStates")
-                        .HasForeignKey("PlanningAppId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PlanningAppId");
 
                     b.HasOne("vega.Core.Models.States.StateInitialiserState", "state")
                         .WithMany()
