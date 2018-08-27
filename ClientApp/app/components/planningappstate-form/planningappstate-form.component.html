@@ -1,0 +1,89 @@
+<style>
+        .full button span {
+          background-color: limegreen;
+          border-radius: 32px;
+          color: black;
+        }
+        .partially button span {
+          background-color: orange;
+          border-radius: 32px;
+          color: black;
+        }
+      </style>
+
+<h1>Planning App State</h1>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#planningstatedetails" aria-controls="planningstatedetails" role="tab" data-toggle="tab">Planning State Details</a></li>
+    <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
+</ul>
+
+<div class="tab-content">
+    <!-- Planning tab -->
+    <div role="tabpanel" class="tab-pane active" id="planningstatedetails">
+        <div class="well">
+            <form class="form-horizontal" #f1="ngForm" (submit)="submit()">      
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="firstName">State Name</label>
+                    <div class="col-sm-3">
+                        <input id="stateName" type="text" class="form-control" [(ngModel)]="planningAppState.stateName" name="stateName" disabled="disabled"> 
+                    </div>
+                    <div class="col-sm-8"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="dateCompleted">Date Completed</label>
+                    <div class="col-sm-3">
+                    <input id="dateCompleted" type="text" class="form-control" [(ngModel)]="planningAppState.dateCompleted" name="dateCompleted" disabled="disabled"> 
+                    </div>
+                    <div class="col-sm-8"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="stateStatus">Status</label>
+                    <div class="col-sm-3">
+                        <input id="stateStatus" type="text" class="form-control" [(ngModel)]="planningAppState.stateStatus" name="stateStatus" disabled="disabled"> 
+                    </div>
+                    <div class="col-sm-8"></div>
+                </div>
+                <div *ngIf="planningAppState.dueByDateEditable">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="dueByDate">Due By Date</label>
+                        <div class="col-sm-3">
+                            <div style="display:inline-block; min-height:290px;">
+                                <div class="card">
+                                    <pre class="card-block card-header"><em *ngIf="updatedDueByDate">{{ getDate() | date:'dd-MM-yyyy'}}</em></pre>
+                                </div>
+                                <div style="display:inline-block; min-height:290px;">
+                                    <datepicker [(ngModel)]="updatedDueByDate" name="dtcal" [minDate]="calMinDate" [showWeeks]="true" [dayDisabled]="ignoreWeekends" [dateDisabled]="dateDisabled"></datepicker>
+                                </div>
+                            </div>                          
+                        </div>
+                        <div class="col-sm-8"></div>
+                    </div>
+                </div>
+            </form>
+            <form class="form-horizontal" #f="ngForm">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <button class="btn btn-primary" type="button" (click)="submit()">Save</button>               
+                    </div>
+                    <div class="col-sm-9">
+                    </div>
+                </div> 
+            </form>
+        <div>
+    </div>
+    </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="notes">
+            <div class="well">
+                <div class="form-group">
+                    <!-- <div class="col-sm-1"> -->
+                        <div style="display:inline-block; min-height:290px;">
+                            <textarea rows="10" cols="100" [(ngModel)]="planningAppState.notes" name="updateNotes"></textarea>
+                        </div>                          
+                     </div>
+                    <div class="col-sm-8"></div>
+                <!-- </div> -->
+            </div> 
+        </div> 
+</div>

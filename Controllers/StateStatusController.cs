@@ -22,7 +22,6 @@ namespace vega.Controllers
             this.unitOfWork = unitOfWork;
             this.repository = repository;
             this.mapper = mapper;
-
         }
 
 

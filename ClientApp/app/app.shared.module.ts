@@ -22,6 +22,7 @@ import { PaginationComponent } from './components/shared/pagination.component';
 import { PlanningAppNewComponent } from './components/planningapp-new/planningapp-new.component';
 import { PlanningAppListComponent } from './components/planningapp-list/planningapp-list.component';
 import { PlanningAppFormComponent } from './components/planningapp-form/planningapp-form.component';
+import { PlanningAppStateFormComponent } from './components/planningappstate-form/planningappstate-form.component';
 import { StateInitialiserListComponent } from './components/stateinitialiser-list/stateinitialiser-list.component';
 import { StateInitialiserFormComponent } from './components/stateinitialiser-form/stateinitialiser-form.component';
 import { StateInitialiserStateListComponent } from './components/stateinitialiserstate-list/stateinitialiserstate-list.component';
@@ -39,6 +40,7 @@ import { CustomerService } from './services/customer.service';
 import { AppErrorHandler } from './app.error.handler';
 import { DrawingService } from './services/drawing.service';
 import { StateStatusService } from './services/statestatus.service';
+import { PlanningAppStateService } from './services/planninappstate.service';
 
 @NgModule({
     declarations: [
@@ -52,6 +54,7 @@ import { StateStatusService } from './services/statestatus.service';
         PlanningAppNewComponent,
         PlanningAppListComponent,
         PlanningAppFormComponent,
+        PlanningAppStateFormComponent,
         StateInitialiserListComponent,
         StateInitialiserFormComponent,
         StateInitialiserStateListComponent,
@@ -88,6 +91,7 @@ import { StateStatusService } from './services/statestatus.service';
             { path: 'planningapps', component: PlanningAppListComponent },
             { path: 'planningapps/all', component: PlanningAppListComponent },
             { path: 'planningapps/:id', component: PlanningAppFormComponent },
+            { path: 'planningappstate/:id', component: PlanningAppStateFormComponent },
             { path: 'stateinitialisers', component: StateInitialiserListComponent },
             { path: 'stateinitialisers/new', component: StateInitialiserFormComponent },
             { path: 'stateinitialisers/:id', component: StateInitialiserStateListComponent },
@@ -105,6 +109,7 @@ import { StateStatusService } from './services/statestatus.service';
         { provide: BrowserXhr, useClass: BrowserXhrWithProgress},
         VehicleService,
         PlanningAppService,
+        PlanningAppStateService,
         PhotoService,
         DrawingService,
         ProgressService,

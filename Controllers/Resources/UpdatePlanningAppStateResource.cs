@@ -5,5 +5,6 @@ namespace vega.Controllers.Resources
         public int Id { get; set; }
         public bool Reset { get; set; }
         public string DueByDate { get; set; }
+        public string Notes { get; set; }
     }
 }

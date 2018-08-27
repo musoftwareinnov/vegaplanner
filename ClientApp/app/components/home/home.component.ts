@@ -24,13 +24,14 @@ export class HomeComponent {
     maxDate = new Date();
 
 
-
+    numDate: number = 0;
     model: any;
     dt: Date = new Date();
-    minDate: Date = new Date();;
-    events: any[];
-    tomorrow: Date;
+    minDate: Date = new Date("15/08/2018");
+   events: any[];
+     tomorrow: Date;
     afterTomorrow: Date;
+    ignoreWeekends: number[];
     dateDisabled: { date: Date; mode: string }[];
     formats: string[] = [
       'DD-MM-YYYY',
@@ -50,16 +51,31 @@ export class HomeComponent {
         this.bsRangeValue = [this.bsValue, this.maxDate];
       (this.tomorrow = new Date()).setDate(this.tomorrow.getDate() + 1);
       (this.afterTomorrow = new Date()).setDate(this.tomorrow.getDate() + 2);
-      (this.minDate = new Date()).setDate(this.minDate.getDate() - 1000);
+      this.minDate = this.getMinDate();
+      //(this.minDate = new Date().setDate()
       this.dateDisabled = [];
       this.events = [
         { date: this.tomorrow, status: 'full' },
         { date: this.afterTomorrow, status: 'partially' }
       ];
+
+      this.ignoreWeekends = [0,6];
     }
    
+    getMinDate(): Date {
+
+       var mDate = "15-08-2018";
+       var dateParts = mDate.split("-");
+       var minDate = new Date(+dateParts[2], +dateParts[1] - 1, +dateParts[0]);
+       return minDate;
+    }
+
     getDate(): number {
-      return (this.dt && this.dt.getTime()) || new Date().getTime();
+    //   return (this.dt && this.dt.getTime()) || new Date().getTime();
+
+         this.numDate = (this.dt && this.dt.getTime()) || new Date().getTime();
+         
+         return this.numDate;
     }
    
     today(): void {

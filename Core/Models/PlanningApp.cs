@@ -28,6 +28,8 @@ namespace vega.Core.Models
 
         public ICollection<Drawing> Drawings { get; set; }
 
+        public string Notes { get; set; }
+
         public PlanningApp()
         {
             PlanningAppStates = new List<PlanningAppState>();
@@ -237,10 +239,18 @@ namespace vega.Core.Models
                 return null;
         }
 
-        public PlanningAppState SeekPrev()
+        public PlanningAppState SeekPrev()  //Get previous state based on CurrentState
         {   
             if(!Completed() && !isFirstState(Current()))
                 return PlanningAppStates[PlanningAppStates.IndexOf(Current())-1]; 
+            else    
+                return null;
+        }
+
+        public PlanningAppState SeekPrev(PlanningAppState planningAppState) //Get previous state based on specified State
+        {   
+            if(!Completed() && !isFirstState(planningAppState))
+                return PlanningAppStates[PlanningAppStates.IndexOf(planningAppState)-1]; 
             else    
                 return null;
         }
@@ -270,16 +280,15 @@ namespace vega.Core.Models
                 return SeekLastState().CompletionDate.Value;
         }
 
-        private bool isLastState(PlanningAppState planningAppState)
+        public bool isLastState(PlanningAppState planningAppState)
         {
                 return PlanningAppStates.Count() == (PlanningAppStates.IndexOf(planningAppState) + 1);
         }
 
-        private bool isFirstState(PlanningAppState planningAppState)
+        public bool isFirstState(PlanningAppState planningAppState)
         {
                 return PlanningAppStates.IndexOf(planningAppState) == 0;
         }
-
         private PlanningAppState SeekLastState()
         {
                 return PlanningAppStates.Count() > 0 ? PlanningAppStates[PlanningAppStates.Count() - 1] : null;

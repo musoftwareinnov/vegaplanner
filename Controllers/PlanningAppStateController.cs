@@ -35,6 +35,23 @@ namespace vega.Controllers
 
         }
 
+        [HttpGet("{id}")]
+        public async Task<PlanningAppStateFullResource> GetPlanningAppState(int id)
+        {
+            var planningAppState = await repository.GetPlanningAppState(id);
+
+            var planningApp = await planningAppRepository.GetPlanningApp(planningAppState.PlanningAppId);
+
+            var planningAppStateResource = Mapper.Map<PlanningAppState, PlanningAppStateFullResource>(planningAppState);
+
+            DateTime minDueDate = planningAppState.SetMinDueByDate(planningApp);
+            planningAppStateResource.MinDueByDate = minDueDate.SettingDateFormat();
+            planningAppStateResource.DueByDateEditable = minDueDate > CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+
+            return planningAppStateResource;
+        }
+
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePlanningAppState(int id, [FromBody] UpdatePlanningAppStateResource planningAppStateResource)
         {
@@ -48,9 +65,10 @@ namespace vega.Controllers
                 planningAppState.CustomDurationSet=false;
                 planningAppState.CustomDuration=0;                
             }
-            else
+            else {
                 planningAppState.UpdateCustomDueByDate(dueByDate);
-
+                planningAppState.Notes = planningAppStateResource.Notes;
+            }
             //Regenerate due by dates with custom completion date (if set)
             planningApp.generateDueByDates();
 

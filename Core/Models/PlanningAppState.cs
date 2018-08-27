@@ -30,7 +30,7 @@ namespace vega.Core.Models
         public StateStatusSettings Options { get; }
         public bool CustomDurationSet { get; set; }
         public int CustomDuration { get; set; }
-        public int AllowStateEdit { get; set; }
+        public string Notes { get; set; }
    
         public PlanningAppState()
         {
@@ -67,6 +67,24 @@ namespace vega.Core.Models
             return StateStatus.Name;
         }
 
+        public DateTime SetMinDueByDate(PlanningApp planningApp) {
+            
+            DateTime minDueByDate = new DateTime();
+
+            if(!planningApp.Completed()) {
+                var current = planningApp.Current();
+
+                if(this.state.OrderId >= current.state.OrderId) {
+                    if(planningApp.isFirstState(this) || this.CurrentState == true)
+                        minDueByDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate().AddBusinessDays(1); //Add one day
+                    else 
+                        minDueByDate = planningApp.SeekPrev(this).DueByDate.AddBusinessDays(1);
+                }
+            }
+
+            return minDueByDate;
+        }
+
         public void AggregateDueByDate(PlanningAppState planningAppState) {
             this.DueByDate = planningAppState.DueByDate.AddBusinessDays(this.CompletionTime());
         }
@@ -96,8 +114,7 @@ namespace vega.Core.Models
                 }
             }
         }
-
-
+        
         public int CompletionTime() {
             if(this.CustomDurationSet)
                 return CustomDuration;

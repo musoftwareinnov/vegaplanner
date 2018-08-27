@@ -83,7 +83,7 @@
           <td>{{ v.dateCompleted }}</td>
           <td>{{ v.stateStatus }}</td>
           <td>
-            <a *ngIf="v.currentState == true" [routerLink]="['/planningapps/', v.id]">Edit</a>
+            <a [routerLink]="['/planningappstate/', v.id]">Edit</a>
           </td>
         </tr>
       </tbody>
