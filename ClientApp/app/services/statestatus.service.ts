@@ -8,7 +8,7 @@ export class StateStatusService {
   private readonly statestatusEndpoint = '/api/statestatus';
   constructor(private http: HttpClient) { }
 
-  getStateStatuses(id: number)  {
-    return this.http.get<any>(this.statestatusEndpoint)
+  getStateStatuses(status: string)  {
+    return this.http.get<any>(this.statestatusEndpoint + "?statusName=" + status)
   }
 }

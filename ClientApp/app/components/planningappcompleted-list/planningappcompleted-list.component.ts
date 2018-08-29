@@ -3,17 +3,20 @@ import { StateStatus } from './../../models/statestatus';
 import { PlanningAppService } from '../../services/planningapp.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastyService } from 'ng2-toasty';
+;
 
 @Component({
-  templateUrl: './planningapp-list.component.html'
+  selector: 'app-planningappcompleted-list',
+  templateUrl: './planningappcompleted-list.component.html',
+  styleUrls: ['./planningappcompleted-list.component.css']
 })
-export class PlanningAppListComponent implements OnInit {
+export class PlanningAppListCompletedComponent implements OnInit {
   private readonly PAGE_SIZE = 10; 
   queryResult: any = {};
   query: any = {
     pageSize: this.PAGE_SIZE,
     stateStatus: {},
-    planningAppType: ""
+    planningAppType: "Not InProgress"
   };
   interval: any = {};
 
@@ -33,11 +36,10 @@ export class PlanningAppListComponent implements OnInit {
     });
     this.populatePlanningAppSummary();
     this.loadStatuses();
-    // this.stateStatuses.push("All")
-    //this.refreshData();
-    // this.interval = setInterval(() => { 
-    //     this.refreshData(); 
-    // }, 5000);
+    this.refreshData();
+    this.interval = setInterval(() => { 
+        this.refreshData(); 
+    }, 5000);
   }
 
   refreshData() {
@@ -45,7 +47,7 @@ export class PlanningAppListComponent implements OnInit {
   }
 
   private loadStatuses() {
-    this.StateStatusService.getStateStatuses("InProgress")
+    this.StateStatusService.getStateStatuses("Not InProgress")
       .subscribe(result => this.stateStatuses = result);
   }
 

@@ -21,6 +21,7 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
 import { PaginationComponent } from './components/shared/pagination.component';
 import { PlanningAppNewComponent } from './components/planningapp-new/planningapp-new.component';
 import { PlanningAppListComponent } from './components/planningapp-list/planningapp-list.component';
+import { PlanningAppListCompletedComponent } from './components/planningappcompleted-list/planningappcompleted-list.component';
 import { PlanningAppFormComponent } from './components/planningapp-form/planningapp-form.component';
 import { PlanningAppStateFormComponent } from './components/planningappstate-form/planningappstate-form.component';
 import { StateInitialiserListComponent } from './components/stateinitialiser-list/stateinitialiser-list.component';
@@ -55,6 +56,7 @@ import { PlanningAppStateService } from './services/planninappstate.service';
         PlanningAppListComponent,
         PlanningAppFormComponent,
         PlanningAppStateFormComponent,
+        PlanningAppListCompletedComponent,
         StateInitialiserListComponent,
         StateInitialiserFormComponent,
         StateInitialiserStateListComponent,
@@ -87,6 +89,7 @@ import { PlanningAppStateService } from './services/planninappstate.service';
             { path: 'vehicles/edit/:id', component: VehicleFormComponent },
             { path: 'vehicles/:id', component: ViewVehicleComponent },
             { path: 'vehicles', component: VehicleListComponent },
+            { path: 'planningapps/completed', component: PlanningAppListCompletedComponent },
             { path: 'planningapps/new', component: PlanningAppNewComponent },
             { path: 'planningapps', component: PlanningAppListComponent },
             { path: 'planningapps/all', component: PlanningAppListComponent },

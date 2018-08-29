@@ -14,20 +14,15 @@ namespace vega.Core.Models
         // public int PlanningAppStatusId { get; set; }
         // public PlanningAppStatus PlanningAppStatus { get; set; }
         public int CustomerId { get; set; }
-
         public Customer Customer { get; set; }
-        
         public int StateInitialiserId { get; set; }
-
         public StateInitialiser StateInitialiser { get; set; }
-
         public int CurrentPlanningStatusId { get; set; }
         public StateStatus CurrentPlanningStatus { get; set; }
- 
         public IList<PlanningAppState> PlanningAppStates { get; set; }
 
+        
         public ICollection<Drawing> Drawings { get; set; }
-
         public string Notes { get; set; }
 
         public PlanningApp()

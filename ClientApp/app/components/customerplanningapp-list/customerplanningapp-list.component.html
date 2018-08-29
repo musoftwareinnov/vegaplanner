@@ -6,9 +6,9 @@
 <div class="well">
   <div class="form-group">
     <label for="Planning Status">Planning Status</label>
-    <select id="statusSelected" class="form-control" [(ngModel)]="statusSelected" (change)="onFilterChange()">
+    <select id="planningStatus" class="form-control" [(ngModel)]="query.planningAppType" (change)="onStateFilterChange()">
       <option value=""></option>
-      <option *ngFor="let m of planningStatus" value="{{ m}}">{{ m }}</option>
+      <option *ngFor="let m of stateStatuses" value="{{ m.name }}">{{ m.name }}</option>
     </select>  
   </div>
 </div>

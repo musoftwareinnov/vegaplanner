@@ -3,6 +3,8 @@ import { PlanningAppService } from '../../services/planningapp.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
 import { Customer } from '../../models/customer';
+import { StateStatusService } from '../../services/statestatus.service';
+import { StateStatus } from '../../models/statestatus';
 
 @Component({
   selector: 'app-customerplanningapp-list',
@@ -23,26 +25,25 @@ export class CustomerPlanningAppListComponent implements OnInit {
   statusSelected: string = "";
   planningStatus: string[] = [];
   customer: any = {};
-
+  
+  stateStatuses: StateStatus[] = [];
 
   constructor(
   private route: ActivatedRoute,
   private router: Router,
   private PlanningAppService: PlanningAppService,
+  private StateStatusService: StateStatusService,
   private CustomerService: CustomerService) { 
 
     route.params.subscribe(p => { this.query.customerId = +p['id'] || 0})
   }
 
+
+
   ngOnInit() {
 
     //Add status list drop down (may bring from server)
-    this.planningStatus.push('All');
-    this.planningStatus.push('InProgress');
-    this.planningStatus.push('Complete');
-    this.planningStatus.push('Archived');
-    this.planningStatus.push('Terminated');
-
+    this.loadStatuses()
     this.populatePlanningAppSummary();
     this.populateCustomer();
     this.refreshData();
@@ -53,6 +54,11 @@ export class CustomerPlanningAppListComponent implements OnInit {
 
   refreshData() {
     this.populatePlanningAppSummary();
+  }
+
+  private loadStatuses() {
+    this.StateStatusService.getStateStatuses("All")
+      .subscribe(result => this.stateStatuses = result);
   }
 
   private populatePlanningAppSummary() {
@@ -70,10 +76,8 @@ export class CustomerPlanningAppListComponent implements OnInit {
     this.populatePlanningAppSummary();
   }
 
-  onFilterChange() {
-    this.query.page = 1; 
-    this.query.planningAppType = this.statusSelected;
-    
+  onStateFilterChange() {
+    console.warn("state = " + this.query.planningAppType);
     this.populatePlanningAppSummary();
   }
 }

@@ -17,17 +17,41 @@ namespace vega.Persistence
 
         }
   
-        public async Task<List<StateStatus>> GetStateStatusList (bool includeAll = true)
+        public async Task<List<StateStatus>> GetStateStatusList (string stateStatus)
         {
-            if(includeAll)
-                return await vegaDbContext.StateStatus.ToListAsync();
-            else {
-                var inProgress = vegaDbContext.StateStatus.AsQueryable();
+             if(stateStatus == StatusList.All) {
+                return vegaDbContext.StateStatus.Where(s => s.GroupType != s.Name).OrderBy(o => o.OrderId).ToList();
+            }           
+            if(stateStatus == null) 
+                return await GetStateStatusList();
+            else {        
+                var status = vegaDbContext.StateStatus.Where(s => s.Name == stateStatus).SingleOrDefault();
                 
-                inProgress.Where(s => s.Name == "OnTime");
-
-                return await inProgress.ToListAsync();
+                if(status.Name == status.GroupType)
+                    return await vegaDbContext.StateStatus.Where(s => s.GroupType == stateStatus).OrderBy(o => o.OrderId).ToListAsync();
+                else
+                    return await GetStateStatusList();
             }
+        } 
+
+        public List<StateStatus> GetStateStatusListGroup (string stateStatus)
+        {     
+            if(stateStatus == StatusList.All) {
+                return vegaDbContext.StateStatus.Where(s => s.GroupType != s.Name).OrderBy(o => o.OrderId).ToList();
+            }
+            var statusList = vegaDbContext.StateStatus.Where(s => s.GroupType == stateStatus).OrderBy(o => o.OrderId).ToList();
+            if(statusList.Count() > 0 ) //We have a group selection
+                statusList.Remove(statusList.Where(s => s.Name ==stateStatus).SingleOrDefault()); //Remove group status
+            else {
+                //not a group status single only
+                 statusList = vegaDbContext.StateStatus.Where(s => s.Name == stateStatus).OrderBy(o => o.OrderId).ToList();
+            }
+            return statusList;          
+        } 
+
+        public async Task<List<StateStatus>> GetStateStatusList ()
+        {
+            return await vegaDbContext.StateStatus.OrderBy(o => o.OrderId).ToListAsync();
         } 
 
         public async Task<List<StateStatus>> GetStateStatusListInProgress ()

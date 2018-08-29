@@ -10,6 +10,7 @@ namespace vega.Core.Models.States
         public static readonly string AppInProgress =  "InProgress";
         public static readonly string AppArchived =  "Archived";
         public static readonly string AppTerminated =  "Terminated";
+        public static readonly string All =  "All";
         public static readonly string AppError =  "Error";
 
         

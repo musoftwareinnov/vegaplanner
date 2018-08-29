@@ -103,23 +103,42 @@ namespace vega.Persistence
             if(queryObj.PlanningAppType==null) {
                 queryObj.PlanningAppType = StatusList.AppInProgress;
             }
+
             //Build up list of planning apps
             List<PlanningApp> planningAppSelectList = new List<PlanningApp>();
 
-            if(queryObj.PlanningAppType == StatusList.AppInProgress) {
-                planningAppSelectList = generateInProgressList(query);  
+            var statusList = stateStatusRepository.GetStateStatusListGroup(queryObj.PlanningAppType);
+
+            if(statusList.First().GroupType == StatusList.AppInProgress) {
+                var appsInProgress = query.Where(pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress).ToList();
+                foreach(var status in statusList) { 
+                    planningAppSelectList.AddRange(appsInProgress.Where(pa => pa.Current().DynamicStateStatus() == status.Name)
+                                         .OrderBy(o => o.Current().DueByDate));
+                }
             }
-            else if(stateStatusSelectorMap.ContainsKey(queryObj.PlanningAppType)) {
-                    var inProgress = query.Where(planningStatusSelectorMap[StatusList.AppInProgress]).ToList();
-                    planningAppSelectList.AddRange(inProgress.Where(stateStatusSelectorMap[queryObj.PlanningAppType]).OrderBy(p => p.Current().DueByDate).ToList());
+            else {
+                //Get a list off all apps that are not in progress - ie, Completed/Archived/Terminated
+                foreach(var status in statusList) { 
+                        planningAppSelectList.AddRange(query.Where(pa => pa.CurrentPlanningStatus.Name == status.Name)
+                                         .OrderByDescending(o => o.Id));
                 }
-            else if (planningStatusSelectorMap.ContainsKey(queryObj.PlanningAppType)){
-                    query = query.Where(planningStatusSelectorMap[queryObj.PlanningAppType]);
-                    planningAppSelectList.AddRange( query.Where(planningStatusSelectorMap[queryObj.PlanningAppType]).OrderByDescending(p => p.Id));
-                }
-            else if(queryObj.PlanningAppType == "All") {
-                    planningAppSelectList = query.OrderByDescending(p => p.Id).ToList();
-            }  
+            }
+
+
+            // if(queryObj.PlanningAppType == StatusList.AppInProgress) {
+            //     planningAppSelectList = generateInProgressList(query);  
+            // }
+            // else if(stateStatusSelectorMap.ContainsKey(queryObj.PlanningAppType)) {
+            //         var inProgress = query.Where(planningStatusSelectorMap[StatusList.AppInProgress]).ToList();
+            //         planningAppSelectList.AddRange(inProgress.Where(stateStatusSelectorMap[queryObj.PlanningAppType]).OrderBy(p => p.Current().DueByDate).ToList());
+            //     }
+            // else if (planningStatusSelectorMap.ContainsKey(queryObj.PlanningAppType)){
+            //         query = query.Where(planningStatusSelectorMap[queryObj.PlanningAppType]);
+            //         planningAppSelectList.AddRange( query.Where(planningStatusSelectorMap[queryObj.PlanningAppType]).OrderByDescending(p => p.Id));
+            //     }
+            // else if(queryObj.PlanningAppType == "All") {
+            //         planningAppSelectList = query.OrderByDescending(p => p.Id).ToList();
+            // }  
 
             query = planningAppSelectList.AsQueryable();
             result.TotalItems =  query.Count();
@@ -128,17 +147,6 @@ namespace vega.Persistence
             return result;
         }
 
-        private List<PlanningApp> generateInProgressList(IQueryable<PlanningApp> query) {
-
-                List<PlanningApp> planningAppSelectList = new List<PlanningApp>();
-                var inProgress = query.Where(planningStatusSelectorMap[StatusList.AppInProgress]).ToList(); //Only process apps in Progress
-
-                planningAppSelectList.AddRange(inProgress.Where(stateStatusSelectorMap[StatusList.Overdue]).OrderBy(p => p.Current().DueByDate).ToList());
-                planningAppSelectList.AddRange(inProgress.Where(stateStatusSelectorMap[StatusList.Due]).OrderBy(p => p.Current().DueByDate).ToList());
-                planningAppSelectList.AddRange(inProgress.Where(stateStatusSelectorMap[StatusList.OnTime]).OrderBy(p => p.Current().DueByDate).ToList());
-
-                return planningAppSelectList;
-        }
         public List<PlanningApp> GetPlanningAppsUsingGenerator(int generatorId, bool inProgress = true)
         {
             return  vegaDbContext.PlanningApps
@@ -151,7 +159,6 @@ namespace vega.Persistence
                                 .ToList();
         }
 
-        //private List<PlanningApp> buildPlanningAppList()
         public PlanningApp UpdatePlanningApp(PlanningApp planningApp)
         {
             vegaDbContext.Update(planningApp);

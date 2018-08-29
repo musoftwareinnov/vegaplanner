@@ -1,16 +1,17 @@
         StaticData
         
-        protected override void Up(MigrationBuilder migrationBuilder)
-   migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('OnTime', getdate())");
-          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Due', getdate())");
-          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Overdue', getdate())");          
-          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Complete', getdate())");  
-          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Overran', getdate())");  
-          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('InProgress', getdate())"); 
-          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Archived', getdate())"); 
-          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Terminated', getdate())");
-        migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('All', getdate())");
-          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Error', getdate())");  
+        protected override void Up(MigrationBuilder migrationBuilder) {
+            migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('InProgress', getdate(), 'InProgress', 1)");
+            migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('Overdue', getdate(), 'InProgress', 2)");
+            migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('Due', getdate(), 'InProgress', 3)");
+            migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('OnTime', getdate(), 'InProgress', 4)");
+            migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('Not InProgress', getdate(), 'Not InProgress', 5)");
+            migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('Complete', getdate(), 'Not InProgress', 6)");
+            migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('Overran', getdate(), 'Not InProgress', 7)");
+            migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('Terminated', getdate(), 'Not InProgress', 8)");
+            migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('Archived', getdate(), 'Not InProgress', 9)");
+            migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('All', getdate(), 'All', 10)");
+
 
             migrationBuilder.Sql("INSERT INTO Makes (Name) VALUES ('Make1')");
             migrationBuilder.Sql("INSERT INTO Makes (Name) VALUES ('Make2')");
@@ -66,6 +67,6 @@
                 column: "PlanningAppId",
                 principalTable: "PlanningApps",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.NoAction);
+                onDelete: ReferentialAction.NoAction);**************
 
 

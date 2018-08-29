@@ -7,7 +7,10 @@ namespace vega.Core
 {    
     public interface IStateStatusRepository
     {
-        Task<List<StateStatus>> GetStateStatusList (bool includeAll = true);
+        Task<List<StateStatus>> GetStateStatusList (string stateStatus);
+
+        List<StateStatus> GetStateStatusListGroup (string stateStatus);
+        Task<List<StateStatus>> GetStateStatusList ();
 
         Task<List<StateStatus>> GetStateStatusListInProgress();
         StateStatus GetStateStatus(int id);

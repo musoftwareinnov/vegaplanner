@@ -26,9 +26,9 @@ namespace vega.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<StateStatusResource>> GetStatuses()
+        public async Task<IEnumerable<StateStatusResource>> GetStatuses(string StatusName)
         {
-            var statuses = await repository.GetStateStatusList(true);
+            var statuses = await repository.GetStateStatusList(StatusName);
 
             return Mapper.Map<List<StateStatus>, List<StateStatusResource>>(statuses);
         }
