@@ -47,7 +47,6 @@ namespace vega.Controllers
             DateTime minDueDate = planningAppState.SetMinDueByDate(planningApp);
             planningAppStateResource.MinDueByDate = minDueDate.SettingDateFormat();
             planningAppStateResource.DueByDateEditable = minDueDate > CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
-
             return planningAppStateResource;
         }
 

@@ -10,6 +10,5 @@ export class StateStatusService {
 
   getStateStatuses(id: number)  {
     return this.http.get<any>(this.statestatusEndpoint)
-      //.map(res => res.json());
   }
 }

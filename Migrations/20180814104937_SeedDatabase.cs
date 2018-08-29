@@ -16,6 +16,7 @@ namespace vega.Migrations
           migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('InProgress', getdate())"); 
           migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Archived', getdate())"); 
           migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Terminated', getdate())");
+          migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('All', getdate())");
           migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate) VALUES ('Error', getdate())");  
 
             migrationBuilder.Sql("INSERT INTO Makes (Name) VALUES ('Make1')");

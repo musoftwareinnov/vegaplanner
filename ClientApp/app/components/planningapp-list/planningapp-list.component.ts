@@ -2,6 +2,7 @@ import { StateStatusService } from './../../services/statestatus.service';
 import { StateStatus } from './../../models/statestatus';
 import { PlanningAppService } from '../../services/planningapp.service';
 import { Component, OnInit } from '@angular/core';
+import { ToastyService } from 'ng2-toasty';
 
 @Component({
   templateUrl: './planningapp-list.component.html'
@@ -11,22 +12,32 @@ export class PlanningAppListComponent implements OnInit {
   queryResult: any = {};
   query: any = {
     pageSize: this.PAGE_SIZE,
-    stateStatus: {}
+    stateStatus: {},
+    planningAppType: ""
   };
   interval: any = {};
 
   stateStatuses: StateStatus[] = [];
 
   constructor(private PlanningAppService: PlanningAppService,
-              private StateStatusService: StateStatusService) { }
+              private StateStatusService: StateStatusService,
+              private toastyService: ToastyService,) { }
 
   ngOnInit() {
+    this.toastyService.wait({
+      title: 'Initialising', 
+      msg: 'Loading Applications.....',
+      theme: 'bootstrap',
+      showClose: false,
+      timeout: 2000
+    });
     this.populatePlanningAppSummary();
     this.loadStatuses();
-    this.refreshData();
-    this.interval = setInterval(() => { 
-        this.refreshData(); 
-    }, 5000);
+    // this.stateStatuses.push("All")
+    //this.refreshData();
+    // this.interval = setInterval(() => { 
+    //     this.refreshData(); 
+    // }, 5000);
   }
 
   refreshData() {
@@ -49,7 +60,7 @@ export class PlanningAppListComponent implements OnInit {
   }
 
   onStateFilterChange() {
-    console.warn("state = " + this.query.stateStatus);
+    console.warn("state = " + this.query.planningAppType);
     this.populatePlanningAppSummary();
   }
 }

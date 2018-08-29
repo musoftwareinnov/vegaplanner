@@ -17,6 +17,22 @@ namespace vega.Persistence
         private readonly VegaDbContext vegaDbContext;
         private readonly IStateInitialiserRepository stateInitialiserRepository;
 
+
+        Dictionary<string, Expression<Func<PlanningApp, bool>>> planningStatusSelectorMap = new Dictionary<string, Expression<Func<PlanningApp, bool>>>()
+            {
+                [StatusList.AppInProgress] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress,
+                [StatusList.AppArchived] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppArchived,
+                [StatusList.AppTerminated] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppTerminated,
+                [StatusList.Complete] = pa => pa.CurrentPlanningStatus.Name == StatusList.Complete
+            };
+
+        Dictionary<string, Func<PlanningApp, bool>> stateStatusSelectorMap = new Dictionary<string, Func<PlanningApp, bool>>()
+            {
+                [StatusList.Overdue] = pa => pa.Current().DynamicStateStatus() == StatusList.Overdue,
+                [StatusList.Due] = pa => pa.Current().DynamicStateStatus() == StatusList.Due,
+                [StatusList.OnTime] = pa => pa.Current().DynamicStateStatus() == StatusList.OnTime,
+            };
+
         public PlanningAppRepository(VegaDbContext vegaDbContext, 
                                      IStateStatusRepository stateStatusRepository,
                                      IStateInitialiserRepository stateInitialiserRepository,
@@ -34,13 +50,6 @@ namespace vega.Persistence
  
         public void Add(PlanningApp planningApp, StateInitialiser stateInitialiser)
         {
-
-            //var stateInitialiser = await stateInitialiserRepository.GetStateInitialiser(planningApp.StateInitialiserId, includeDeleted: false);
-
-            // var stateInitialiser = vegaDbContext.StateInitialisers
-            //                 .Where(s => s.Id == planningApp.StateInitialiserId)
-            //                     .Include(t => t.States)
-            //                     .SingleOrDefault();
 
             var initialStatus = vegaDbContext.StateStatus.Where(s => s.Name == stateStatusSettings.STATE_ON_TIME).SingleOrDefault();
             var initialStatusList  = vegaDbContext.StateStatus.ToList();
@@ -94,50 +103,42 @@ namespace vega.Persistence
             if(queryObj.PlanningAppType==null) {
                 queryObj.PlanningAppType = StatusList.AppInProgress;
             }
-
-            var planningStatusSelectorMap = new Dictionary<string, Expression<Func<PlanningApp, bool>>>()
-            {
-                [StatusList.AppInProgress] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress,
-                [StatusList.AppArchived] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppArchived,
-                [StatusList.AppTerminated] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppTerminated
-            };
+            //Build up list of planning apps
+            List<PlanningApp> planningAppSelectList = new List<PlanningApp>();
 
             if(queryObj.PlanningAppType == StatusList.AppInProgress) {
-                var queryList = query.Where(planningStatusSelectorMap[queryObj.PlanningAppType]).ToList();
-
-                List<String> statusList = new List<String>();
-
-                if(queryObj.StateStatus > 0) {
-                        var stateStatus = stateStatusRepository.GetStateStatus(queryObj.StateStatus);
-                        statusList.Add(stateStatus.Name);
-                }
-                else if(queryObj.PlanningAppStatusType == null)
-                    statusList.AddRange(new List<String> { StatusList.Overdue, StatusList.Due, StatusList.OnTime} );
-                else 
-                    statusList.Add(queryObj.PlanningAppStatusType);
-
-                //Generate the list
-                List<PlanningApp> planningAppList = new List<PlanningApp>();
-                foreach ( var status in statusList) {
-                    planningAppList.AddRange(queryList.Where(p => p.Current().DynamicStateStatus() == status)
-                                                    .OrderBy(p => p.Current().DueByDate)
-                                                    .ToList());
-                }
-                query = planningAppList.AsQueryable();
+                planningAppSelectList = generateInProgressList(query);  
             }
-            else 
-                {
-                if(queryObj.PlanningAppType != "All") 
-                    query = query.AsQueryable().Where(p => p.CurrentPlanningStatus.Name == queryObj.PlanningAppType);
+            else if(stateStatusSelectorMap.ContainsKey(queryObj.PlanningAppType)) {
+                    var inProgress = query.Where(planningStatusSelectorMap[StatusList.AppInProgress]).ToList();
+                    planningAppSelectList.AddRange(inProgress.Where(stateStatusSelectorMap[queryObj.PlanningAppType]).OrderBy(p => p.Current().DueByDate).ToList());
                 }
+            else if (planningStatusSelectorMap.ContainsKey(queryObj.PlanningAppType)){
+                    query = query.Where(planningStatusSelectorMap[queryObj.PlanningAppType]);
+                    planningAppSelectList.AddRange( query.Where(planningStatusSelectorMap[queryObj.PlanningAppType]).OrderByDescending(p => p.Id));
+                }
+            else if(queryObj.PlanningAppType == "All") {
+                    planningAppSelectList = query.OrderByDescending(p => p.Id).ToList();
+            }  
 
+            query = planningAppSelectList.AsQueryable();
             result.TotalItems =  query.Count();
-            query = query.ApplyPaging(queryObj);
- 
+            query = query.ApplyPaging(queryObj); 
             result.Items = query.ToList();
             return result;
         }
 
+        private List<PlanningApp> generateInProgressList(IQueryable<PlanningApp> query) {
+
+                List<PlanningApp> planningAppSelectList = new List<PlanningApp>();
+                var inProgress = query.Where(planningStatusSelectorMap[StatusList.AppInProgress]).ToList(); //Only process apps in Progress
+
+                planningAppSelectList.AddRange(inProgress.Where(stateStatusSelectorMap[StatusList.Overdue]).OrderBy(p => p.Current().DueByDate).ToList());
+                planningAppSelectList.AddRange(inProgress.Where(stateStatusSelectorMap[StatusList.Due]).OrderBy(p => p.Current().DueByDate).ToList());
+                planningAppSelectList.AddRange(inProgress.Where(stateStatusSelectorMap[StatusList.OnTime]).OrderBy(p => p.Current().DueByDate).ToList());
+
+                return planningAppSelectList;
+        }
         public List<PlanningApp> GetPlanningAppsUsingGenerator(int generatorId, bool inProgress = true)
         {
             return  vegaDbContext.PlanningApps

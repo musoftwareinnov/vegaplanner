@@ -11,6 +11,6 @@ namespace vega.Core.Models
         public bool IsSortAscending { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
-        public int StateStatus { get; set; }
+        public string StateStatus { get; set; }
     }
 }

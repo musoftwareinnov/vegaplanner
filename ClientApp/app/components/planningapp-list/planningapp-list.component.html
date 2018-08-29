@@ -8,9 +8,9 @@
     <!-- <div class="col-sm-2"> -->
         <div class="form-group">
           <label for="Planning Status">Planning Status</label>
-          <select id="planningStatus" class="form-control" [(ngModel)]="query.stateStatus" (change)="onStateFilterChange()">
+          <select id="planningStatus" class="form-control" [(ngModel)]="query.planningAppType" (change)="onStateFilterChange()">
             <option value=""></option>
-            <option *ngFor="let m of stateStatuses" value="{{ m.id }}">{{ m.name }}</option>
+            <option *ngFor="let m of stateStatuses" value="{{ m.name }}">{{ m.name }}</option>
           </select>  
         </div>
   <!-- </div> -->
@@ -36,6 +36,18 @@
   .highlightDue{
   background: rgb(226, 225, 159); 
   } 
+
+  .highlightTerminated{
+  background: rgba(150, 216, 224, 0.199); 
+  } 
+
+  .highlightArchived{
+  background: rgb(251, 253, 130); 
+  } 
+
+  .highlightCompleted{
+  background: rgb(180, 253, 173); 
+  }
   /* tr:nth-child(even) {background-color: #f2f2f2;} */
   </style>
 </head>
@@ -54,7 +66,11 @@
     </tr>
   </thead>
 
-  <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'" [class.highlightDue]="v.currentStateStatus == 'Due'">
+  <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'" 
+                                          [class.highlightTerminated]="v.planningStatus == 'Terminated'"
+                                          [class.highlightArchived]="v.planningStatus == 'Archived'"
+                                          [class.highlightCompleted]="v.planningStatus == 'Complete'"
+                                          [class.highlightDue]="v.currentStateStatus == 'Due'">
       <td>{{ v.id }}</td>
       <td>{{ v.customerName}}</td>
       <td>{{ v.name }}</td>

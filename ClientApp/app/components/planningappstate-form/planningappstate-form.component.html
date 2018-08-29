@@ -9,7 +9,7 @@
           border-radius: 32px;
           color: black;
         }
-      </style>
+</style>
 
 <h1>Planning App State</h1>
 
@@ -52,7 +52,7 @@
                                 <div class="card">
                                     <pre class="card-block card-header"><em *ngIf="updatedDueByDate">{{ getDate() | date:'dd-MM-yyyy'}}</em></pre>
                                 </div>
-                                <div style="display:inline-block; min-height:290px;">
+                                <div style="display:inline-block; min-height:290px; background-color: rgb(127, 219, 255); border-radius: 32px">
                                     <datepicker [(ngModel)]="updatedDueByDate" name="dtcal" [minDate]="calMinDate" [showWeeks]="true" [dayDisabled]="ignoreWeekends" [dateDisabled]="dateDisabled"></datepicker>
                                 </div>
                             </div>                          

@@ -262,7 +262,6 @@ namespace vega.Core.Models
 
         public PlanningAppState Current()
         {
-
                 return PlanningAppStates.Where(s => s.CurrentState == true).SingleOrDefault();
         }
 

@@ -30,6 +30,15 @@ namespace vega.Persistence
             }
         } 
 
+        public async Task<List<StateStatus>> GetStateStatusListInProgress ()
+        {
+            var inProgress = vegaDbContext.StateStatus.AsQueryable();
+            
+            inProgress.Where(s => s.Name == "OnTime");
+
+            return await inProgress.ToListAsync();
+        } 
+
         public StateStatus GetStateStatus(int id)
         {
             return vegaDbContext.StateStatus.Where(s => s.Id == id).SingleOrDefault();
