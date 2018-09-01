@@ -36,10 +36,10 @@ export class PlanningAppListCompletedComponent implements OnInit {
     });
     this.populatePlanningAppSummary();
     this.loadStatuses();
-    this.refreshData();
-    this.interval = setInterval(() => { 
-        this.refreshData(); 
-    }, 5000);
+    // this.refreshData();
+    // this.interval = setInterval(() => { 
+    //     this.refreshData(); 
+    // }, 5000);
   }
 
   refreshData() {

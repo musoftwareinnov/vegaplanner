@@ -73,10 +73,14 @@ namespace vega.Core.Models
 
             if(!planningApp.Completed()) {
                 var current = planningApp.Current();
-
+                var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
                 if(this.state.OrderId >= current.state.OrderId) {
-                    if(planningApp.isFirstState(this) || this.CurrentState == true)
-                        minDueByDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate().AddBusinessDays(1); //Add one day
+                    if(planningApp.isFirstState(this))
+                        minDueByDate = currentDate.AddBusinessDays(1); //Add one day
+                    else if (this.CurrentState == true)
+                        minDueByDate = currentDate.AddBusinessDays(1); 
+                    else if (planningApp.SeekPrev(this).DueByDate <= currentDate)
+                        minDueByDate = currentDate.AddBusinessDays(1); 
                     else 
                         minDueByDate = planningApp.SeekPrev(this).DueByDate.AddBusinessDays(1);
                 }

@@ -49,6 +49,22 @@ namespace vega.Persistence
             return statusList;          
         } 
 
+        public List<StateStatus> GetStateStatusListCustomer (int customerId)
+        {     
+            var stateStatus = "OnTime";
+            if(stateStatus == StatusList.All) {
+                return  vegaDbContext.StateStatus.Where(s => s.GroupType != s.Name).OrderBy(o => o.OrderId).ToList();
+            }
+            var statusList = vegaDbContext.StateStatus.Where(s => s.GroupType == stateStatus).OrderBy(o => o.OrderId).ToList();
+            if(statusList.Count() > 0 ) //We have a group selection
+                statusList.Remove(statusList.Where(s => s.Name ==stateStatus).SingleOrDefault()); //Remove group status
+            else {
+                //not a group status single only
+                 statusList = vegaDbContext.StateStatus.Where(s => s.Name == stateStatus).OrderBy(o => o.OrderId).ToList();
+            }
+            return  statusList;          
+        }
+
         public async Task<List<StateStatus>> GetStateStatusList ()
         {
             return await vegaDbContext.StateStatus.OrderBy(o => o.OrderId).ToListAsync();

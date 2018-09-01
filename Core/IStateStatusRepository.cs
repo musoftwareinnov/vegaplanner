@@ -10,6 +10,8 @@ namespace vega.Core
         Task<List<StateStatus>> GetStateStatusList (string stateStatus);
 
         List<StateStatus> GetStateStatusListGroup (string stateStatus);
+
+        List<StateStatus> GetStateStatusListCustomer (int CustomerId);
         Task<List<StateStatus>> GetStateStatusList ();
 
         Task<List<StateStatus>> GetStateStatusListInProgress();

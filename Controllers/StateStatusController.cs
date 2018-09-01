@@ -24,6 +24,13 @@ namespace vega.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("{customerId}")]
+        public async Task<IEnumerable<StateStatusResource>> GetCustomerStatuses(int customerId)
+        {
+            var statuses = repository.GetStateStatusListCustomer(customerId);
+
+            return Mapper.Map<List<StateStatus>, List<StateStatusResource>>(statuses);
+        }
 
         [HttpGet]
         public async Task<IEnumerable<StateStatusResource>> GetStatuses(string StatusName)
@@ -32,5 +39,7 @@ namespace vega.Controllers
 
             return Mapper.Map<List<StateStatus>, List<StateStatusResource>>(statuses);
         }
+
+
     }
 }

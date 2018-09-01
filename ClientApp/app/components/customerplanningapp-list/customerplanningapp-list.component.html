@@ -33,6 +33,9 @@
   .highlightInProgress{
   background: rgb(159, 219, 135); 
   } 
+  .highlightTerminated{
+  background: red;
+  } 
 
 
   /* tr:nth-child(even) {background-color: #f2f2f2;} */
@@ -45,17 +48,21 @@
       <th>App Id</th>
       <th>Description</th>
       <th>Status</th>
+      <th>State Status</th>
       <th>State</th>
       <th>Due By </th>
       <th>Next State</th>
-      <th>Completion Date</th>
+      <th>Exp Completion Date</th>
     </tr>
   </thead>
 
-  <tr *ngFor="let v of queryResult.items" [class.highlightInProgress]="v.planningStatus == 'InProgress'" >
+  <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'"
+                                          [class.highlightDue]="v.currentStateStatus == 'Due'"
+                                          [class.highlightTerminated]="v.planningStatus == 'Terminated'">
       <td>{{ v.id }}</td>
       <td>{{ v.name }}</td>
       <td>{{ v.planningStatus }}</td>
+      <td>{{ v.currentStateStatus }}</td>
       <td>{{ v.currentState }}</td>
       <td>{{ v.expectedStateCompletionDate }}</td>
       <td>{{ v.nextState }}</td>

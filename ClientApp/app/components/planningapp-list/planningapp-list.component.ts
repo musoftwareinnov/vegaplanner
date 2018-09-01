@@ -33,11 +33,10 @@ export class PlanningAppListComponent implements OnInit {
     });
     this.populatePlanningAppSummary();
     this.loadStatuses();
-    // this.stateStatuses.push("All")
-    //this.refreshData();
-    // this.interval = setInterval(() => { 
-    //     this.refreshData(); 
-    // }, 5000);
+    this.refreshData();
+    this.interval = setInterval(() => { 
+        this.refreshData(); 
+    }, 5000);
   }
 
   refreshData() {

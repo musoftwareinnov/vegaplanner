@@ -173,6 +173,10 @@ namespace vega.Core.Models
         public void Terminate(List<StateStatus> statusList)
         {   
             CurrentPlanningStatus = statusList.Where(p => p.Name == StatusList.AppTerminated).SingleOrDefault();
+            //Close outƒ active status and complete
+            // PlanningAppStates
+            //             .Select(c => {c.CurrentState = false; return c;})
+            //             .ToList(); 
         }
      
         private void rewindState()

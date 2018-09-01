@@ -22,10 +22,6 @@ namespace vega.Persistence
             return await vegaDbContext.PlanningAppState
                                     .Where(s => s.Id == id)
                                         .Include(i => i.state)
-                                    // .Where(s => s.Id == id)
-                                    //     .Include(p => p.PlanningApp)
-                                    //         .ThenInclude(s => s.PlanningAppStates)
-                                    //             .ThenInclude(st => st.state)
                                     .SingleOrDefaultAsync();
         }
 
