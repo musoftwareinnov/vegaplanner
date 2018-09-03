@@ -61,7 +61,7 @@
       <th>Status</th>
       <th>State</th>
       <th>Due By </th>
-      <th>Next State</th>
+      <th>Planning App Id</th>
       <th>Completion Date</th>
     </tr>
   </thead>
@@ -77,7 +77,7 @@
       <td>{{ v.currentStateStatus }}</td>
       <td>{{ v.currentState }}</td>
       <td>{{ v.expectedStateCompletionDate }}</td>
-      <td>{{ v.nextState }}</td>
+      <td>{{ v.councilPlanningAppId }}</td>
       <td>{{ v.completionDate }}</td>
       <td>
         <a [routerLink]="['/planningapps/', v.id]">View</a>

@@ -17,22 +17,6 @@ namespace vega.Persistence
         private readonly VegaDbContext vegaDbContext;
         private readonly IStateInitialiserRepository stateInitialiserRepository;
 
-
-        Dictionary<string, Expression<Func<PlanningApp, bool>>> planningStatusSelectorMap = new Dictionary<string, Expression<Func<PlanningApp, bool>>>()
-            {
-                [StatusList.AppInProgress] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress,
-                [StatusList.AppArchived] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppArchived,
-                [StatusList.AppTerminated] = pa => pa.CurrentPlanningStatus.Name == StatusList.AppTerminated,
-                [StatusList.Complete] = pa => pa.CurrentPlanningStatus.Name == StatusList.Complete
-            };
-
-        Dictionary<string, Func<PlanningApp, bool>> stateStatusSelectorMap = new Dictionary<string, Func<PlanningApp, bool>>()
-            {
-                [StatusList.Overdue] = pa => pa.Current().DynamicStateStatus() == StatusList.Overdue,
-                [StatusList.Due] = pa => pa.Current().DynamicStateStatus() == StatusList.Due,
-                [StatusList.OnTime] = pa => pa.Current().DynamicStateStatus() == StatusList.OnTime,
-            };
-
         public PlanningAppRepository(VegaDbContext vegaDbContext, 
                                      IStateStatusRepository stateStatusRepository,
                                      IStateInitialiserRepository stateInitialiserRepository,
@@ -107,57 +91,70 @@ namespace vega.Persistence
             //Build up list of planning apps
             List<PlanningApp> planningAppSelectList = new List<PlanningApp>();
 
-            var statusListInProgress = stateStatusRepository.GetStateStatusListGroup(StatusList.AppInProgress);
-            var statusListNotInProgress = stateStatusRepository.GetStateStatusListGroup(StatusList.AppNotInProgress);
-
-            //REFACTOR WHEN TIME AVAIL!!!!!!!
             if(queryObj.PlanningAppType == StatusList.All ) {
-                var appsInProgress = query.Where(pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress).ToList();
-                foreach(var status in statusListInProgress) { 
-                    planningAppSelectList.AddRange(appsInProgress.Where(pa => pa.Current().DynamicStateStatus() == status.Name)
-                                         .OrderBy(o => o.Current().DueByDate));
-                }    
-
-                //Get a list off all apps that are not in progress - ie, Completed/Archived/Terminated
-                foreach(var status in statusListNotInProgress) { 
-                        planningAppSelectList.AddRange(query.Where(pa => pa.CurrentPlanningStatus.Name == status.Name)
-                                         .OrderByDescending(o => o.Id));
-                }
+                planningAppSelectList = getAppsInProgress(query);   
+                planningAppSelectList.AddRange(getAppsNotInProgress(query));
             }
             else if(queryObj.PlanningAppType == StatusList.AppInProgress ) {
-                var appsInProgress = query.Where(pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress).ToList();
-                foreach(var status in statusListInProgress) { 
-                    planningAppSelectList.AddRange(appsInProgress.Where(pa => pa.Current().DynamicStateStatus() == status.Name)
-                                         .OrderBy(o => o.Current().DueByDate));
-                }    
+                planningAppSelectList = getAppsInProgress(query);        
             }
             else if(queryObj.PlanningAppType == StatusList.AppNotInProgress ) { //ie, Completed/Archived/Terminated
-                //Get a list off all apps that are not in progress - 
-                foreach(var status in statusListNotInProgress) { 
-                        planningAppSelectList.AddRange(query.Where(pa => pa.CurrentPlanningStatus.Name == status.Name)
-                                         .OrderByDescending(o => o.Id));
-                }
+                planningAppSelectList = getAppsNotInProgress(query);
             }   
-            else {
-                //Individual state selected
-                if(statusListInProgress.Exists(s => s.Name == queryObj.PlanningAppType)) {
-                    var appsInProgress = query.Where(pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress).ToList();
-                    planningAppSelectList.AddRange(appsInProgress.Where(pa => pa.Current().DynamicStateStatus() == queryObj.PlanningAppType)
-                        .OrderBy(o => o.Current().DueByDate));
-                }
-                else if(statusListNotInProgress.Exists(s => s.Name == queryObj.PlanningAppType)) {
-                    planningAppSelectList.AddRange(query.Where(pa => pa.CurrentPlanningStatus.Name == queryObj.PlanningAppType)
-                                         .OrderByDescending(o => o.Id));
-                }
-
-            }          
-
+            else 
+                planningAppSelectList = getAppsWithStatus(query, queryObj.PlanningAppType); //Individual state selected       
 
             query = planningAppSelectList.AsQueryable();
             result.TotalItems =  query.Count();
             query = query.ApplyPaging(queryObj); 
             result.Items = query.ToList();
             return result;
+        }
+
+        public List<PlanningApp> getAppsWithStatus(IQueryable<PlanningApp> query, string planningAppType) {
+
+            var statusListInProgress = stateStatusRepository.GetStateStatusListGroup(StatusList.AppInProgress);
+            var statusListNotInProgress = stateStatusRepository.GetStateStatusListGroup(StatusList.AppNotInProgress);
+            List<PlanningApp> planningAppSelectList = new List<PlanningApp>();
+
+            if(statusListInProgress.Exists(s => s.Name == planningAppType)) {
+                var appsInProgress = query.Where(pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress).ToList();
+                planningAppSelectList.AddRange(appsInProgress.Where(pa => pa.Current().DynamicStateStatus() == planningAppType)
+                    .OrderBy(o => o.Current().DueByDate));
+            }
+            else if(statusListNotInProgress.Exists(s => s.Name == planningAppType)) {
+                planningAppSelectList.AddRange(query.Where(pa => pa.CurrentPlanningStatus.Name == planningAppType)
+                                        .OrderByDescending(o => o.Id));
+            }
+            return planningAppSelectList;
+        }
+
+        public List<PlanningApp> getAppsInProgress(IQueryable<PlanningApp> query) {
+
+            List<PlanningApp> planningAppSelectList = new List<PlanningApp>();
+            var statusListInProgress = stateStatusRepository.GetStateStatusListGroup(StatusList.AppInProgress);
+
+            var appsInProgress = query.Where(pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress).ToList();
+
+            foreach(var app in appsInProgress) {
+                app.PlanningAppStates = app.PlanningAppStates.OrderBy(o => o.state.OrderId).ToList();
+            }
+            foreach(var status in statusListInProgress) { 
+                planningAppSelectList.AddRange(appsInProgress.Where(pa => pa.Current().DynamicStateStatus() == status.Name)
+                                        .OrderBy(o => o.Current().DueByDate));
+            }  
+
+            return planningAppSelectList;
+        }
+
+        public List<PlanningApp> getAppsNotInProgress(IQueryable<PlanningApp> query) {
+            var statusListNotInProgress = stateStatusRepository.GetStateStatusListGroup(StatusList.AppNotInProgress);
+            List<PlanningApp> planningAppSelectList = new List<PlanningApp>();
+            foreach(var status in statusListNotInProgress) { 
+                    planningAppSelectList.AddRange(query.Where(pa => pa.CurrentPlanningStatus.Name == status.Name)
+                                        .OrderByDescending(o => o.Id));
+            } 
+            return planningAppSelectList;
         }
 
         public List<PlanningApp> GetPlanningAppsUsingGenerator(int generatorId, bool inProgress = true)

@@ -118,8 +118,8 @@ namespace vega.Controllers
                 planningApp.Terminate(stateStatusList);
             else 
                 {
-                ModelState.AddModelError("Update Planning App", "Invalid Instuction Method Id: " + planningResource.method);
-                    return BadRequest(ModelState);
+                //No state specified just save details that can be modified by the user
+                planningApp.Notes = planningResource.Notes;
                 }     
       
             repository.UpdatePlanningApp(planningApp);

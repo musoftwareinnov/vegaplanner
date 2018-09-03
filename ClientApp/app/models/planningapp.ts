@@ -9,8 +9,10 @@ export interface PlanningApp {
     currentState: string;
     expectedStateCompletionDate: string; 
     nextState: string; 
+    councilPlanningAppId: string;
     completionDate: string; 
     generator: string;
+    notes: string;
     planningAppStates: PlanningAppStates[];
     method: number;
   }
@@ -27,6 +29,11 @@ export interface PlanningAppStates {
   export interface ChangePlanningAppState {
     id: number; 
     method: number;
+  }
+
+  export interface SavePlanningNotes {
+    id: number; 
+    notes: string;
   }
 
   export interface PlanningAppGenerator {

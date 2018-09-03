@@ -22,6 +22,7 @@
   <li role="presentation"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Application Details</a></li>
   <li role="presentation"><a href="#customer" aria-controls="customer" role="tab" data-toggle="tab">Customer Details</a></li> 
   <li role="presentation"><a href="#drawings" aria-controls="photos" role="tab" data-toggle="tab">Drawings</a></li> 
+  <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
 </ul>
 
   <!-- Tab panes -->
@@ -258,4 +259,19 @@
     </div>
     <img *ngFor="let drawing of drawings" src="/uploads/{{ drawing.fileName }}" class="img-thumbnail">
   </div>
+  <div role="tabpanel" class="tab-pane" id="notes">
+    <div class="well">
+        <div class="form-group">
+              <div style="display:inline-block; min-height:290px;">
+                  <textarea rows="10" cols="100" [(ngModel)]="planningApp.notes" name="updateNotes"></textarea>
+  
+              </div>  
+              <div>
+                <button  class="btn btn-primary" type="button" (click)="saveNotes()">Save</button> 
+              </div>
+                      
+            </div>
+          <div class="col-sm-8"></div>
+    </div> 
+</div> 
 </div>

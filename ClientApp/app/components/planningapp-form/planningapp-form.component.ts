@@ -1,7 +1,7 @@
 import { Customer } from './../../models/customer';
 import * as _ from 'underscore';
 import { ProgressService } from '../../services/progress.service';
-import { ChangePlanningAppState, PlanningApp } from '../../models/planningapp';
+import { ChangePlanningAppState, PlanningApp, SavePlanningNotes } from '../../models/planningapp';
 import { INITIAL_CONFIG } from '@angular/platform-server';
 import { PlanningAppService } from '../../services/planningapp.service';
 import { DrawingService } from '../../services/drawing.service';
@@ -34,6 +34,11 @@ export class PlanningAppFormComponent implements OnInit {
 
   };
 
+  plannningNotes: SavePlanningNotes = {
+    id:0,
+    notes: ""
+  };
+
   planningApp: PlanningApp = {
     id: 0,
     // customerId: 0,
@@ -56,8 +61,10 @@ export class PlanningAppFormComponent implements OnInit {
     currentState:  "",
     expectedStateCompletionDate:  "",
     nextState:  "",
+    councilPlanningAppId: "",
     completionDate:  "",
     generator: "",
+    notes: "",
     planningAppStates: [],
     method: 1
   };
@@ -90,10 +97,10 @@ export class PlanningAppFormComponent implements OnInit {
         }
     });
 
-    this.refreshData();
-    this.interval = setInterval(() => { 
-        this.refreshData(); 
-    }, 5000);
+    // this.refreshData();
+    // this.interval = setInterval(() => { 
+    //     this.refreshData(); 
+    // }, 5000);
   }
 
   refreshData() {
@@ -118,8 +125,6 @@ export class PlanningAppFormComponent implements OnInit {
     }
 
   submit() {
-    //var result$ = (this.planningApp.id) ? this.planningAppService.update(this.vehicle) : this.vehicleService.create(this.vehicle); 
-
     this.savePlanningApp.id = this.planningApp.id;
     var result$ = this.planningAppService.nextState(this.savePlanningApp )
 
@@ -134,9 +139,27 @@ export class PlanningAppFormComponent implements OnInit {
             theme: 'bootstrap',
             showClose: true,
             timeout: 5000
-          })     
+          })
+          { this.refreshData() }   
           this.router.navigate(['/planningapps/', this.planningApp.id])
         });
+  }
+
+  saveNotes() {
+    this.plannningNotes.id = this.planningApp.id;
+    this.plannningNotes.notes = this.planningApp.notes;
+    console.warn("notes:" + this.plannningNotes.notes);
+    var result$ = this.planningAppService.saveNotes(this.plannningNotes )
+    result$.subscribe(
+      planningApp => {
+        this.toastyService.success({
+          title: 'Success', 
+          msg: 'Notes updated ',
+          theme: 'bootstrap',
+          showClose: true,
+          timeout: 5000
+        })
+      });
   }
   
   archive() {

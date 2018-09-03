@@ -9,5 +9,6 @@ namespace vega.Controllers.Resources
         public int rollbackToStateId { get; set; }
         public string CurrentStateCompletionDate { get; set; }
         public string  DateCompleted { get; set; }
+        public string Notes { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace vega.Controllers.Resources
         public string CurrentState { get; set; }
         public string ExpectedStateCompletionDate { get; set; }
         public string NextState { get; set; }
+        public string CouncilPlanningAppId{ get; set; }
         public string CompletionDate { get; set; }
     }
 }

@@ -19,9 +19,11 @@ namespace vega.Core.Models
         public StateInitialiser StateInitialiser { get; set; }
         public int CurrentPlanningStatusId { get; set; }
         public StateStatus CurrentPlanningStatus { get; set; }
-        public IList<PlanningAppState> PlanningAppStates { get; set; }
+        public string ApplicationNo { get; set; }
+        public string CaseOfficer  { get; set; }
 
         
+        public IList<PlanningAppState> PlanningAppStates { get; set; }
         public ICollection<Drawing> Drawings { get; set; }
         public string Notes { get; set; }
 

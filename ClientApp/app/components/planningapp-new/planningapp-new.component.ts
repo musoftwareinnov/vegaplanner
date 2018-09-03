@@ -49,8 +49,10 @@ export class PlanningAppNewComponent implements OnInit {
     currentState:  "",
     expectedStateCompletionDate:  "",
     nextState:  "",
+    councilPlanningAppId: "",
     completionDate:  "",
     generator: "",
+    notes: "",
     planningAppStates: [],
     method: 1
   };

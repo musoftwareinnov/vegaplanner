@@ -1,4 +1,4 @@
-import { PlanningApp, ChangePlanningAppState, PlanningAppGenerator } from '../models/planningapp';
+import { PlanningApp, ChangePlanningAppState, PlanningAppGenerator, SavePlanningNotes } from '../models/planningapp';
 import { PlanningAppSummary } from '../models/planningappsummary';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -21,14 +21,16 @@ export class PlanningAppService {
 
   nextState(changePlanningAppState: ChangePlanningAppState) {
     changePlanningAppState.method = StateAction.Next;  //move to next state
-    console.warn(changePlanningAppState);
     return this.http.put(this.planningappsEndpoint + '/' + changePlanningAppState.id, changePlanningAppState)
   }
 
   terminate(changePlanningAppState: ChangePlanningAppState) {
     changePlanningAppState.method = StateAction.Terminate;  //move to next state
-    console.warn(changePlanningAppState);
     return this.http.put(this.planningappsEndpoint + '/' + changePlanningAppState.id, changePlanningAppState)
+  }
+
+  saveNotes(planningNotes: SavePlanningNotes) {
+    return this.http.put(this.planningappsEndpoint + '/' + planningNotes.id, planningNotes)
   }
   
   generatePlanningApp(planningAppGenerator:PlanningAppGenerator) {

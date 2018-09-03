@@ -18,6 +18,11 @@ namespace vega.Mapping.MappingProfiles
                                             + ' ' + ps.LastName 
                                             + ", " + ps.Address1
                                             + ' ' + ps.Address2
+                                            + ", " + ps.Postcode ))
+
+                    .ForMember(psr => psr.CustomerAddressSummary,
+                    opt => opt.MapFrom(ps =>  ps.Address1
+                                            + ' ' + ps.Address2
                                             + ", " + ps.Postcode ));
                                             
             CreateMap<CustomerResource, Customer>()
