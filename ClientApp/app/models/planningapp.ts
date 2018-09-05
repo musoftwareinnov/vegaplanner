@@ -1,4 +1,6 @@
 import { Customer } from './customer';
+import { Developer } from './developer';
+import { Address } from './address';
 export interface PlanningApp {
     id: number; 
     customer: Customer;
@@ -40,5 +42,7 @@ export interface PlanningAppStates {
     customerId: number; 
     stateInitialiserId: number;
     name: string;
+    developer: Developer;
+    developmentAddress: Address;
   }
 

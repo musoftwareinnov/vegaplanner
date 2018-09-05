@@ -3,24 +3,3 @@ dotnet ef database update InitialSchema
 dotnet ef database update AddStaticData
 dotnet ef database update AddFeatures
 
-
-            if(statusList.First().GroupType == StatusList.AppInProgress) {
-
-            var statusListInProgress = stateStatusRepository.GetStateStatusListGroup(StatusList.AppInProgress);
-            var statusListNotInProgress = stateStatusRepository.GetStateStatusListGroup(StatusList.AppNotInProgress);
-
-            if(queryObj.PlanningAppType == StatusList.All || queryObj.PlanningAppType == StatusList.AppInProgress) {
-                var appsInProgress = query.Where(pa => pa.CurrentPlanningStatus.Name == StatusList.AppInProgress).ToList();
-                foreach(var status in statusListInProgress) { 
-                    planningAppSelectList.AddRange(appsInProgress.Where(pa => pa.Current().DynamicStateStatus() == status.Name)
-                                         .OrderBy(o => o.Current().DueByDate));
-                }
-            }
-
-            if(queryObj.PlanningAppType == StatusList.All || queryObj.PlanningAppType == StatusList.AppNotInProgress ) {
-                //Get a list off all apps that are not in progress - ie, Completed/Archived/Terminated
-                foreach(var status in statusListNotInProgress) { 
-                        planningAppSelectList.AddRange(query.Where(pa => pa.CurrentPlanningStatus.Name == status.Name)
-                                         .OrderByDescending(o => o.Id));
-                }
-            }  

@@ -1,6 +1,6 @@
 import { PlanningApp } from './../../models/planningapp';
 import { Component, OnInit } from '@angular/core';
-import { CustomerSelect } from '../../models/customer';
+import { CustomerSelect, Customer } from '../../models/customer';
 import { StateGeneratorSelect } from '../../models/state-generator';
 import { PlanningAppGenerator } from '../../models/planningapp';
 import { PlanningAppService } from '../../services/planningapp.service';
@@ -21,41 +21,29 @@ export class PlanningAppNewComponent implements OnInit {
   };
   customerSelect:any[] = [];
   stateGeneratorSelect:any[] = [];
+  //addContactDetails:boolean;
 
-  planningAppGenerator: PlanningAppGenerator = {
+  generator: PlanningAppGenerator = {
     customerId: 0,
     stateInitialiserId: 0,
-    name: ''
-  };
-
-  planningApp: PlanningApp = {
-    id: 0,
-    customer: {
-      id: 0, 
+    name: '',
+    developer: {
+      companyName: "",
       firstName: "",
       lastName: "",
-      address1: "",
-      address2: "",
-      postcode: "",
       emailAddress: "",
-      telephoneHome: "",
       telephoneMobile:"",
-      notes: "",
+      telephoneWork:""
     },
-    name: "",
-    businessDate: "",
-    planningStatus:  "",
-    currentStateStatus: "",
-    currentState:  "",
-    expectedStateCompletionDate:  "",
-    nextState:  "",
-    councilPlanningAppId: "",
-    completionDate:  "",
-    generator: "",
-    notes: "",
-    planningAppStates: [],
-    method: 1
-  };
+    developmentAddress: {
+      CompanyName: "",
+      addressLine1: "",
+      addressLine2: "",
+      postcode: "",
+      geoLocation: "",
+    }
+
+  }
 
   constructor(private PlanningAppService: PlanningAppService,
               private toastyService: ToastyService,
@@ -79,8 +67,8 @@ export class PlanningAppNewComponent implements OnInit {
   }
   
   submit() {  
-    console.warn(this.planningAppGenerator)
-    this.PlanningAppService.generatePlanningApp(this.planningAppGenerator).subscribe(
+    console.warn(this.generator)
+    this.PlanningAppService.generatePlanningApp(this.generator).subscribe(
     planningApp => {
       this.toastyService.success({
         title: 'Success', 

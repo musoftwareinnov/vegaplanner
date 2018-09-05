@@ -23,6 +23,11 @@ export class CustomerService {
     customer.id=0;
     return this.http.post(this.customersEndpoint, customer)
       //.map(res => res.json());
+
+    //   postSubscription(model: IPostSubscription): Observable<ISubscription> {
+    //     return this.http.post<ISubscription>(this.originUrl + '/api/subscriptions', model)
+    //         .catch((reason: any) => this.handleError(reason));
+    // }
   }
 
   update(customer:any) {

@@ -4,12 +4,13 @@ export interface Customer {
     id: number; 
     firstName: string;
     lastName: string;
-    address1: string;
-    address2: string;
+    addressLine1: string;
+    addressLine2: string;
     postcode: string;
     emailAddress: string; 
     telephoneHome: string; 
     telephoneMobile: string; 
+    telephoneWork: string; 
     notes: string;
     //planningApplications: PlanningApp[];
 }

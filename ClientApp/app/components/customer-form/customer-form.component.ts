@@ -15,12 +15,13 @@ export class CustomerFormComponent implements OnInit {
       id: 0, 
       firstName: "",
       lastName: "",
-      address1: "",
-      address2: "",
+      addressLine1: "",
+      addressLine2: "",
       postcode: "",
       emailAddress: "",
       telephoneHome: "",
       telephoneMobile:"",
+      telephoneWork:"",
       notes: "",
     };
     

@@ -25,40 +25,10 @@ namespace vega.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Address1")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Address2");
-
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
                     b.Property<string>("Notes")
                         .HasMaxLength(1024);
 
-                    b.Property<string>("Postcode")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
                     b.Property<string>("SearchCriteria");
-
-                    b.Property<string>("TelephoneHome")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("TelephoneMobile")
-                        .IsRequired()
-                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 
@@ -152,7 +122,7 @@ namespace vega.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CouncilPlanningAppId");
+                    b.Property<string>("ApplicationNo");
 
                     b.Property<int>("CurrentPlanningStatusId");
 
@@ -312,6 +282,65 @@ namespace vega.Migrations
                     b.ToTable("VehicleFeatures");
                 });
 
+            modelBuilder.Entity("vega.Core.Models.Customer", b =>
+                {
+                    b.OwnsOne("vega.Core.Models.Address", "CustomerAddress", b1 =>
+                        {
+                            b1.Property<int?>("CustomerId");
+
+                            b1.Property<string>("AddressLine1")
+                                .HasMaxLength(255);
+
+                            b1.Property<string>("AddressLine2");
+
+                            b1.Property<string>("CompanyName")
+                                .HasMaxLength(255);
+
+                            b1.Property<string>("GeoLocation")
+                                .HasMaxLength(20);
+
+                            b1.Property<string>("Postcode")
+                                .HasMaxLength(10);
+
+                            b1.ToTable("Customers");
+
+                            b1.HasOne("vega.Core.Models.Customer")
+                                .WithOne("CustomerAddress")
+                                .HasForeignKey("vega.Core.Models.Address", "CustomerId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("vega.Core.Models.Contact", "CustomerContact", b1 =>
+                        {
+                            b1.Property<int?>("CustomerId");
+
+                            b1.Property<string>("EmailAddress")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("FirstName")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("LastName")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("TelephoneHome")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("TelephoneMobile")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("TelephoneWork")
+                                .HasMaxLength(30);
+
+                            b1.ToTable("Customers");
+
+                            b1.HasOne("vega.Core.Models.Customer")
+                                .WithOne("CustomerContact")
+                                .HasForeignKey("vega.Core.Models.Contact", "CustomerId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
             modelBuilder.Entity("vega.Core.Models.Drawing", b =>
                 {
                     b.HasOne("vega.Core.Models.PlanningApp")
@@ -352,6 +381,62 @@ namespace vega.Migrations
                         .WithMany()
                         .HasForeignKey("StateInitialiserId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.OwnsOne("vega.Core.Models.Address", "DevelopmentAddress", b1 =>
+                        {
+                            b1.Property<int>("PlanningAppId");
+
+                            b1.Property<string>("AddressLine1")
+                                .HasMaxLength(255);
+
+                            b1.Property<string>("AddressLine2");
+
+                            b1.Property<string>("CompanyName")
+                                .HasMaxLength(255);
+
+                            b1.Property<string>("GeoLocation")
+                                .HasMaxLength(20);
+
+                            b1.Property<string>("Postcode")
+                                .HasMaxLength(10);
+
+                            b1.ToTable("PlanningApps");
+
+                            b1.HasOne("vega.Core.Models.PlanningApp")
+                                .WithOne("DevelopmentAddress")
+                                .HasForeignKey("vega.Core.Models.Address", "PlanningAppId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("vega.Core.Models.Contact", "Developer", b1 =>
+                        {
+                            b1.Property<int?>("PlanningAppId");
+
+                            b1.Property<string>("EmailAddress")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("FirstName")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("LastName")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("TelephoneHome")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("TelephoneMobile")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("TelephoneWork")
+                                .HasMaxLength(30);
+
+                            b1.ToTable("PlanningApps");
+
+                            b1.HasOne("vega.Core.Models.PlanningApp")
+                                .WithOne("Developer")
+                                .HasForeignKey("vega.Core.Models.Contact", "PlanningAppId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("vega.Core.Models.PlanningAppState", b =>
@@ -391,19 +476,23 @@ namespace vega.Migrations
                         {
                             b1.Property<int>("VehicleId");
 
-                            b1.Property<string>("Email")
-                                .IsRequired()
-                                .HasMaxLength(25);
+                            b1.Property<string>("EmailAddress")
+                                .HasMaxLength(30);
 
-                            b1.Property<int>("Id");
+                            b1.Property<string>("FirstName")
+                                .HasMaxLength(30);
 
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(255);
+                            b1.Property<string>("LastName")
+                                .HasMaxLength(30);
 
-                            b1.Property<string>("Phone")
-                                .IsRequired()
-                                .HasMaxLength(255);
+                            b1.Property<string>("TelephoneHome")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("TelephoneMobile")
+                                .HasMaxLength(30);
+
+                            b1.Property<string>("TelephoneWork")
+                                .HasMaxLength(30);
 
                             b1.ToTable("Vehicles");
 

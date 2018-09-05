@@ -1,6 +1,13 @@
-        StaticData
-        
-        protected override void Up(MigrationBuilder migrationBuilder) {
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.Collections.Generic;
+
+namespace vega.Migrations
+{
+    public partial class SeedInitialModel : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('InProgress', getdate(), 'InProgress', 1)");
             migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('Overdue', getdate(), 'InProgress', 2)");
             migrationBuilder.Sql("INSERT INTO StateStatus (Name, LastUpdate, GroupType, OrderId) VALUES ('Due', getdate(), 'InProgress', 3)");
@@ -44,29 +51,11 @@
             migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId, isDeleted) VALUES ('Site Survey Booked',3, 10, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 6,0)");
             migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId, isDeleted) VALUES ('Site Survey Completed',3, 10, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 7,0 )");
 
-            // migrationBuilder.Sql("INSERT INTO Customers (FirstName, LastName, Address1, Address2, Postcode, TelephoneHome, TelephoneMobile,EmailAddress)  VALUES ('Paul', 'Scollay', 'TyGwyn', 'Rose Truro', 'TR4 9PF', '01872 572143', '0783828172', 'pscollay@yahoo.co.uk')");      
-            // migrationBuilder.Sql("INSERT INTO Customers (FirstName, LastName, Address1, Address2, Postcode, TelephoneHome, TelephoneMobile,EmailAddress)  VALUES ('Bob', 'Smith', '32 Acacia Drive', 'London', 'N1 6BL', '0208 342342', '0764352333', 'bsmith@yahoo.co.uk')");   
-
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DELETE FROM Makes");
-            migrationBuilder.Sql("DELETE FROM Models");
 
-            migrationBuilder.Sql("DELETE Features WHERE NAME IN ('Feature1', 'Feature2', 'Feature3')");
-                        migrationBuilder.Sql("DELETE StateInitialiserState WHERE StateInitialiserId = (SELECT ID FROM Stateinitialisers WHERE Name = 'General')");
-            migrationBuilder.Sql("DELETE Stateinitialisers WHERE Name = 'General'");
         }
-
-
-        //OnDelete NoAction
-            migrationBuilder.AddForeignKey(
-                name: "FK_PlanningAppState_PlanningApps_PlanningAppId",
-                table: "PlanningAppState",
-                column: "PlanningAppId",
-                principalTable: "PlanningApps",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.NoAction);**************
-
-
+    }
+}

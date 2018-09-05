@@ -45,7 +45,7 @@ namespace vega.Persistence
             var resList = new List<Customer>();
 
             var query = vegaDbContext.Customers
-                                .OrderBy(c => c.LastName)
+                                .OrderBy(c => c.CustomerContact.LastName)
                                 .AsQueryable();
 
             if(queryObj.SearchCriteria != null)

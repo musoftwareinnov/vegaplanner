@@ -1,11 +1,19 @@
-<h1>New Planning Application</h1>
+<style>
+    .grid-container {
+      display: grid;
+      /* grid-template-columns: auto auto auto auto; */
+      grid-row-gap: 20px;
+    }
+</style>
 
+
+<h1>New Planning Application</h1>
 
 <form #f="ngForm" (submit)="submit()">
   <div class="well">
     <div class="form-group">
       <label for="customer">Select Customer</label>
-      <select id="customer" class="form-control" [(ngModel)]="planningAppGenerator.customerId" name = "customer" required #customer="ngModel">
+      <select id="customer" class="form-control" [(ngModel)]="generator.customerId" name = "customer" required #customer="ngModel">
         <option value=""></option>
         <option *ngFor="let m of customerSelect.items" value="{{m.id}}">{{ m.nameSummary }}</option>
       </select>
@@ -15,7 +23,7 @@
     <!-- <button class="btn btn-primary" [disabled]="!f.valid">Save</button> -->
     <div class="form-group">
       <label for="generator">State Generator</label>
-      <select id="stateGenerator" class="form-control" (change)="onGeneratorChange()" [(ngModel)]="planningAppGenerator.stateInitialiserId" name="stateGeneratorId" required #stateGenerator="ngModel">
+      <select id="stateGenerator" class="form-control" (change)="onGeneratorChange()" [(ngModel)]="generator.stateInitialiserId" name="stateGeneratorId" required #stateGenerator="ngModel">
         <option value=""></option>
         <option *ngFor="let m of stateGeneratorSelect.items" value="{{ m.id }}">{{ m.name }}</option>
       </select>
@@ -24,9 +32,106 @@
 
     <div class="form-group">
         <label for="description">Description</label>
-        <input id="description" type="text" class="form-control" [(ngModel)]="planningAppGenerator.name" name="description" required #description="ngModel">
+        <input id="description" type="text" class="form-control" [(ngModel)]="generator.name" name="description" required #description="ngModel">
     </div>
+
+    <div class="form-group">
+      <div class="form-check">
+        <input #altContact type="checkbox" [checked]="false" class="form-check-input"  id="exampleCheck1" [(ngModel)]="generator.addContactDetails">
+        <label class="form-check-label" for="exampleCheck1">Add developer contact details</label>
+      </div>
+    </div>
+
+    <div *ngIf="altContact.checked" >
+      <div class="grid-container">
+        <div class="form-group">
+          
+          <label class="control-label col-sm-1" for="firstName">First Name</label>
+          <div class="col-sm-3">
+            <input id="firstName" type="text" class="form-control" [(ngModel)]="generator.developer.firstName" name="firstName" required #firstName="ngModel">
+          </div>
+          <!-- <div class="alert alert-danger" *ngIf="firstName.touched && !firstName.valid">Please specify First Name.</div> -->
+          <!-- <div class="col-sm-8"></div> -->
+          <label class="control-label col-sm-1" for="lastName">Last Name</label>
+          <div class="col-sm-3">
+                <input id="lastName" type="text" class="form-control" [(ngModel)]="generator.developer.lastName" name="lastName" required #lastName="ngModel">
+                <div class="alert alert-danger" *ngIf="lastName.touched && !lastName.valid">Please specify Last Name.</div>
+          </div>    
+          <label class="control-label col-sm-1" for="emailAddress">Email</label>
+          <div class="col-sm-3">
+          <input id="emailAddress" type="text" class="form-control" [(ngModel)]="generator.developer.emailAddress" name="emailAddress" required #emailAddress="ngModel">
+          <div class="alert alert-danger" *ngIf="emailAddress.touched && !emailAddress.valid">Please specify email address.</div>
+          </div> 
+        </div>
+      </div>
+      <div class="grid-container">
+        <div class="form-group">
+
+        <label class="control-label col-sm-1" for="telephoneHome">Company</label>
+        <div class="col-sm-3">
+            <input id="telephoneHome" type="text" class="form-control" [(ngModel)]="generator.developer.companyName" name="companyName">
+        </div>
+        <label class="control-label col-sm-1" for="telephoneHome">Work No</label>
+        <div class="col-sm-3">
+            <input id="telephoneWork" type="text" class="form-control" [(ngModel)]="generator.developer.telephoneWork" name="telephoneWork">
+        </div>   
+        <label class="control-label col-sm-1" for="telephoneMobile">Mobile No</label>
+        <div class="col-sm-3">
+            <input id="telephoneMobile" type="text" class="form-control" [(ngModel)]="generator.developer.telephoneMobile" name="telephoneMobile" required #telephoneMobile="ngModel">
+            <div class="alert alert-danger" *ngIf="telephoneMobile.touched && !telephoneMobile.valid">Please specify email mobile number.</div>
+        </div>   
+      </div>
+    </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="form-check">
+          <input #altAddress type="checkbox" [checked]="false" class="form-check-input"  id="altAddress" [(ngModel)]="generator.addContactDetails">
+          <label class="form-check-label" for="exampleCheck1">Add development address</label>
+        </div>
+      </div>
+  
+      <div *ngIf="altAddress.checked" >
+        <div class="grid-container">
+          <div class="form-group">
+            <label class="control-label col-sm-1" for="addressLine1">Address Line1</label>
+            <div class="col-sm-3">
+                  <input id="addressLine1" type="text" class="form-control" [(ngModel)]="generator.developmentAddress.addressLine1" name="addressLine1" required #addressLine1="ngModel">
+                  <div class="alert alert-danger" *ngIf="addressLine1.touched && !addressLine1.valid">Please specify Address.</div>
+            </div>    
+            <label class="control-label col-sm-1" for="addressLine2">Address Line2</label>
+            <div class="col-sm-3">
+              <input id="addressLine2" type="text" class="form-control" [(ngModel)]="generator.developmentAddress.addressLine2" name="addressLine2">
+            </div> 
+          </div>
+        </div>
+        <div class="grid-container">
+          <div class="form-group">
+              <label class="control-label col-sm-1" for="telephoneHome">PostCode</label>
+              <div class="col-sm-3">
+                  <input id="postcode" type="text" class="form-control" [(ngModel)]="generator.developmentAddress.postcode" name="postcode" required #postcode="ngModel">
+                  <div class="alert alert-danger" *ngIf="postcode.touched && !postcode.valid">Please specify Postcode.</div>
+                </div>
+                <label class="control-label col-sm-1" for="firstName">Company Name</label>
+                <div class="col-sm-3">
+                  <input id="companyName" type="text" class="form-control" [(ngModel)]="generator.developmentAddress.companyName" name="companyName">
+                </div>
+                <label class="control-label col-sm-1" for="geoLocation">Geo Location</label>
+                <div class="col-sm-3">
+                  <input id="geoLocation" type="text" class="form-control" [(ngModel)]="generator.developmentAddress.geoLocation" name="geoLocation">
+                </div>
+            </div>
+
+        </div>
+      </div>
+     
+  <div  class="form-group">
     <div class="alert alert-danger" *ngIf="description.touched && !description.valid">Please enter a description.</div>
     <button class="btn btn-primary" [disabled]="!f.valid">Save</button>
+</div> 
+
+
   </div>
+
 </form>

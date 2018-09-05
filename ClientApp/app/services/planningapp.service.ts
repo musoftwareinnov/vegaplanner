@@ -25,12 +25,16 @@ export class PlanningAppService {
   }
 
   terminate(changePlanningAppState: ChangePlanningAppState) {
-    changePlanningAppState.method = StateAction.Terminate;  //move to next state
+    changePlanningAppState.method = StateAction.Terminate; 
     return this.http.put(this.planningappsEndpoint + '/' + changePlanningAppState.id, changePlanningAppState)
   }
 
   saveNotes(planningNotes: SavePlanningNotes) {
     return this.http.put(this.planningappsEndpoint + '/' + planningNotes.id, planningNotes)
+  }
+
+  saveDevelopmentDetails(planningApp: PlanningApp) {
+    return this.http.put(this.planningappsEndpoint + '/' + planningApp.id, planningApp)
   }
   
   generatePlanningApp(planningAppGenerator:PlanningAppGenerator) {

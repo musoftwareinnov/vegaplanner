@@ -15,16 +15,19 @@ namespace vega.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Address1 = table.Column<string>(maxLength: 255, nullable: false),
-                    Address2 = table.Column<string>(nullable: true),
-                    EmailAddress = table.Column<string>(maxLength: 255, nullable: false),
-                    FirstName = table.Column<string>(maxLength: 255, nullable: false),
-                    LastName = table.Column<string>(maxLength: 255, nullable: false),
                     Notes = table.Column<string>(maxLength: 1024, nullable: true),
-                    Postcode = table.Column<string>(maxLength: 255, nullable: false),
                     SearchCriteria = table.Column<string>(nullable: true),
-                    TelephoneHome = table.Column<string>(maxLength: 255, nullable: false),
-                    TelephoneMobile = table.Column<string>(maxLength: 255, nullable: false)
+                    CustomerAddress_AddressLine1 = table.Column<string>(maxLength: 255, nullable: true),
+                    CustomerAddress_AddressLine2 = table.Column<string>(nullable: true),
+                    CustomerAddress_CompanyName = table.Column<string>(maxLength: 255, nullable: true),
+                    CustomerAddress_GeoLocation = table.Column<string>(maxLength: 20, nullable: true),
+                    CustomerAddress_Postcode = table.Column<string>(maxLength: 10, nullable: true),
+                    CustomerContact_EmailAddress = table.Column<string>(maxLength: 30, nullable: true),
+                    CustomerContact_FirstName = table.Column<string>(maxLength: 30, nullable: true),
+                    CustomerContact_LastName = table.Column<string>(maxLength: 30, nullable: true),
+                    CustomerContact_TelephoneHome = table.Column<string>(maxLength: 30, nullable: true),
+                    CustomerContact_TelephoneMobile = table.Column<string>(maxLength: 30, nullable: true),
+                    CustomerContact_TelephoneWork = table.Column<string>(maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,8 +81,10 @@ namespace vega.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GroupType = table.Column<string>(nullable: true),
                     LastUpdate = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(maxLength: 255, nullable: false)
+                    Name = table.Column<string>(maxLength: 255, nullable: false),
+                    OrderId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,10 +142,12 @@ namespace vega.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationNo = table.Column<string>(nullable: true),
                     CurrentPlanningStatusId = table.Column<int>(nullable: false),
                     CustomerId = table.Column<int>(nullable: false),
                     LastUpdate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
+                    Notes = table.Column<string>(nullable: true),
                     StateInitialiserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -175,10 +182,12 @@ namespace vega.Migrations
                     IsRegistered = table.Column<bool>(nullable: false),
                     LastUpdate = table.Column<DateTime>(nullable: false),
                     ModelId = table.Column<int>(nullable: false),
-                    Contact_Email = table.Column<string>(maxLength: 25, nullable: false),
-                    Contact_Id = table.Column<int>(nullable: false),
-                    Contact_Name = table.Column<string>(maxLength: 255, nullable: false),
-                    Contact_Phone = table.Column<string>(maxLength: 255, nullable: false)
+                    Contact_EmailAddress = table.Column<string>(maxLength: 30, nullable: true),
+                    Contact_FirstName = table.Column<string>(maxLength: 30, nullable: true),
+                    Contact_LastName = table.Column<string>(maxLength: 30, nullable: true),
+                    Contact_TelephoneHome = table.Column<string>(maxLength: 30, nullable: true),
+                    Contact_TelephoneMobile = table.Column<string>(maxLength: 30, nullable: true),
+                    Contact_TelephoneWork = table.Column<string>(maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -219,10 +228,14 @@ namespace vega.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CompletionDate = table.Column<DateTime>(nullable: true),
                     CurrentState = table.Column<bool>(nullable: false),
+                    CustomDuration = table.Column<int>(nullable: false),
+                    CustomDurationSet = table.Column<bool>(nullable: false),
                     DueByDate = table.Column<DateTime>(nullable: false),
-                    PlanningAppId = table.Column<int>(nullable: true),
+                    Notes = table.Column<string>(nullable: true),
+                    PlanningAppId = table.Column<int>(nullable: false),
                     StateInitialiserStateId = table.Column<int>(nullable: false),
-                    StateStatusId = table.Column<int>(nullable: false)
+                    StateStatusId = table.Column<int>(nullable: false),
+                    userModifiedDate = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -232,7 +245,7 @@ namespace vega.Migrations
                         column: x => x.PlanningAppId,
                         principalTable: "PlanningApps",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_PlanningAppState_StateInitialiserState_StateInitialiserStateId",
                         column: x => x.StateInitialiserStateId,

@@ -11,7 +11,9 @@ namespace vega.Mapping.MappingProfiles
         public ContactMapping()
         {  
             CreateMap<ContactResource, Contact>();
-            CreateMap<Contact, ContactResource>(); 
+            CreateMap<Contact, ContactResource>()
+                    .ForMember(psr => psr.FullName,                    
+                        opt => opt.MapFrom(ps =>  ps.FirstName + " " + ps.LastName));
         }
 
     }

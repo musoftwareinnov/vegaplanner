@@ -18,9 +18,10 @@
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active"><a href="#states" aria-controls="states" role="tab" data-toggle="tab">Application States</a></li>
-  <li role="presentation"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Application Details</a></li>
+  <li role="presentation" class="active"><a href="#states" aria-controls="states" role="tab" data-toggle="tab">Application Progress</a></li>
+  <li role="presentation"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Application Summary</a></li>
   <li role="presentation"><a href="#customer" aria-controls="customer" role="tab" data-toggle="tab">Customer Details</a></li> 
+  <li role="presentation"><a href="#development" aria-controls="development" role="tab" data-toggle="tab">Development Details</a></li> 
   <li role="presentation"><a href="#drawings" aria-controls="photos" role="tab" data-toggle="tab">Drawings</a></li> 
   <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
 </ul>
@@ -47,7 +48,7 @@
       </style>
     </head>
     
-    <h3>Planning Application States</h3>
+    <h3>Planning Application Progress</h3>
 
     <div class="well">
         <form class="form-horizontal">
@@ -175,7 +176,6 @@
   <div role="tabpanel" class="tab-pane" id="customer">
       <div class="well">
           <form class="form-horizontal">
-
                 <div class="form-group">
                     <label class="control-label col-sm-1" for="firstName">First Name</label>
                     <div class="col-sm-3">
@@ -195,18 +195,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-sm-1" for="address1">Address1</label>
+                    <label class="control-label col-sm-1" for="address1">AddressLine1</label>
                     <div class="col-sm-6">
-                      <input id="address1" type="text" disabled="disabled" class="form-control" [(ngModel)]="planningApp.customer.address1" name="address1">
+                      <input id="address1" type="text" disabled="disabled" class="form-control" [(ngModel)]="planningApp.customer.addressLine1" name="address1">
                     </div>
                     <div class="col-sm-5">
                     </div>
                   </div>
 
                 <div class="form-group">
-                    <label class="control-label col-sm-1" for="address1">Address2</label>
+                    <label class="control-label col-sm-1" for="address1">AddressLine2</label>
                     <div class="col-sm-6">
-                      <input id="address2" type="text" disabled="disabled" class="form-control" [(ngModel)]="planningApp.customer.address2" name="address2">
+                      <input id="address2" type="text" disabled="disabled" class="form-control" [(ngModel)]="planningApp.customer.addressLine2" name="address2">
                     </div>
                     <div class="col-sm-5">
                     </div>
@@ -244,10 +244,115 @@
                     </div>
                     <div class="col-sm-8">
                     </div>
-                </div>      
+                </div>   
+                <div class="form-group">
+                  <label class="control-label col-sm-1" for="telephoneWork">Work No</label>
+                  <div class="col-sm-3">
+                    <input id="telephoneMobile" type="text" disabled="disabled" class="form-control" [(ngModel)]="planningApp.customer.telephoneWork" name="telephoneWork">
+                  </div>
+                  <div class="col-sm-8">
+                  </div>
+              </div>   
             </form>
       </div>
   </div>
+  <div role="tabpanel" class="tab-pane" id="development">
+      <h4>Developer Contact Details</h4>
+      <div class="well">
+ 
+          <form class="form-horizontal">
+              <div class="form-group">
+                  <label class="control-label col-sm-2" for="firstName">Developer Name </label>
+                  <div class="col-sm-3">
+                    <input id="developerName" type="text"  class="form-control" [(ngModel)]="planningApp.developer.fullName" name="developerName">
+                  </div>
+                  <div class="col-sm-8">
+                  </div>
+                </div>
+              <div class="form-group">
+                  <label class="control-label col-sm-2" for="address1">Email</label>
+                  <div class="col-sm-3">
+                    <input id="emailAddress" type="text" class="form-control" [(ngModel)]="planningApp.customer.emailAddress" name="emailAddress">
+                  </div>
+                  <div class="col-sm-8">
+                  </div>
+              </div>     
+              <div class="form-group">
+                  <label class="control-label col-sm-2" for="telephoneMobile">Mobile No</label>
+                  <div class="col-sm-3">
+                    <input id="telephoneMobile" type="text"  class="form-control" [(ngModel)]="planningApp.customer.telephoneMobile" name="telephoneMobile">
+                  </div>
+                  <div class="col-sm-8">
+                  </div>
+              </div>   
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="telephoneWork">Work No</label>
+                <div class="col-sm-3">
+                  <input id="telephoneMobile" type="text"  class="form-control" [(ngModel)]="planningApp.customer.telephoneWork" name="telephoneWork">
+                </div>
+                <div class="col-sm-8">
+                </div>
+              </div> 
+              <div class="form-group">
+                  <label class="control-label col-sm-4"></label>
+                  <div class="col-sm-1">
+                      <button class="btn btn-primary">Save</button>        
+                  </div>
+              </div>  
+          </form>
+      </div> 
+      <h4>Development Address Details</h4>
+      <div class="well">
+          <form class="form-horizontal">
+              <div class="form-group">
+                  <label class="control-label col-sm-2" for="firstName">Company Name </label>
+                  <div class="col-sm-3">
+                    <input id="companyName" type="text"  class="form-control" [(ngModel)]="planningApp.developmentAddress.companyName" name="companyName">
+                  </div>
+                  <div class="col-sm-8">
+                  </div>
+                </div>
+              <div class="form-group">
+                  <label class="control-label col-sm-2" for="addressLine2">Address Line1 </label>
+                  <div class="col-sm-3">
+                    <input id="addressLine1" type="text"  class="form-control" [(ngModel)]="planningApp.developmentAddress.addressLine1" name="addressLine1">
+                  </div>
+                  <div class="col-sm-8">
+                  </div>
+              </div>     
+              <div class="form-group">
+                  <label class="control-label col-sm-2" for="addressLine2">Address Line 2</label>
+                  <div class="col-sm-3">
+                    <input id="addressLine2" type="text" class="form-control" [(ngModel)]="planningApp.developmentAddress.addressLine2" name="addressLine2">
+                  </div>
+                  <div class="col-sm-8">
+                  </div>
+              </div>   
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="postcode">Postcode</label>
+                <div class="col-sm-3">
+                  <input id="postcode" type="text"  class="form-control" [(ngModel)]="planningApp.developmentAddress.postcode" name="postcode">
+                </div>
+                <div class="col-sm-8">
+                </div>
+              </div>  
+              <div class="form-group">
+                  <label class="control-label col-sm-2" for="geoLocation">Geo Location</label>
+                  <div class="col-sm-3">
+                    <input id="geoLocation" type="text" class="form-control" [(ngModel)]="planningApp.developmentAddress.geoLocation" name="geoLocation">
+                  </div>
+                  <div class="col-sm-8">
+                  </div>
+                </div> 
+                <div class="form-group">
+                    <label class="control-label col-sm-4"></label>
+                    <div class="col-sm-1">
+                        <button class="btn btn-primary">Save</button>        
+                    </div>
+                </div> 
+          </form>
+      </div>
+    </div> 
   <!-- Drawings tab -->
   <div role="tabpanel" class="tab-pane" id="drawings">
     <h2>Drawings</h2>
@@ -273,5 +378,5 @@
             </div>
           <div class="col-sm-8"></div>
     </div> 
-</div> 
+  </div> 
 </div>

@@ -20,6 +20,8 @@ namespace vega.Persistence
         public DbSet<Drawing> Drawings { get; set; }
         public DbSet<StateStatus> StateStatus { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Address> CustomerAddress { get; set; }
+        public DbSet<Address> DevelopmentAddress { get; set; }
 
         public VegaDbContext(DbContextOptions<VegaDbContext> options) : base (options)
         {
@@ -30,29 +32,19 @@ namespace vega.Persistence
                 modelBuilder.Entity<VehicleFeature>().HasKey(vf => new { vf.VehicleId, vf.FeatureId });
                 modelBuilder.Entity<Vehicle>().OwnsOne(c => c.Contact);
 
+                modelBuilder.Entity<PlanningApp>().OwnsOne(c => c.Developer);
+                modelBuilder.Entity<PlanningApp>().OwnsOne(c => c.DevelopmentAddress);
+
+                modelBuilder.Entity<Customer>().OwnsOne(c => c.CustomerAddress);
+                modelBuilder.Entity<Customer>().OwnsOne(c => c.CustomerContact);
+                
+
                 // modelBuilder.Entity<PlanningAppState>()
                 //     .HasOne(b => b.PlanningApp)
                 //     .WithMany(a => a.PlanningAppStates)
                 //     .IsRequired()
                 //     .OnDelete(DeleteBehavior.Cascade);       
 
-
-
-                    // modelBuilder.Entity<PlanningAppState>()
-                    //     .HasOne(b => b.PlanningApp)
-                    //     .WithMany(p => p.PlanningAppStates)
-                    //    // .HasForeignKey(e => e.PlanningAppId)
-                    //     .OnDelete(DeleteBehavior.Restrict);
-
-                // modelBuilder.Entity<PlanningApp>()
-                //     .HasMany(p => p.PlanningAppStates)
-                //     .WithOne(t => t.PlanningApp);
-                // modelBuilder.Entity<InitialiseState>()
-                //     .HasIndex(s => s.OrderId);
-
-                    //.IsUnique();
-
-                //modelBuilder.Entity<StateInitialiserState>().HasKey(vf => new { vf.OrderId });
         }
     }
 }

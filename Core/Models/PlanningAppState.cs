@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Options;
 using vega.Core.Models.Generic;
 using vega.Core.Models.States;
@@ -13,6 +14,7 @@ namespace vega.Core.Models
     {
 
         public int Id { get; set; }
+
         public int PlanningAppId { get; set; }
         public PlanningApp PlanningApp { get; set; }
         public int StateInitialiserStateId { get; set; }

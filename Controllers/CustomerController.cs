@@ -59,6 +59,9 @@ namespace vega.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            Customer c = new Customer();
+            
  
             var customer = mapper.Map<CustomerResource, Customer>(customerResource);
 

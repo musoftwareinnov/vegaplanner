@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using vega.Controllers.Resources.Contact;
+using vega.Core.Models;
 
 namespace vega.Controllers.Resources
 {
@@ -18,6 +20,8 @@ namespace vega.Controllers.Resources
         public string ExpectedStateCompletionDate { get; set; }
         public string CompletionDate { get; set; }
         public string Generator { get; set; }
+        public ContactResource Developer { get; set; }
+        public Address DevelopmentAddress { get; set; }
         public string Notes { get; set; }
 
         public ICollection<PlanningAppStateResource> PlanningAppStates { get; set; }

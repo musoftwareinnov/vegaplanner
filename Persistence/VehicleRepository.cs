@@ -66,7 +66,7 @@ namespace vega.Persistence
             {
                 ["make"] = v => v.Model.Make.Name,
                 ["model"] = v => v.Model.Name,
-                ["contactName"] = v => v.Contact.Name,
+                // ["contactName"] = v => v.Contact.Name,
                 //["id"] = v => v.Id   NOTE EF auto adds Id if not existing here!
             };
 

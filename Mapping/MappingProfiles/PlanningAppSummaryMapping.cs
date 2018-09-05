@@ -23,7 +23,7 @@ namespace vega.Mapping.MappingProfiles
                 .ForMember(psr => psr.Name, 
                     opt => opt.MapFrom(ps => ps.Name))
                 .ForMember(psr => psr.CustomerName,
-                    opt => opt.MapFrom(ps => ps.Customer.FirstName + ' ' + ps.Customer.LastName))
+                    opt => opt.MapFrom(ps => ps.Customer.CustomerContact.FirstName + ' ' + ps.Customer.CustomerContact.LastName))
                 .ForMember(psr => psr.CompletionDate, 
                     opt => opt.MapFrom(ps => ps.CompletionDate().SettingDateFormat())); 
 
