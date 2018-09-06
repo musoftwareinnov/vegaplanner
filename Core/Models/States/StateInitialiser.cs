@@ -11,6 +11,7 @@ namespace vega.Core.Models
     {  
         public string Description { get; set; }
         public List<StateInitialiserState> States { get; set; }
+
         public StateInitialiser()
         {  
             States = new List<StateInitialiserState>();

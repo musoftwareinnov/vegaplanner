@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using vega.Core.Models.Generic;
 
 namespace vega.Core.Models.States
 {
+    
     public class StateInitialiserState : IdNameProperty
     {
         public int OrderId { get; set; }  
@@ -14,5 +17,13 @@ namespace vega.Core.Models.States
 
         public bool isDeleted { get; set; }
         public StateInitialiser stateInitialiser;
+
+        public ICollection<StateInitialiserStateRule> StateRules { get; set; }
+
+        public StateInitialiserState()
+        {  
+            StateRules = new Collection<StateInitialiserStateRule>();
+
+        }
     }
 }

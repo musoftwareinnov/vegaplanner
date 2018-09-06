@@ -1,4 +1,5 @@
 import { StateInitialiserState } from './../../models/stateinitialiserstate';
+import { StateRule } from './../../models/stateRule';
 import { Component, OnInit } from '@angular/core';
 import { StateInitialiserStateService } from '../../services/stateinitialiserstate.service';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
@@ -16,7 +17,8 @@ export class StateInitialiserStateFormComponent implements OnInit {
       orderId: 0,
       completionTime: 2,
       alertToCompletionTime: 1,
-      stateInitialiserId: 0
+      stateInitialiserId: 0,
+      stateRules: []
     };
 
   orderId: any = 0;
@@ -40,7 +42,7 @@ export class StateInitialiserStateFormComponent implements OnInit {
         this.orderId = +params['orderId'] || 0;
         this.stateInitialiserId = +params['initialiserId'] || 0;
       });
-    
+
     if (this.stateInitialiserState.id)
    
         this.stateInitialiserStateService.getStateInitialiserState(this.stateInitialiserState.id)

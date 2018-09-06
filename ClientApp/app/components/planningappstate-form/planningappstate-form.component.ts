@@ -48,7 +48,11 @@ export class PlanningAppStateFormComponent implements OnInit {
      startingDay: 1
    };
    private opened: boolean = false;
+
+   private conditionList: string[] = [ "planningAppId", "BRR Dates" ]
   
+   private conList: { conditionName:any, conditionValue: any } [];
+
   
   constructor(
     private route: ActivatedRoute,
@@ -58,6 +62,7 @@ export class PlanningAppStateFormComponent implements OnInit {
 
     route.params.subscribe(p => { this.planningAppState.id = +p['id'] || 0})
 
+    //Calender Specific Settings
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsRangeValue = [this.bsValue, this.maxDate];
     (this.tomorrow = new Date()).setDate(this.tomorrow.getDate() + 1);
@@ -68,8 +73,10 @@ export class PlanningAppStateFormComponent implements OnInit {
       { date: this.tomorrow, status: 'full' },
       { date: this.afterTomorrow, status: 'partially' }
     ];
+    // End of Calendar settings
 
-    
+
+    this.conList = [ {conditionName: "planningAppId", conditionValue: ""}, {conditionName: "Build Regs Date1", conditionValue: ""} ]
 
     }
 
@@ -96,6 +103,8 @@ export class PlanningAppStateFormComponent implements OnInit {
   submit() {
     this.planningAppState.dueByDate  = moment(this.updatedDueByDate).format('DD-MM-YYYY');
     var result$ = this.planningAppStateService.updatePlanningAppState(this.planningAppState); 
+
+    console.warn(this.conList);
 
     result$.subscribe(
       planningAppState => {

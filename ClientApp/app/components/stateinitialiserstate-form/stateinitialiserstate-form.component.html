@@ -36,6 +36,36 @@
       </div>
       <!-- <div class="alert alert-danger" *ngIf="alertToCompletionTime.touched && !alertToCompletionTime.valid">Please enter Alert in days.</div> -->
 
+      <div *ngIf="stateInitialiserState.stateRules.length>0">
+        <h4>States Rules</h4>
+        <div class="well">
+                <table class="table">
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Planning App Field</th>
+                    <th>isMandatory</th>
+                    </tr>
+                </thead>
+                <tr *ngFor="let s of stateInitialiserState.stateRules">
+                    <td>{{ s.name}}</td>
+                    <td>{{ s.type}}</td>
+                    <td>{{ s.isPlanningAppField}} </td>
+                    <td>{{ s.isMandatory}} </td>
+                    <!-- <td>
+                        <a *ngIf="v.id>0" [routerLink]="['/stateinitialiserstate/', v.id]" [queryParams]="{ orderId: v.orderId }">Edit</a>
+                    </td>
+                    <td>
+                        <a [routerLink]="['/stateinitialiserstate/', 0]" [queryParams]="{ orderId: v.orderId, initialiserId: stateInitialiser.id }">Insert</a>
+                    </td> -->
+                </tr>
+                </tbody>
+                </table>
+            </div>
+    </div>
+
+
 
     <button class="btn btn-primary" [disabled]="!f.valid">Save State</button>
     <button *ngIf="stateInitialiserState.id" class="btn btn-danger" type="button" (click)="delete()">Delete</button>

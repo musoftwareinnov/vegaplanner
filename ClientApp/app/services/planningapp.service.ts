@@ -40,7 +40,6 @@ export class PlanningAppService {
   generatePlanningApp(planningAppGenerator:PlanningAppGenerator) {
     console.warn(planningAppGenerator);
     return this.http.post<PlanningApp>(this.planningappsEndpoint, planningAppGenerator)
-      //.map(res => res.json());
   }
 
   toQueryString(obj:any) {

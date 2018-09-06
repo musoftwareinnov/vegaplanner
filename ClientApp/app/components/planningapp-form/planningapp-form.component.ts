@@ -125,8 +125,12 @@ export class PlanningAppFormComponent implements OnInit {
     location.reload()
     }
 
-  submit() {
+  nextState() {
     this.savePlanningApp.id = this.planningApp.id;
+
+    //Check conditions have been set before saving
+    
+
     var result$ = this.planningAppService.nextState(this.savePlanningApp )
 
     if(this.planningApp.nextState == null)

@@ -47,6 +47,9 @@
             // migrationBuilder.Sql("INSERT INTO Customers (FirstName, LastName, Address1, Address2, Postcode, TelephoneHome, TelephoneMobile,EmailAddress)  VALUES ('Paul', 'Scollay', 'TyGwyn', 'Rose Truro', 'TR4 9PF', '01872 572143', '0783828172', 'pscollay@yahoo.co.uk')");      
             // migrationBuilder.Sql("INSERT INTO Customers (FirstName, LastName, Address1, Address2, Postcode, TelephoneHome, TelephoneMobile,EmailAddress)  VALUES ('Bob', 'Smith', '32 Acacia Drive', 'London', 'N1 6BL', '0208 342342', '0764352333', 'bsmith@yahoo.co.uk')");   
 
+            //Create State Rule
+            migrationBuilder.Sql("INSERT INTO StateRule (Name, Type, isMandatory, isPlanningAppField) VALUES ( 'ApplicationNo', 'String', 1, 1) "); 
+            migrationBuilder.Sql("INSERT INTO StateInitialiserStateRules(StateInitialiserStateId, StateRuleId ) VALUES ((select id from  StateInitialiserState  where name = 'Site Survey Completed'),(select id from  StateRule  where name = 'ApplicationNo'))");  
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -69,9 +69,19 @@ namespace vega.Persistence
         }
 
         public async Task<StateInitialiserState>  GetStateInitialiserState(int id) {
-                return await this.vegaDbContext.StateInitialiserState
-                    .Where(si => si.Id == id)        
+                var res =  this.vegaDbContext.StateInitialiserState
+                    .Where(si => si.Id == id)    
+                    .Include(v => v.StateRules)
+                        .ThenInclude(vf => vf.StateRule)    
                     .SingleOrDefaultAsync();
+
+                return await res;
+              
+                // return await this.vegaDbContext.StateInitialiserState
+                //     .Where(si => si.Id == id)    
+                //     .Include(v => v.StateRules)
+                //         .ThenInclude(vf => vf.StateRule)    
+                //     .SingleOrDefaultAsync();
         }
 
         public void Update(StateInitialiserState stateInitialiserState)

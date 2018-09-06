@@ -21,6 +21,19 @@
 <div class="tab-content">
     <!-- Planning tab -->
     <div role="tabpanel" class="tab-pane active" id="planningstatedetails">
+            <h2>Features</h2>
+            <!-- <ul>
+
+              <input id="stateName" type="text" class="form-control"  *ngFor="let f of conList" [(ngModel)]="f.conditionName">{{ f.conditionName }}>
+            </ul> -->
+
+            <ul  *ngFor="let f of conList">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="firstName">{{ f.conditionName }}</label>
+                        <input id="stateName" type="text" class="form-control" [(ngModel)]="f.conditionValue">
+                    </div>
+            </ul>           
+
         <div class="well">
             <form class="form-horizontal" #f1="ngForm" (submit)="submit()">      
                 <div class="form-group">

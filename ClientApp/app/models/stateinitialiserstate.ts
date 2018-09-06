@@ -1,3 +1,5 @@
+import { StateRule } from "./StateRule";
+
 export interface StateInitialiserState { 
     id: number;
     name: string;
@@ -5,4 +7,5 @@ export interface StateInitialiserState {
     completionTime: number;
     alertToCompletionTime: number;
     stateInitialiserId: number;
+    stateRules: StateRule[];
 }

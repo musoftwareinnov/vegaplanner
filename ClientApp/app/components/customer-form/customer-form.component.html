@@ -10,7 +10,8 @@
     <div role="tabpanel" class="tab-pane active" id="customerDetail">
         <div class="well">
             <form class="form-horizontal" #f1="ngForm" (submit)="submit()">
-                
+
+
                 <div class="form-group">
                     <label class="control-label col-sm-1" for="firstName">First Name</label>
                     <div class="col-sm-3">
@@ -97,7 +98,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-1"></label>
                     <div class="col-sm-4">
-                        <button class="btn btn-primary" [disabled]="!f1.valid">Save</button>        
+                        <button class="btn btn-primary btn-lg glyphicon glyphicon-thumbs-up" [disabled]="!f1.valid">  </button>        
                     </div>
                     <div class="col-sm-7"></div>
                 </div> 
