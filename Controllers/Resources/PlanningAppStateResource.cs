@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using AutoMapper;
+using vega.Core.Models;
 
 namespace vega.Controllers.Resources
 {
@@ -11,5 +13,6 @@ namespace vega.Controllers.Resources
         public string DateCompleted { get; set; }
         public string StateStatus { get; set; }
         public bool CurrentState { get; set; }
+
     }
 }

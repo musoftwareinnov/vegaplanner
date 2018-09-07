@@ -22,7 +22,7 @@
       text-align: left;
       padding: 8px;
   }
-  .highlightOverdue{
+  /* .highlightOverdue{
   background: rgb(245, 165, 165);
   } 
 
@@ -40,14 +40,15 @@
 
   .highlightCompleted{
   background: rgb(180, 253, 173); 
-  }
-  /* tr:nth-child(even) {background-color: #f2f2f2;} */
+  } */
+  tr:nth-child(even) {background-color: #f2f2f2;} */
   </style>
 </head>
 <div class="well">
-<table class="table">
+<table class="table table-hover" >
   <thead>
     <tr>
+      <th></th>
       <th>App Id</th>
       <th>Customer</th>
       <th>Description</th>
@@ -59,18 +60,31 @@
     </tr>
   </thead>
 
-  <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'" 
+  <!-- <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'" 
                                           [class.highlightTerminated]="v.planningStatus == 'Terminated'"
                                           [class.highlightArchived]="v.planningStatus == 'Archived'"
                                           [class.highlightCompleted]="v.planningStatus == 'Complete'"
-                                          [class.highlightDue]="v.currentStateStatus == 'Due'">
+                                          [class.highlightDue]="v.currentStateStatus == 'Due'"> -->
+    <tr *ngFor="let v of queryResult.items">
+      <div *ngIf="v.currentStateStatus=='Complete'">
+          <td><button class="btn btn-success btn-xs glyphicon glyphicon-ok" type="button"></button> </td>
+      </div>
+      <div *ngIf="v.currentStateStatus=='OnTime'">
+          <td><button class="btn btn-success btn-xs glyphicon glyphicon-thumbs-up" type="button"></button> </td>
+      </div>
+      <div *ngIf="v.currentStateStatus=='Due'">
+            <td><button class="btn btn-warning btn-xs glyphicon glyphicon-exclamation-sign" type="button"></button></td>
+      </div>
+      <div *ngIf="v.currentStateStatus=='Overdue'">
+            <td><button class="btn btn-danger btn-xs glyphicon glyphicon-exclamation-sign" type="button"></button></td>
+      </div>
       <td>{{ v.id }}</td>
       <td>{{ v.customerName}}</td>
       <td>{{ v.name }}</td>
       <td>{{ v.currentStateStatus }}</td>
       <td>{{ v.currentState }}</td>
       <td>{{ v.expectedStateCompletionDate }}</td>
-      <td>{{ v.councilPlanningAppId }}</td>
+      <td>{{ v.applicationNo }}</td>
       <td>{{ v.completionDate }}</td>
       <td>
         <a [routerLink]="['/planningapps/', v.id]" class="btn btn-primary btn-xs glyphicon glyphicon-edit"></a>

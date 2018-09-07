@@ -42,6 +42,7 @@ import { AppErrorHandler } from './app.error.handler';
 import { DrawingService } from './services/drawing.service';
 import { StateStatusService } from './services/statestatus.service';
 import { PlanningAppStateService } from './services/planninappstate.service';
+import { StatisticsService } from './services/statistics.service';
 
 @NgModule({
     declarations: [
@@ -119,7 +120,8 @@ import { PlanningAppStateService } from './services/planninappstate.service';
         CustomerService,
         StateStatusService,
         StateInitialiserService,
-        StateInitialiserStateService
+        StateInitialiserStateService,
+        StatisticsService
     ]
 })
 export class AppModuleShared {

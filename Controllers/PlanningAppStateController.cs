@@ -12,6 +12,7 @@ using vega.Extensions.DateTime;
 using Microsoft.Extensions.Options;
 using vega.Core.Models.Settings;
 using vega.Core.Utils;
+using System.Linq;
 
 namespace vega.Controllers
 {
@@ -55,21 +56,29 @@ namespace vega.Controllers
         public async Task<IActionResult> UpdatePlanningAppState(int id, [FromBody] UpdatePlanningAppStateResource planningAppStateResource)
         {
             var planningAppState = await repository.GetPlanningAppState(id);
-
             var planningApp = await planningAppRepository.GetPlanningApp(planningAppState.PlanningAppId);
             var dueByDate = planningAppStateResource.DueByDate.ParseInputDate();
 
+            //TODO!!!!!!! Only Update Custom Fields if submitted by them
             if(planningAppStateResource.Reset == true)
             {
                 planningAppState.CustomDurationSet=false;
-                planningAppState.CustomDuration=0;                
+                planningAppState.CustomDuration=0;
+                //Regenerate due by dates with custom completion date (if set)
+                planningApp.generateDueByDates();                
+            }
+            else if(planningAppStateResource.UpdateCustomFieldsOnly == true)
+            {
+                //Set any fields in the PlanningApp table that have been set in the Rule List
+                var planningAppFields = planningAppStateResource.StateRules.Where(r => r.isPlanningAppField == true).ToList();
+                planningApp.UpdateKeyFields(planningAppFields);
             }
             else {
                 planningAppState.UpdateCustomDueByDate(dueByDate);
                 planningAppState.Notes = planningAppStateResource.Notes;
+                //Regenerate due by dates with custom completion date (if set)
+                planningApp.generateDueByDates();
             }
-            //Regenerate due by dates with custom completion date (if set)
-            planningApp.generateDueByDates();
 
             repository.Update(planningAppState);
             await unitOfWork.CompleteAsync();

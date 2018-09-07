@@ -50,6 +50,14 @@
             //Create State Rule
             migrationBuilder.Sql("INSERT INTO StateRule (Name, Type, isMandatory, isPlanningAppField) VALUES ( 'ApplicationNo', 'String', 1, 1) "); 
             migrationBuilder.Sql("INSERT INTO StateInitialiserStateRules(StateInitialiserStateId, StateRuleId ) VALUES ((select id from  StateInitialiserState  where name = 'Site Survey Completed'),(select id from  StateRule  where name = 'ApplicationNo'))");  
+  
+            migrationBuilder.Sql("INSERT INTO StateRule (Name, Type, isMandatory, isPlanningAppField) VALUES ( 'ApplicationNo', 'String', 1, 1) "); 
+            migrationBuilder.Sql("INSERT INTO StateRule (Name, Type, isMandatory, isPlanningAppField) VALUES ( 'Case Officer', 'String', 1, 1) "); 
+            migrationBuilder.Sql("INSERT INTO StateRule (Name, Type, isMandatory, isPlanningAppField) VALUES ( 'Booking Time', 'String', 1, 1) "); 
+
+            migrationBuilder.Sql("INSERT INTO StateInitialiserStateRules(StateInitialiserStateId, StateRuleId ) VALUES (
+                        (select id from  StateInitialiserState  where name = 'Site Survey Completed'),
+                        (select id from  StateRule  where name = 'ApplicationNo') ) ");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

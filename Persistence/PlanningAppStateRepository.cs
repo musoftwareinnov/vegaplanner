@@ -10,19 +10,23 @@ namespace vega.Persistence
     public class PlanningAppStateRepository : IPlanningAppStateRepository
     {
         private readonly VegaDbContext vegaDbContext;
-        public PlanningAppStateRepository(VegaDbContext vegaDbContext)
+        private readonly IStateInitialiserStateRepository stateRepository;
+        public PlanningAppStateRepository(VegaDbContext vegaDbContext, IStateInitialiserStateRepository stateRepository)
         {
-            this.vegaDbContext = vegaDbContext;  
+            this.stateRepository = stateRepository;
+            this.vegaDbContext = vegaDbContext;
         }
 
         public async Task<PlanningAppState> GetPlanningAppState(int id)
         {
 
-            //Refactor and call PLanningApp!!!!
-            return await vegaDbContext.PlanningAppState
-                                    .Where(s => s.Id == id)
-                                        .Include(i => i.state)
-                                    .SingleOrDefaultAsync();
+            var appState = vegaDbContext.PlanningAppState.Where(s => s.Id == id)
+                                                            .Include(i => i.state)
+                                                           .SingleOrDefault();
+            
+            appState.state = await stateRepository.GetStateInitialiserState(appState.state.Id);
+
+            return appState;
         }
 
         public void Update(PlanningAppState planningAppState)

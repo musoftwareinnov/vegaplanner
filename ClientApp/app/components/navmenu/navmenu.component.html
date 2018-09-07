@@ -19,7 +19,7 @@
                 </li>
                 <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
                     <a [routerLink]="['/planningapps']">
-                        <span class='glyphicon glyphicon-list-alt'></span> Apps In Progress <span class="badge badge-light">15</span>
+                        <span class='glyphicon glyphicon-list-alt'></span> Apps In Progress <span class="badge badge-light">{{ planningStatistics.inProgress}}</span>
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
@@ -44,7 +44,7 @@
                 </li>
                 <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
                         <a [routerLink]="['/planningapps/completed']">
-                            <span class='glyphicon glyphicon-check'></span>Apps Completed 
+                            <span class='glyphicon glyphicon-check'></span>Apps Completed <span class="badge">{{ planningStatistics.completed}}</span>
                         </a>
                     </li>
                 <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">

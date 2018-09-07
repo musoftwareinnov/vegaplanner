@@ -13,7 +13,10 @@ namespace vega.Mapping.MappingProfiles
                 CreateMap<StateInitialiser, StateInitialiserResource>();
                 CreateMap<StateInitialiserSaveResource, StateInitialiser>();
                 CreateMap<SaveStateInitialiserStateResource, StateInitialiserState>();
-                CreateMap<StateInitialiserStateResource, StateInitialiserState>();
+
+                CreateMap<StateInitialiserStateResource, StateInitialiserState>()
+                                .ForMember(s => s.StateRules, opt => opt.Ignore());
+
                 CreateMap<StateInitialiserState, StateInitialiserStateResource>()
                     .ForMember(sis => sis.StateRules,
                         opt => opt.MapFrom(s => s.StateRules

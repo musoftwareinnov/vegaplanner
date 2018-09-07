@@ -94,8 +94,6 @@ namespace vega.Controllers
             var stateInitialiserState = mapper.Map<StateInitialiserStateResource, StateInitialiserState>(stateInitialiserStateResource);
             repository.Update(stateInitialiserState);
 
-
-
             //update states from all current planning applications
             var apps =  planningAppRepository.GetPlanningAppsUsingGenerator(stateInitialiserState.StateInitialiserId, inProgress:true);
             apps.ForEach(p => p.generateDueByDates());

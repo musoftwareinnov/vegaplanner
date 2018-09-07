@@ -15,25 +15,13 @@
 
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#planningstatedetails" aria-controls="planningstatedetails" role="tab" data-toggle="tab">Planning State Details</a></li>
+    <li *ngIf="planningAppState.stateRules.length>0" role="presentation"><a href="#staterequirements" aria-controls="staterequirements" role="tab" data-toggle="tab">State Requirements</a></li>
     <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
 </ul>
 
 <div class="tab-content">
     <!-- Planning tab -->
     <div role="tabpanel" class="tab-pane active" id="planningstatedetails">
-            <h2>Features</h2>
-            <!-- <ul>
-
-              <input id="stateName" type="text" class="form-control"  *ngFor="let f of conList" [(ngModel)]="f.conditionName">{{ f.conditionName }}>
-            </ul> -->
-
-            <ul  *ngFor="let f of conList">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="firstName">{{ f.conditionName }}</label>
-                        <input id="stateName" type="text" class="form-control" [(ngModel)]="f.conditionValue">
-                    </div>
-            </ul>           
-
         <div class="well">
             <form class="form-horizontal" #f1="ngForm" (submit)="submit()">      
                 <div class="form-group">
@@ -74,6 +62,7 @@
                     </div>
                 </div>
             </form>
+
             <form class="form-horizontal" #f="ngForm">
                 <div class="form-group">
                     <div class="col-sm-3">
@@ -86,6 +75,32 @@
         <div>
     </div>
     </div>
+    </div>
+    <div *ngIf="planningAppState.stateRules.length>0"  role="tabpanel" class="tab-pane" id="staterequirements">
+            <div class="well">
+
+                <form class="form-horizontal" #f1="ngForm" (submit)="submit()">   
+                    <div  *ngFor="let r of planningAppState.stateRules">   
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="firstName">{{r.name}}</label>
+                            <div class="col-sm-5">
+                                <input id="stateName" type="text" class="form-control" [(ngModel)]="r.value" name="stateName" placeholder="{{ r.name }}"> 
+                            </div>
+                            <div class="col-sm-5"></div>
+                        </div>
+                    </div>
+                </form> 
+
+                <form class="form-horizontal" #f="ngForm">
+                        <div class="form-group">
+                            <div class="col-sm-7">
+                                <button class="btn btn-primary" type="button" (click)="submit()">Save</button>               
+                            </div>
+                            <div class="col-sm-5">
+                            </div>
+                        </div> 
+                    </form>
+        </div> 
     </div>
     <div role="tabpanel" class="tab-pane" id="notes">
             <div class="well">

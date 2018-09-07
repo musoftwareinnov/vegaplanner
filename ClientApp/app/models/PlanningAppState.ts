@@ -1,3 +1,4 @@
+import { StateRule } from "./StateRule";
 
 export interface PlanningAppState {
     id: number; 
@@ -8,5 +9,6 @@ export interface PlanningAppState {
     currentState: boolean;
     minDueByDate: string;
     dueByDateEditable: boolean;
+    stateRules: StateRule[];
     notes: string;
 }

@@ -45,6 +45,7 @@ namespace vega
             services.AddScoped<IStateStatusRepository, StateStatusRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IDrawingRepository, DrawingRepository>(); 
+            services.AddScoped<IPlanningStatisticsRepository, PlanningStatisticsRepository>(); 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper();
             services.AddDbContext<VegaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));

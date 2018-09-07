@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using vega.Controllers.Resources;
 using vega.Core.Models.Generic;
 using vega.Core.Models.States;
 using vega.Core.Utils;
@@ -178,11 +179,18 @@ namespace vega.Core.Models
         public void Terminate(List<StateStatus> statusList)
         {   
             CurrentPlanningStatus = statusList.Where(p => p.Name == StatusList.AppTerminated).SingleOrDefault();
-            //Close outƒ active status and complete
-            // PlanningAppStates
-            //             .Select(c => {c.CurrentState = false; return c;})
-            //             .ToList(); 
         }
+
+        public void UpdateKeyFields(IEnumerable<StateRuleResource> fieldsToUpdate)
+        {   
+            foreach(var rule in fieldsToUpdate) {
+                if(rule.Name == "ApplicationNo") {
+                        this.ApplicationNo = rule.Value;
+                }
+            }
+        }
+
+        //Private Functions
      
         private void rewindState()
         {
@@ -211,6 +219,8 @@ namespace vega.Core.Models
                     .Select(c => {c.DueByDate = c.DueByDate.AddBusinessDays(-daysDiff); return c;})
                     .ToList();  
         }
+
+
 
         //****************/
         //Helper functions

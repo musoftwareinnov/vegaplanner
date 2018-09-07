@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using vega.Core.Models;
+
 namespace vega.Controllers.Resources
 {
     public class PlanningAppStateFullResource
@@ -10,6 +13,7 @@ namespace vega.Controllers.Resources
         public bool CurrentState { get; set; }
         public string MinDueByDate { get; set; }
         public bool DueByDateEditable { get; set; }
+        public ICollection<StateRule> StateRules { get; set; }
         public string Notes { get; set; }
     }
 }

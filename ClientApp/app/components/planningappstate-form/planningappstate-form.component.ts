@@ -20,6 +20,7 @@ export class PlanningAppStateFormComponent implements OnInit {
       currentState: false,
       minDueByDate: "",
       dueByDateEditable: false,
+      stateRules: [],
       notes: "",
     };
   
@@ -104,7 +105,7 @@ export class PlanningAppStateFormComponent implements OnInit {
     this.planningAppState.dueByDate  = moment(this.updatedDueByDate).format('DD-MM-YYYY');
     var result$ = this.planningAppStateService.updatePlanningAppState(this.planningAppState); 
 
-    console.warn(this.conList);
+    console.warn(this.planningAppState.stateRules);
 
     result$.subscribe(
       planningAppState => {

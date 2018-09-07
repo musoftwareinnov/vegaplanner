@@ -18,8 +18,8 @@
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Application Summary</a></li>
-  <li role="presentation"><a href="#states" aria-controls="states" role="tab" data-toggle="tab">Application Progress</a></li>
+  <li role="presentation" ><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Application Summary</a></li>
+  <li role="presentation" class="active"><a href="#states" aria-controls="states" role="tab" data-toggle="tab">Application Progress</a></li>
   <li role="presentation"><a href="#customer" aria-controls="customer" role="tab" data-toggle="tab">Customer Details</a></li> 
   <li role="presentation"><a href="#development" aria-controls="development" role="tab" data-toggle="tab">Development Details</a></li> 
   <li role="presentation"><a href="#drawings" aria-controls="photos" role="tab" data-toggle="tab">Drawings</a></li> 
@@ -30,7 +30,7 @@
 <div class="tab-content" *ngIf="planningApp">
   <!-- Planning tab -->
    <!-- State table -->
-  <div role="tabpanel" class="tab-pane" id="states">
+  <div role="tabpanel" class="tab-pane active" id="states">
     <head>
         <style>
         table {
@@ -92,17 +92,35 @@
     <table class="table">   
       <thead>
         <tr>
+          <th></th>          
           <th>State Name</th>
           <th>Due By Date</th>
           <th>Date Completed</th>
           <th>State Status</th>
+          <th></th>
         </tr>
       </thead>
       <tr *ngFor="let v of planningApp.planningAppStates" [ngClass] = "{'highlight' : v.currentState == true}">
+          <div *ngIf="v.stateStatus=='Complete'">
+              <td><button class="btn btn-success btn-xs glyphicon glyphicon-ok" type="button"></button> </td>
+          </div>
+          <div *ngIf="v.stateStatus=='OnTime'">
+              <td><button class="btn btn-info btn-xs glyphicon glyphicon-play" type="button"></button> </td>
+          </div>
+          <div *ngIf="v.stateStatus=='Due'">
+                <td><button class="btn btn-warning btn-xs glyphicon glyphicon-exclamation-sign" type="button"></button></td>
+          </div>
+          <div *ngIf="v.stateStatus=='Overdue'">
+                <td><button class="btn btn-danger btn-xs glyphicon glyphicon-exclamation-sign" type="button"></button></td>
+          </div>
+          <div *ngIf="v.stateStatus=='Overran'">
+              <td><button class="btn btn-success btn-xs glyphicon glyphicon-thumbs-down" type="button"></button></td>
+        </div>
           <td>{{ v.stateName}}</td>
           <td>{{ v.dueByDate }}</td>
           <td>{{ v.dateCompleted }}</td>
           <td>{{ v.stateStatus }}</td>
+
           <td>
             <a [routerLink]="['/planningappstate/', v.id]" class="btn btn-primary btn-xs glyphicon glyphicon-edit"> </a>
           </td>
@@ -122,7 +140,7 @@
   </div>
   </div>
 
-  <div role="tabpanel" class="tab-pane active" id="details">
+  <div role="tabpanel" class="tab-pane" id="details">
     <div class="well">
       <form class="form-horizontal" #f1="ngForm" (submit)="submit()">
         <div class="form-group">
