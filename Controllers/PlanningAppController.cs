@@ -34,25 +34,13 @@ namespace vega.Controllers
                                      IPlanningAppRepository repository, 
                                      IUnitOfWork unitOfWork,
                                      IStateStatusRepository statusListRepository,
-                                     IStateInitialiserRepository stateInitialiserRepository,
-                                     IOptionsSnapshot<DateSettings> options)
+                                     IStateInitialiserRepository stateInitialiserRepository)
         {
             this.unitOfWork = unitOfWork;
             this.repository = repository;
             this.mapper = mapper;
             this.statusListRepository = statusListRepository;
             this.stateInitialiserRepository = stateInitialiserRepository;
-            dateSettings = options.Value;
-
-            //TODO: refactor out of controller
-            if(options.Value.CurrentDateOverride == "")
-                CurrentDate = DateTime.Now;
-            else {
-                CurrentDate = options.Value.CurrentDateOverride.ParseInputDate();
-            }
-
-            //Store as singleton date for entire controller
-            CurrentDateSingleton.setDate(CurrentDate);
         }
 
         [HttpPost]
@@ -107,7 +95,8 @@ namespace vega.Controllers
             if (planningApp == null)
                 return NotFound();
 
-            //Inject Logger to say what changed state by which user
+            //TODO!!!!!!!Inject Logger to say what changed state by which user
+
             if(planningResource.method == (int) StateAction.NextState) {
                 planningApp.NextState(stateStatusList);
             }

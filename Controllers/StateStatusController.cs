@@ -8,12 +8,12 @@ using vega.Controllers.Resources;
 using vega.Core.Models;
 using vega.Core;
 using vega.Core.Models.States;
-
+ 
 namespace vega.Controllers
-{
+{   
     [Route("/api/statestatus")]
     public class StateStatusController: Controller
-    {
+    {  
         private readonly IMapper mapper;
         private readonly IStateStatusRepository repository;
         private readonly IUnitOfWork unitOfWork;

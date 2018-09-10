@@ -42,9 +42,13 @@
             text-align: left;
             padding: 4px;
         } 
-          .highlight{
+        .highlight{
             background: rgb(143, 192, 192); /* green */
             } 
+
+        .isCustomDuration{
+          background: rgba(233, 206, 52, 0.801); 
+  } 
       </style>
     </head>
 
@@ -92,7 +96,7 @@
     <table class="table">   
       <thead>
         <tr>
-          <th></th>          
+          <th></th>         
           <th>State Name</th>
           <th>Due By Date</th>
           <th>Date Completed</th>
@@ -115,9 +119,14 @@
           </div>
           <div *ngIf="v.stateStatus=='Overran'">
               <td><button class="btn btn-success btn-xs glyphicon glyphicon-thumbs-down" type="button"></button></td>
-        </div>
+          </div>
           <td>{{ v.stateName}}</td>
-          <td>{{ v.dueByDate }}</td>
+          <div *ngIf="v.isCustomDuraton==true">
+              <td class="isCustomDuration">{{ v.dueByDate }}</td>
+          </div>
+          <div *ngIf="v.isCustomDuraton==false">
+              <td >{{ v.dueByDate }}</td>
+          </div>
           <td>{{ v.dateCompleted }}</td>
           <td>{{ v.stateStatus }}</td>
 

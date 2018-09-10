@@ -21,6 +21,7 @@ export class PlanningAppStateFormComponent implements OnInit {
       minDueByDate: "",
       dueByDateEditable: false,
       stateRules: [],
+      isCustomDuration: false,
       notes: "",
     };
   
@@ -102,6 +103,27 @@ export class PlanningAppStateFormComponent implements OnInit {
   }
 
   submit() {
+    this.planningAppState.dueByDate  = moment(this.updatedDueByDate).format('DD-MM-YYYY');
+    var result$ = this.planningAppStateService.updatePlanningAppState(this.planningAppState); 
+
+    console.warn(this.planningAppState.stateRules);
+
+    result$.subscribe(
+      planningAppState => {
+      this.toastyService.success({
+        title: 'Success', 
+        msg: 'Planning App State was sucessfully saved.',
+        theme: 'bootstrap',
+        showClose: true,
+        timeout: 5000
+      })
+  
+      //this.router.navigate(['/planningapps']);
+    });
+  }
+
+
+  saveRules() {
     this.planningAppState.dueByDate  = moment(this.updatedDueByDate).format('DD-MM-YYYY');
     var result$ = this.planningAppStateService.updatePlanningAppState(this.planningAppState); 
 

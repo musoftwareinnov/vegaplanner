@@ -9,6 +9,7 @@ export interface PlanningAppState {
     currentState: boolean;
     minDueByDate: string;
     dueByDateEditable: boolean;
+    isCustomDuration: boolean;
     stateRules: StateRule[];
     notes: string;
 }

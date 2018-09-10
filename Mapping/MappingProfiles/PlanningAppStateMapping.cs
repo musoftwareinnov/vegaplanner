@@ -23,7 +23,9 @@ namespace vega.Mapping.MappingProfiles
                 .ForMember(psr => psr.DateCompleted,
                     opt => opt.MapFrom(ps => ps.CompletionDate == null ? "" : ps.CompletionDate.Value.ToLocalTime().SettingDateFormat()))
                 .ForMember(psr => psr.StateStatus,
-                    opt => opt.MapFrom(ps => ps.DynamicStateStatus()));
+                    opt => opt.MapFrom(ps => ps.DynamicStateStatus()))
+                .ForMember(psr => psr.isCustomDuraton,
+                    opt => opt.MapFrom(ps => ps.isCustomDuration()));
 
             CreateMap<PlanningAppState, PlanningAppStateFullResource>()
                 .ForMember(psr => psr.StateName,

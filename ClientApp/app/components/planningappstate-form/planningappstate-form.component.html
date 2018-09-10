@@ -79,27 +79,24 @@
     <div *ngIf="planningAppState.stateRules.length>0"  role="tabpanel" class="tab-pane" id="staterequirements">
             <div class="well">
 
-                <form class="form-horizontal" #f1="ngForm" (submit)="submit()">   
+                <form class="form-horizontal" #f1="ngForm">   
+                    <div class="form-group">
+                            <label class="control-label col-sm-2" for="firstName">State Name</label>
+                            <div class="col-sm-5">
+                                <input id="stateName" type="text" class="form-control" [(ngModel)]="planningAppState.stateName" name="stateName" disabled="disabled"> 
+                            </div>
+                            <div class="col-sm-5"></div>
+                        </div>
                     <div  *ngFor="let r of planningAppState.stateRules">   
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="firstName">{{r.name}}</label>
+                            <label class="control-label col-sm-2" for="stateRule">{{r.name}}</label>
                             <div class="col-sm-5">
-                                <input id="stateName" type="text" class="form-control" [(ngModel)]="r.value" name="stateName" placeholder="{{ r.name }}"> 
+                                <input id="stateRule" type="text" class="form-control" [(ngModel)]="r.value" name="stateRule" placeholder="{{ r.name }}"> 
                             </div>
                             <div class="col-sm-5"></div>
                         </div>
                     </div>
                 </form> 
-
-                <form class="form-horizontal" #f="ngForm">
-                        <div class="form-group">
-                            <div class="col-sm-7">
-                                <button class="btn btn-primary" type="button" (click)="submit()">Save</button>               
-                            </div>
-                            <div class="col-sm-5">
-                            </div>
-                        </div> 
-                    </form>
         </div> 
     </div>
     <div role="tabpanel" class="tab-pane" id="notes">

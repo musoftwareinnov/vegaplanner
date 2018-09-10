@@ -39,7 +39,8 @@ namespace vega.Core.Models
 
         public PlanningApp GeneratePlanningStates(List<StateInitialiserState> stateInitialisers, IEnumerable<StateStatus> stateStatus) 
         {
-            var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+            //var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+            var currentDate = SystemDate.Instance.date;
 
             foreach(var stateInialiser in stateInitialisers) {
                 PlanningAppState newState = new PlanningAppState();
@@ -137,8 +138,9 @@ namespace vega.Core.Models
             if(!Completed()) {
                 PlanningAppStates = PlanningAppStates.OrderBy(s => s.state.OrderId).ToList();
 
-                var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+                //var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
 
+                var currentDate = SystemDate.Instance.date;
                 var prevState = Current(); //Store reference to current state
 
                 if(!isLastState(prevState)) {
@@ -283,7 +285,9 @@ namespace vega.Core.Models
             if(SeekPrev() != null)
                 return SeekPrev().DueByDate;
             else   
-                return CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+                //return CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+                return SystemDate.Instance.date;
+
             
         }
         public DateTime CompletionDate() {

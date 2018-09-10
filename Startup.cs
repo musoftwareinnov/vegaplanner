@@ -10,12 +10,21 @@ using vega.Persistence;
 using AutoMapper;
 using vega.Core.Models;
 using vega.Core.Models.Settings;
+using System;
+using vega.Extensions.DateTime;
+using Microsoft.Extensions.Options;
+
+using vega.Core.Utils;
 
 namespace vega
 {
+    public class DateSettings
+    {
+         public string CurrentDateOverride { get; set; }
+    }
     public class Startup
     {
-           public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -23,6 +32,20 @@ namespace vega
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            //Set global date, ovverride if set
+            var options = new DateSettings();
+            Configuration.GetSection("DateSettings").Bind(options);
+            setApplicationDate(options.CurrentDateOverride);
+        }
+
+        public void setApplicationDate(string currentDateOverride)
+        {
+            var currentDate = DateTime.Now;
+            if(currentDateOverride != "")
+                currentDate = currentDateOverride.ParseInputDate();
+
+            SystemDate.Instance.date = currentDate;
         }
 
         public IConfigurationRoot Configuration { get; }

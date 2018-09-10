@@ -13,6 +13,7 @@ namespace vega.Controllers.Resources
         public string DateCompleted { get; set; }
         public string StateStatus { get; set; }
         public bool CurrentState { get; set; }
+        public bool isCustomDuraton  { get; set; }
 
     }
 }

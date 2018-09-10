@@ -7,9 +7,8 @@ namespace vega.Core.Utils
         private static CurrentDateSingleton _instance;
         protected DateTime currentDate;
    
-        CurrentDateSingleton() 
+        public CurrentDateSingleton() 
         { 
-           
         }
 
         public static CurrentDateSingleton setDate(DateTime currentDate)

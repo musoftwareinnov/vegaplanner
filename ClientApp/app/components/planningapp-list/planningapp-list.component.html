@@ -22,25 +22,7 @@
       text-align: left;
       padding: 8px;
   }
-  /* .highlightOverdue{
-  background: rgb(245, 165, 165);
-  } 
-
-  .highlightDue{
-  background: rgb(226, 225, 159); 
-  } 
-
-  .highlightTerminated{
-  background: rgba(150, 216, 224, 0.199); 
-  } 
-
-  .highlightArchived{
-  background: rgb(251, 253, 130); 
-  } 
-
-  .highlightCompleted{
-  background: rgb(180, 253, 173); 
-  } */
+  
   tr:nth-child(even) {background-color: #f2f2f2;} */
   </style>
 </head>
@@ -90,8 +72,6 @@
         <a [routerLink]="['/planningapps/', v.id]" class="btn btn-primary btn-xs glyphicon glyphicon-edit"></a>
       </td>
     </tr>
-  </tbody>
 </table>
 </div>
-<!-- <pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination> -->
 <pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>

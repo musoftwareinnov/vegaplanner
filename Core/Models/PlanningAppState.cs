@@ -55,8 +55,8 @@ namespace vega.Core.Models
         public string DynamicStateStatus() {
             var alertDate = DueByDate.AddBusinessDays(state.AlertToCompletionTime * -1);
             
-            var CurrentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
-
+            //var CurrentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+            var CurrentDate = SystemDate.Instance.date;
             if(CompletionDate == null  )
             {
                 if(CurrentDate > DueByDate)
@@ -75,7 +75,8 @@ namespace vega.Core.Models
 
             if(!planningApp.Completed()) {
                 var current = planningApp.Current();
-                var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+                //var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+                var currentDate = SystemDate.Instance.date;
                 if(this.state.OrderId >= current.state.OrderId) {
                     if(planningApp.isFirstState(this))
                         minDueByDate = currentDate.AddBusinessDays(1); //Add one day
@@ -95,17 +96,16 @@ namespace vega.Core.Models
             this.DueByDate = planningAppState.DueByDate.AddBusinessDays(this.CompletionTime());
         }
         public void SetDueByDate() {
-            this.DueByDate = CurrentDateSingleton.setDate(DateTime.Now)
-                                .getCurrentDate().AddBusinessDays(this.CompletionTime());
+            this.DueByDate = SystemDate.Instance.date.AddBusinessDays(this.CompletionTime());
         }
 
         public void UpdateCustomDueByDate(DateTime dueByDate)
         {
-                        int daysDiff;
+            int daysDiff;
             if (dueByDate > this.DueByDate)
-                daysDiff = this.DueByDate.GetBusinessDays(dueByDate, new List<DateTime>());
+                daysDiff = this.DueByDate.GetBusinessDays(dueByDate, new List<DateTime>());//Move dates forward
             else
-                daysDiff = dueByDate.GetBusinessDays(this.DueByDate, new List<DateTime>()) * -1; //Move dates forward
+                daysDiff = dueByDate.GetBusinessDays(this.DueByDate, new List<DateTime>()) * -1; //Move dates back
 
             if (daysDiff != 0)
             {   //Date are different so customise
@@ -128,5 +128,8 @@ namespace vega.Core.Models
                 return state.CompletionTime;    
         }
 
+        public bool isCustomDuration() {
+            return this.CustomDurationSet;
+        }
     }
 }
