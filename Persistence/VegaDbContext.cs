@@ -22,7 +22,7 @@ namespace vega.Persistence
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Address> CustomerAddress { get; set; }
         public DbSet<Address> DevelopmentAddress { get; set; }
-        public DbSet<StateRule> StateRule { get; set; }
+        public DbSet<StateInitialiserCustomField> StateInitialiserCustomFields { get; set; }
 
         public VegaDbContext(DbContextOptions<VegaDbContext> options) : base (options)
         {
@@ -39,7 +39,7 @@ namespace vega.Persistence
                 modelBuilder.Entity<Customer>().OwnsOne(c => c.CustomerAddress);
                 modelBuilder.Entity<Customer>().OwnsOne(c => c.CustomerContact);
                 
-                modelBuilder.Entity<StateInitialiserStateRule>().HasKey(sr => new { sr.StateInitialiserStateId, sr.StateRuleId });
+                modelBuilder.Entity<StateInitialiserStateCustomField>().HasKey(sr => new { sr.StateInitialiserStateId, sr.StateInitialiserCustomFieldId });
 
                 // modelBuilder.Entity<PlanningAppState>()
                 //     .HasOne(b => b.PlanningApp)

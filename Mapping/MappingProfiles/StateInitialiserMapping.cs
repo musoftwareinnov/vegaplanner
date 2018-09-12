@@ -15,16 +15,16 @@ namespace vega.Mapping.MappingProfiles
                 CreateMap<SaveStateInitialiserStateResource, StateInitialiserState>();
 
                 CreateMap<StateInitialiserStateResource, StateInitialiserState>()
-                                .ForMember(s => s.StateRules, opt => opt.Ignore());
+                                .ForMember(s => s.StateInitialiserStateCustomFields, opt => opt.Ignore());
 
                 CreateMap<StateInitialiserState, StateInitialiserStateResource>()
-                    .ForMember(sis => sis.StateRules,
-                        opt => opt.MapFrom(s => s.StateRules
-                            .Select(sr => new StateRule {   Id = sr.StateRule.Id, 
-                                                            Name = sr.StateRule.Name,
-                                                            Type = sr.StateRule.Type,
-                                                            isPlanningAppField = sr.StateRule.isPlanningAppField,
-                                                            isMandatory = sr.StateRule.isPlanningAppField})));
+                    .ForMember(sis => sis.StateInitialiserStateCustomFields,
+                        opt => opt.MapFrom(s => s.StateInitialiserStateCustomFields
+                            .Select(sr => new StateInitialiserCustomField {   Id = sr.StateInitialiserCustomField.Id, 
+                                                            Name = sr.StateInitialiserCustomField.Name,
+                                                            Type = sr.StateInitialiserCustomField.Type,
+                                                            isPlanningAppField = sr.StateInitialiserCustomField.isPlanningAppField,
+                                                            isMandatory = sr.StateInitialiserCustomField.isMandatory})));
 
         }
     }

@@ -4,12 +4,13 @@ using vega.Core.Models.States;
 
 namespace vega.Core.Models
 {
-    [Table("StateInitialiserStateRules")]
-    public class StateInitialiserStateRule
+    [Table("StateInitialiserStateCustomFields")]
+    public class StateInitialiserStateCustomField
     {
         public int StateInitialiserStateId { get; set; }
-        public int StateRuleId { get; set; }
         public StateInitialiserState StateInitialiserState { get; set; }
-        public StateRule StateRule { get; set; }
+        public int StateInitialiserCustomFieldId { get; set; }
+
+        public StateInitialiserCustomField StateInitialiserCustomField { get; set; }
     }
 }

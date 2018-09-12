@@ -152,8 +152,8 @@ export class PlanningAppFormComponent implements OnInit {
         error => {
             console.warn("Error!!!!");
             this.toastyService.error({
-            title: 'Please enter State Requirements before submitting', 
-            msg: error.statusText,
+            title: 'Please enter mandatory fields in state requirements tab', 
+            msg: "",
             theme: 'bootstrap',
             showClose: true,
             timeout: 5000

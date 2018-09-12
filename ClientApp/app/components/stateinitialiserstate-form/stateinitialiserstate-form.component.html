@@ -36,7 +36,7 @@
       </div>
       <!-- <div class="alert alert-danger" *ngIf="alertToCompletionTime.touched && !alertToCompletionTime.valid">Please enter Alert in days.</div> -->
 
-      <div *ngIf="stateInitialiserState.stateRules.length>0">
+      <div *ngIf="stateInitialiserState.stateInitialiserStateCustomFields.length>0">
         <h4>States Rules</h4>
         <div class="well">
             <table class="table">
@@ -48,7 +48,7 @@
                     <th>isMandatory</th>
                     </tr>
                 </thead>
-                <tr *ngFor="let s of stateInitialiserState.stateRules">
+                <tr *ngFor="let s of stateInitialiserState.stateInitialiserStateCustomFields">
                     <td>{{ s.name}}</td>
                     <td>{{ s.type}}</td>
                     <td>{{ s.isPlanningAppField}} </td>

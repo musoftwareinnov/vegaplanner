@@ -25,8 +25,8 @@ namespace vega.Persistence
             var stateInitialiser =  await vegaDbContext.StateInitialisers
                             .Where(s => s.Id == id)
                                 .Include(t => t.States)
-                                    .ThenInclude(s => s.StateRules)   
-                                        .ThenInclude(r => r.StateRule)         
+                                    .ThenInclude(s => s.StateInitialiserStateCustomFields)   
+                                        .ThenInclude(r => r.StateInitialiserCustomField)         
                                 .SingleOrDefaultAsync();
         
             IOrderedEnumerable<StateInitialiserState> orderedStates;

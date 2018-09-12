@@ -12,6 +12,6 @@ namespace vega.Controllers.Resources.StateInitialser
         public int AlertToCompletionTime { get; set; }   //Days
         public int StateInitialiserId { get; set; }
         public bool isDeleted { get; set; }
-        public ICollection<StateRule> StateRules { get; set; }
+        public ICollection<StateInitialiserCustomField> StateInitialiserStateCustomFields { get; set; }
     }
 }

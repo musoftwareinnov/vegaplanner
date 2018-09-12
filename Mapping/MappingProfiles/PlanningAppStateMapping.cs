@@ -36,14 +36,14 @@ namespace vega.Mapping.MappingProfiles
                     opt => opt.MapFrom(ps => ps.CompletionDate == null ? "" : ps.CompletionDate.Value.ToLocalTime().SettingDateFormat()))
                 .ForMember(psr => psr.StateStatus,
                     opt => opt.MapFrom(ps => ps.DynamicStateStatus()))
-                .ForMember(sis => sis.StateRules,
-                    opt => opt.MapFrom(s => s.state.StateRules
-                        .Select(sr => new StateRuleResource {   Id = sr.StateRule.Id, 
-                                                        Name = sr.StateRule.Name,
+                .ForMember(sis => sis.PlanningAppStateCustomFieldsResource,
+                    opt => opt.MapFrom(s => s.state.StateInitialiserStateCustomFields
+                        .Select(sr => new PlanningAppStateCustomFieldResource {   Id = sr.StateInitialiserCustomField.Id, 
+                                                        Name = sr.StateInitialiserCustomField.Name,
                                                         Value = "",
-                                                        Type = sr.StateRule.Type,
-                                                        isPlanningAppField = sr.StateRule.isPlanningAppField,
-                                                        isMandatory = sr.StateRule.isPlanningAppField}))); 
+                                                        Type = sr.StateInitialiserCustomField.Type,
+                                                        isPlanningAppField = sr.StateInitialiserCustomField.isPlanningAppField,
+                                                        isMandatory = sr.StateInitialiserCustomField.isMandatory}))); 
         }
     }
 }

@@ -9,7 +9,7 @@ namespace vega.Controllers.Resources
         public bool Reset { get; set; }
         public bool UpdateCustomFieldsOnly { get; set; }
         public string DueByDate { get; set; }
-        public ICollection<StateRuleResource> StateRules { get; set; }
+        public ICollection<PlanningAppStateCustomFieldResource> PlanningAppStateCustomFieldsResource { get; set; }
         public string Notes { get; set; }
     }
 }

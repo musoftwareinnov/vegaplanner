@@ -1,6 +1,6 @@
 namespace vega.Core.Models
 {
-    public class StateRule
+    public class StateInitialiserCustomField
     {
         public int Id { get; set; }
         public string Name { get; set; }

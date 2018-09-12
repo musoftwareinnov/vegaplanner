@@ -15,7 +15,7 @@
 
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#planningstatedetails" aria-controls="planningstatedetails" role="tab" data-toggle="tab">Planning State Details</a></li>
-    <li *ngIf="planningAppState.stateRules.length>0" role="presentation"><a href="#staterequirements" aria-controls="staterequirements" role="tab" data-toggle="tab">State Requirements</a></li>
+    <li *ngIf="planningAppState.planningAppStateCustomFieldsResource.length>0" role="presentation"><a href="#staterequirements" aria-controls="staterequirements" role="tab" data-toggle="tab">State Requirements</a></li>
     <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
 </ul>
 
@@ -58,25 +58,23 @@
                                 </div>
                             </div>                          
                         </div>
-                        <div class="col-sm-8"></div>
+                        <div class="col-sm-7"></div>
                     </div>
                 </div>
-            </form>
-
-            <form class="form-horizontal" #f="ngForm">
                 <div class="form-group">
+                    <div class="control-label col-sm-2"></div>
                     <div class="col-sm-3">
-                        <button class="btn btn-primary" type="button" (click)="submit()">Save</button>               
-                    </div>
-                    <div class="col-sm-9">
-                    </div>
+                        <button class="btn btn-primary" type="button" (click)="submit()">Save</button>    
+                    </div>        
+                    <div class="col-sm-7"></div>  
                 </div> 
+
             </form>
         <div>
     </div>
     </div>
     </div>
-    <div *ngIf="planningAppState.stateRules.length>0"  role="tabpanel" class="tab-pane" id="staterequirements">
+    <div *ngIf="planningAppState.planningAppStateCustomFieldsResource.length>0"  role="tabpanel" class="tab-pane" id="staterequirements">
             <div class="well">
 
                 <form class="form-horizontal" #f1="ngForm">   
@@ -87,28 +85,41 @@
                             </div> 
                             <div class="col-sm-5"></div>
                         </div>
-                    <div  *ngFor="let r of planningAppState.stateRules">   
+                    <div  *ngFor="let r of planningAppState.planningAppStateCustomFieldsResource">   
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="stateRule">{{r.name}}</label>
-                            <div class="col-sm-5">
-                                <input id="{{ r.id }}" type="text" class="form-control" [(ngModel)]="r.value" name="{{ r.name }}" placeholder="{{ r.name }}"> 
-                            </div>
+                            <label class="control-label col-sm-2">{{r.name}}</label>
+                                <div class="col-sm-5">
+                                    <input id="{{ r.id }}" [ngStyle]="{'background-color': r.isMandatory==true? 'Tomato' : ''} "type="text" class="form-control" [(ngModel)]="r.value" name="{{ r.name }}" placeholder="{{ r.name }}"> 
+                                </div>
                             <div class="col-sm-5"></div>
                         </div>
                     </div>
+                    <div class="form-group">
+                            <div class="control-label col-sm-2"></div>
+                            <div class="col-sm-3">
+                                <button class="btn btn-primary" type="button" (click)="submit()">Save</button>    
+                            </div>        
+                            <div class="col-sm-7"></div>  
+                        </div> 
                 </form> 
         </div> 
     </div>
     <div role="tabpanel" class="tab-pane" id="notes">
             <div class="well">
                 <div class="form-group">
-                    <!-- <div class="col-sm-1"> -->
+                        <div class="control-label col-sm-1"></div>
                         <div style="display:inline-block; min-height:290px;">
                             <textarea rows="10" cols="100" [(ngModel)]="planningAppState.notes" name="updateNotes"></textarea>
                         </div>                          
                      </div>
-                    <div class="col-sm-8"></div>
-                <!-- </div> -->
+                     
+                <div class="form-group">
+                        <div class="control-label col-sm-1"></div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-primary" type="button" (click)="submit()">Save</button>    
+                        </div>        
+                        <div class="col-sm-8"></div>  
+                    </div> 
             </div> 
         </div> 
 </div>

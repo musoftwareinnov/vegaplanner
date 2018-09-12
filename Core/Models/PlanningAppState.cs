@@ -33,27 +33,27 @@ namespace vega.Core.Models
         public StateStatusSettings Options { get; }
         public bool CustomDurationSet { get; set; }
         public int CustomDuration { get; set; }
-        public List<PlanningAppStateRuleValue> customStateValue  { get; set; }          
+        public List<PlanningAppStateCustomField> customFields  { get; set; }          
         public string Notes { get; set; }
    
         public PlanningAppState()
         {
-            customStateValue = new List<PlanningAppStateRuleValue>();
+            customFields = new List<PlanningAppStateCustomField>();
         }
 
-        public PlanningAppStateRuleValue getRule(int resourceId) { 
-            return this.customStateValue
-                                    .Where(r => r.RuleId == resourceId).SingleOrDefault();
+        public PlanningAppStateCustomField getPlanningAppStateCustomField(int resourceId) { 
+            return this.customFields
+                                    .Where(r => r.StateInitialiserStateCustomFieldId == resourceId).SingleOrDefault();
         }
 
         /* Helper Methods  */
 
         public bool isValid() {
             
-            foreach(var rule in this.state.StateRules) {
-                var value = getRule(rule.StateRuleId);
+            foreach(var template in this.state.StateInitialiserStateCustomFields) {
+                var value = getPlanningAppStateCustomField(template.StateInitialiserCustomFieldId);
 
-                if(string.IsNullOrWhiteSpace(value.StrValue) && rule.StateRule.isMandatory)
+                if(string.IsNullOrWhiteSpace(value.StrValue) && template.StateInitialiserCustomField.isMandatory)
                     return false;
             }
             return true;

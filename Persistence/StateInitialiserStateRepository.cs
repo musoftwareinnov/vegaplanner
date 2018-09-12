@@ -60,8 +60,8 @@ namespace vega.Persistence
         public async Task<StateInitialiserState>  GetStateInitialiserState(int id) {
                 var res =  this.vegaDbContext.StateInitialiserState
                     .Where(si => si.Id == id)    
-                    .Include(v => v.StateRules)
-                        .ThenInclude(vf => vf.StateRule)
+                    .Include(v => v.StateInitialiserStateCustomFields)
+                        .ThenInclude(vf => vf.StateInitialiserCustomField)
                     .SingleOrDefaultAsync();
 
                 return await res;

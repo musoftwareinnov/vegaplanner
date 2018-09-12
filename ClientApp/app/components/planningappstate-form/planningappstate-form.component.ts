@@ -8,7 +8,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-planningappstate-form',
   templateUrl: './planningappstate-form.component.html',
-  styleUrls: ['./planningappstate-form.component.css']
+  styleUrls: ['./planningappstate-form.component.css'],
 })
 export class PlanningAppStateFormComponent implements OnInit {
   planningAppState: PlanningAppState = {

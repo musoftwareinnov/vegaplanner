@@ -11,8 +11,8 @@ using vega.Persistence;
 namespace vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    [Migration("20180910193253_PlanningAppStateRuleValue")]
-    partial class PlanningAppStateRuleValue
+    [Migration("20180912122233_InitialInitialSeeding")]
+    partial class InitialInitialSeeding
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -186,7 +186,7 @@ namespace vega.Migrations
                     b.ToTable("PlanningAppState");
                 });
 
-            modelBuilder.Entity("vega.Core.Models.PlanningAppStateRuleValue", b =>
+            modelBuilder.Entity("vega.Core.Models.PlanningAppStateCustomField", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -197,7 +197,7 @@ namespace vega.Migrations
 
                     b.Property<int?>("PlanningAppStateId");
 
-                    b.Property<int>("RuleId");
+                    b.Property<int>("StateInitialiserStateCustomFieldId");
 
                     b.Property<string>("StrValue");
 
@@ -205,7 +205,7 @@ namespace vega.Migrations
 
                     b.HasIndex("PlanningAppStateId");
 
-                    b.ToTable("PlanningAppStateRuleValue");
+                    b.ToTable("PlanningAppStateCustomFields");
                 });
 
             modelBuilder.Entity("vega.Core.Models.StateInitialiser", b =>
@@ -226,20 +226,7 @@ namespace vega.Migrations
                     b.ToTable("StateInitialisers");
                 });
 
-            modelBuilder.Entity("vega.Core.Models.StateInitialiserStateRule", b =>
-                {
-                    b.Property<int>("StateInitialiserStateId");
-
-                    b.Property<int>("StateRuleId");
-
-                    b.HasKey("StateInitialiserStateId", "StateRuleId");
-
-                    b.HasIndex("StateRuleId");
-
-                    b.ToTable("StateInitialiserStateRules");
-                });
-
-            modelBuilder.Entity("vega.Core.Models.StateRule", b =>
+            modelBuilder.Entity("vega.Core.Models.StateInitialiserCustomField", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -254,7 +241,20 @@ namespace vega.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StateRule");
+                    b.ToTable("StateInitialiserCustomFields");
+                });
+
+            modelBuilder.Entity("vega.Core.Models.StateInitialiserStateCustomField", b =>
+                {
+                    b.Property<int>("StateInitialiserStateId");
+
+                    b.Property<int>("StateInitialiserCustomFieldId");
+
+                    b.HasKey("StateInitialiserStateId", "StateInitialiserCustomFieldId");
+
+                    b.HasIndex("StateInitialiserCustomFieldId");
+
+                    b.ToTable("StateInitialiserStateCustomFields");
                 });
 
             modelBuilder.Entity("vega.Core.Models.States.StateInitialiserState", b =>
@@ -511,23 +511,23 @@ namespace vega.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("vega.Core.Models.PlanningAppStateRuleValue", b =>
+            modelBuilder.Entity("vega.Core.Models.PlanningAppStateCustomField", b =>
                 {
                     b.HasOne("vega.Core.Models.PlanningAppState")
-                        .WithMany("customStateValue")
+                        .WithMany("customFields")
                         .HasForeignKey("PlanningAppStateId");
                 });
 
-            modelBuilder.Entity("vega.Core.Models.StateInitialiserStateRule", b =>
+            modelBuilder.Entity("vega.Core.Models.StateInitialiserStateCustomField", b =>
                 {
-                    b.HasOne("vega.Core.Models.States.StateInitialiserState", "StateInitialiserState")
-                        .WithMany("StateRules")
-                        .HasForeignKey("StateInitialiserStateId")
+                    b.HasOne("vega.Core.Models.StateInitialiserCustomField", "StateInitialiserCustomField")
+                        .WithMany()
+                        .HasForeignKey("StateInitialiserCustomFieldId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("vega.Core.Models.StateRule", "StateRule")
-                        .WithMany()
-                        .HasForeignKey("StateRuleId")
+                    b.HasOne("vega.Core.Models.States.StateInitialiserState", "StateInitialiserState")
+                        .WithMany("StateInitialiserStateCustomFields")
+                        .HasForeignKey("StateInitialiserStateId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -58,9 +58,9 @@ namespace vega.Core.Models
 
                 newPlanningAppState.StateStatus = stateStatus.Where(s => s.Name == StatusList.OnTime).SingleOrDefault();
                 //Add custom fields to state if exist
-                foreach(var customRule in newPlanningAppState.state.StateRules) {
-                    newPlanningAppState.customStateValue
-                            .Add(new PlanningAppStateRuleValue { RuleId = customRule.StateRuleId });
+                foreach(var stateInitialiserStateCustomField in newPlanningAppState.state.StateInitialiserStateCustomFields) {
+                    newPlanningAppState.customFields
+                            .Add(new PlanningAppStateCustomField { StateInitialiserStateCustomFieldId = stateInitialiserStateCustomField.StateInitialiserCustomFieldId });
                 }
                 PlanningAppStates.Add(newPlanningAppState);
             }
@@ -187,7 +187,7 @@ namespace vega.Core.Models
             CurrentPlanningStatus = statusList.Where(p => p.Name == StatusList.AppTerminated).SingleOrDefault();
         }
 
-        public void UpdateKeyFields(IEnumerable<StateRuleResource> fieldsToUpdate)
+        public void UpdateKeyFields(IEnumerable<PlanningAppStateCustomFieldResource> fieldsToUpdate)
         {   
             foreach(var rule in fieldsToUpdate) {
                 switch (rule.Name) {

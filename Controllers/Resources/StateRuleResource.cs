@@ -1,6 +1,6 @@
 namespace vega.Controllers.Resources
 {
-    public class StateRuleResource
+    public class PlanningAppStateCustomFieldResource
     {
         public int Id { get; set; }
         public string Name { get; set; }

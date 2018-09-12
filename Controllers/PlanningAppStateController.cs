@@ -46,10 +46,10 @@ namespace vega.Controllers
             var planningAppStateResource = Mapper.Map<PlanningAppState, PlanningAppStateFullResource>(planningAppState);
 
             //populate the custom fields with values set in 'customStateValue'
-            foreach( var customStateValueResource in planningAppStateResource.StateRules) {
-                var stateRule = planningAppState.getRule(customStateValueResource.Id);
-                if(stateRule != null) //Can be null is new rule added after creation of planning app
-                    customStateValueResource.Value = planningAppState.getRule(customStateValueResource.Id).StrValue;
+            foreach( var customFieldResource in planningAppStateResource.PlanningAppStateCustomFieldsResource) {
+                var customField = planningAppState.getPlanningAppStateCustomField(customFieldResource.Id);
+                if(customField != null) 
+                    customFieldResource.Value = planningAppState.getPlanningAppStateCustomField(customFieldResource.Id).StrValue;
             }
 
             DateTime minDueDate = planningAppState.SetMinDueByDate(planningApp);
@@ -73,11 +73,11 @@ namespace vega.Controllers
             }
 
             //Set any fields in the PlanningApp table that have been set in the Rule List
-            foreach (var customStateValueResource in planningAppStateResource.StateRules) 
-                planningAppState.getRule(customStateValueResource.Id).StrValue = customStateValueResource.Value;
+            foreach (var customStateValueResource in planningAppStateResource.PlanningAppStateCustomFieldsResource) 
+                planningAppState.getPlanningAppStateCustomField(customStateValueResource.Id).StrValue = customStateValueResource.Value;
 
             //Store custom fields in planning state
-            planningApp.UpdateKeyFields(planningAppStateResource.StateRules);
+            planningApp.UpdateKeyFields(planningAppStateResource.PlanningAppStateCustomFieldsResource);
 
             planningAppState.Notes = planningAppStateResource.Notes;
             repository.Update(planningAppState);

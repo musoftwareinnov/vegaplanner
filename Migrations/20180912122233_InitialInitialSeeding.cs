@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace vega.Migrations
 {
-    public partial class SeedInitialModel : Migration
+    public partial class InitialInitialSeeding : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,8 +48,20 @@ namespace vega.Migrations
             migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId, isDeleted) VALUES ('Client Visited',3, 6, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 3,0)");
             migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId, isDeleted) VALUES ('T&C Sent',4, 10, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 4,0)");
             migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId, isDeleted) VALUES ('T&C Received',5, 12, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 5,0)");
-            migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId, isDeleted) VALUES ('Site Survey Booked',3, 10, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 6,0)");
-            migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId, isDeleted) VALUES ('Site Survey Completed',3, 10, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 7,0 )");
+            migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId, isDeleted) VALUES ('Acquire Application No',3, 10, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 6,0)");
+            migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId, isDeleted) VALUES ('Site Survey Booked',3, 10, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 7,0)");
+            migrationBuilder.Sql("INSERT INTO StateInitialiserState (Name, AlertToCompletionTime, CompletionTime, LastUpdate, StateInitialiserId, OrderId, isDeleted) VALUES ('Site Survey Completed',3, 10, getdate(), (SELECT ID FROM Stateinitialisers WHERE Name = 'General'), 8,0 )");
+
+            // migrationBuilder.Sql("INSERT INTO Customers (FirstName, LastName, Address1, Address2, Postcode, TelephoneHome, TelephoneMobile,EmailAddress)  VALUES ('Paul', 'Scollay', 'TyGwyn', 'Rose Truro', 'TR4 9PF', '01872 572143', '0783828172', 'pscollay@yahoo.co.uk')");      
+            // migrationBuilder.Sql("INSERT INTO Customers (FirstName, LastName, Address1, Address2, Postcode, TelephoneHome, TelephoneMobile,EmailAddress)  VALUES ('Bob', 'Smith', '32 Acacia Drive', 'London', 'N1 6BL', '0208 342342', '0764352333', 'bsmith@yahoo.co.uk')");   
+
+            //Create Custom Fields
+            migrationBuilder.Sql("INSERT INTO StateInitialiserCustomFields (Name, Type, isMandatory, isPlanningAppField) VALUES ( 'ApplicationNo', 'String', 1, 1) "); 
+            migrationBuilder.Sql("INSERT INTO StateInitialiserCustomFields (Name, Type, isMandatory, isPlanningAppField) VALUES ( 'Case Officer', 'String', 1, 1) "); 
+            migrationBuilder.Sql("INSERT INTO StateInitialiserCustomFields (Name, Type, isMandatory, isPlanningAppField) VALUES ( 'Booking Time', 'String', 1, 1) "); 
+   
+            migrationBuilder.Sql("INSERT INTO StateInitialiserStateCustomFields(StateInitialiserStateId, StateInitialiserCustomFieldId ) VALUES ((select id from  StateInitialiserState  where name = 'Acquire Application No'),(select id from  StateInitialiserCustomFields  where name = 'ApplicationNo'))");  
+  
 
         }
 

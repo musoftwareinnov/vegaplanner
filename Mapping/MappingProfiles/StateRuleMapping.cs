@@ -10,8 +10,8 @@ namespace vega.Mapping.MappingProfiles
     {
         public StateRuleMapping()
         {  
-            CreateMap<StateRuleResource, StateRule>();
-            CreateMap<StateRule, StateRuleResource>();
+            CreateMap<PlanningAppStateCustomFieldResource, StateInitialiserCustomField>();
+            CreateMap<StateInitialiserCustomField, PlanningAppStateCustomFieldResource>();
         }
     }
 }
