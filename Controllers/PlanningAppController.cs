@@ -23,6 +23,7 @@ namespace vega.Controllers
         private readonly IPlanningAppRepository repository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IStateInitialiserRepository stateInitialiserRepository;
+        private readonly IPlanningAppStateRepository planningAppStateRepository;
 
         public IStateStatusRepository statusListRepository { get; }
         public DateSettings dateSettings { get; set; }
@@ -32,12 +33,14 @@ namespace vega.Controllers
 
         public PlanningAppController(IMapper mapper, 
                                      IPlanningAppRepository repository, 
+                                     IPlanningAppStateRepository planningAppStateRepository, 
                                      IUnitOfWork unitOfWork,
                                      IStateStatusRepository statusListRepository,
                                      IStateInitialiserRepository stateInitialiserRepository)
         {
             this.unitOfWork = unitOfWork;
             this.repository = repository;
+            this.planningAppStateRepository = planningAppStateRepository;
             this.mapper = mapper;
             this.statusListRepository = statusListRepository;
             this.stateInitialiserRepository = stateInitialiserRepository;
@@ -96,9 +99,17 @@ namespace vega.Controllers
                 return NotFound();
 
             //TODO!!!!!!!Inject Logger to say what changed state by which user
-
             if(planningResource.method == (int) StateAction.NextState) {
-                planningApp.NextState(stateStatusList);
+                
+                //Validate that custom mandatory fields have been set
+                var currentStateId = planningApp.Current().Id;
+
+                //get full entities, including custom state rules
+                var currentState = await planningAppStateRepository.GetPlanningAppState(currentStateId);
+                if(currentState.isValid())
+                    planningApp.NextState(stateStatusList);
+                else
+                    return BadRequest(new { message = "bad request for next state"});
             }
             else if (planningResource.method == (int) StateAction.PrevState) 
                 planningApp.PrevState(stateStatusList);

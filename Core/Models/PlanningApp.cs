@@ -7,6 +7,7 @@ using vega.Core.Models.Generic;
 using vega.Core.Models.States;
 using vega.Core.Utils;
 using vega.Extensions.DateTime;
+using vega.Persistence;
 
 namespace vega.Core.Models
 {
@@ -37,26 +38,31 @@ namespace vega.Core.Models
             Drawings = new Collection<Drawing>();
         }
 
-        public PlanningApp GeneratePlanningStates(List<StateInitialiserState> stateInitialisers, IEnumerable<StateStatus> stateStatus) 
+        public PlanningApp GeneratePlanningStates(List<StateInitialiserState> stateInitialisers, 
+                                                    IEnumerable<StateStatus> stateStatus) 
         {
-            //var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
             var currentDate = SystemDate.Instance.date;
 
             foreach(var stateInialiser in stateInitialisers) {
-                PlanningAppState newState = new PlanningAppState();
-                newState.state = stateInialiser;
+                PlanningAppState newPlanningAppState = new PlanningAppState();
+                newPlanningAppState.state = stateInialiser;
 
                 PlanningAppState prevState;
                 var stateCount = PlanningAppStates.Count;
                 if(stateCount > 0) {
-                    prevState = PlanningAppStates[stateCount-1];
-                    newState.DueByDate =  prevState.DueByDate.AddBusinessDays(stateInialiser.CompletionTime);
+                    prevState =  PlanningAppStates[stateCount-1];
+                    newPlanningAppState.DueByDate =  prevState.DueByDate.AddBusinessDays(stateInialiser.CompletionTime);
                 }
                 else 
-                    newState.DueByDate = currentDate.AddBusinessDays(stateInialiser.CompletionTime);
+                    newPlanningAppState.DueByDate = currentDate.AddBusinessDays(stateInialiser.CompletionTime);
 
-                newState.StateStatus = stateStatus.Where(s => s.Name == StatusList.OnTime).SingleOrDefault();
-                PlanningAppStates.Add(newState);
+                newPlanningAppState.StateStatus = stateStatus.Where(s => s.Name == StatusList.OnTime).SingleOrDefault();
+                //Add custom fields to state if exist
+                foreach(var customRule in newPlanningAppState.state.StateRules) {
+                    newPlanningAppState.customStateValue
+                            .Add(new PlanningAppStateRuleValue { RuleId = customRule.StateRuleId });
+                }
+                PlanningAppStates.Add(newPlanningAppState);
             }
             //set first state to current state
             if(PlanningAppStates.Count > 0)
@@ -138,8 +144,6 @@ namespace vega.Core.Models
             if(!Completed()) {
                 PlanningAppStates = PlanningAppStates.OrderBy(s => s.state.OrderId).ToList();
 
-                //var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
-
                 var currentDate = SystemDate.Instance.date;
                 var prevState = Current(); //Store reference to current state
 
@@ -186,8 +190,10 @@ namespace vega.Core.Models
         public void UpdateKeyFields(IEnumerable<StateRuleResource> fieldsToUpdate)
         {   
             foreach(var rule in fieldsToUpdate) {
-                if(rule.Name == "ApplicationNo") {
+                switch (rule.Name) {
+                    case "ApplicationNo":
                         this.ApplicationNo = rule.Value;
+                    break;
                 }
             }
         }
@@ -285,10 +291,8 @@ namespace vega.Core.Models
             if(SeekPrev() != null)
                 return SeekPrev().DueByDate;
             else   
-                //return CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
                 return SystemDate.Instance.date;
 
-            
         }
         public DateTime CompletionDate() {
             if(!Completed())

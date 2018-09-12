@@ -84,14 +84,14 @@
                             <label class="control-label col-sm-2" for="firstName">State Name</label>
                             <div class="col-sm-5">
                                 <input id="stateName" type="text" class="form-control" [(ngModel)]="planningAppState.stateName" name="stateName" disabled="disabled"> 
-                            </div>
+                            </div> 
                             <div class="col-sm-5"></div>
                         </div>
                     <div  *ngFor="let r of planningAppState.stateRules">   
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="stateRule">{{r.name}}</label>
                             <div class="col-sm-5">
-                                <input id="stateRule" type="text" class="form-control" [(ngModel)]="r.value" name="stateRule" placeholder="{{ r.name }}"> 
+                                <input id="{{ r.id }}" type="text" class="form-control" [(ngModel)]="r.value" name="{{ r.name }}" placeholder="{{ r.name }}"> 
                             </div>
                             <div class="col-sm-5"></div>
                         </div>

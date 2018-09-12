@@ -130,13 +130,13 @@ export class PlanningAppFormComponent implements OnInit {
 
     //Check conditions have been set before saving
     
-
-    var result$ = this.planningAppService.nextState(this.savePlanningApp )
+    var result = this.planningAppService.nextState(this.savePlanningApp )
 
     if(this.planningApp.nextState == null)
         this.planningApp.nextState = this.COMPLETE;
 
-    result$.subscribe(
+    result.subscribe(
+
         planningApp => {
           this.toastyService.success({
             title: 'Success', 
@@ -147,7 +147,19 @@ export class PlanningAppFormComponent implements OnInit {
           })
           { this.refreshData() }   
           this.router.navigate(['/planningapps/', this.planningApp.id])
-        });
+        },
+
+        error => {
+            console.warn("Error!!!!");
+            this.toastyService.error({
+            title: 'Please enter State Requirements before submitting', 
+            msg: error.statusText,
+            theme: 'bootstrap',
+            showClose: true,
+            timeout: 5000
+          })
+        },  
+        );
   }
 
   saveNotes() {

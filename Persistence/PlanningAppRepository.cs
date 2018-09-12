@@ -17,14 +17,18 @@ namespace vega.Persistence
         private readonly VegaDbContext vegaDbContext;
         private readonly IStateInitialiserRepository stateInitialiserRepository;
 
+        private readonly IStateInitialiserStateRepository stateInitialiserStateRepository;
+
         public PlanningAppRepository(VegaDbContext vegaDbContext, 
                                      IStateStatusRepository stateStatusRepository,
                                      IStateInitialiserRepository stateInitialiserRepository,
+                                     IStateInitialiserStateRepository stateInitialiserStateRepository,
                                      IOptionsSnapshot<StateStatusSettings> options)
         {
             this.vegaDbContext = vegaDbContext;
             this.stateStatusRepository = stateStatusRepository;
             this.stateInitialiserRepository = stateInitialiserRepository;
+            this.stateInitialiserStateRepository = stateInitialiserStateRepository;
             stateStatusSettings = options.Value;
         }
 

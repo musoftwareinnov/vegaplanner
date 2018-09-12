@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Options;
@@ -32,13 +33,32 @@ namespace vega.Core.Models
         public StateStatusSettings Options { get; }
         public bool CustomDurationSet { get; set; }
         public int CustomDuration { get; set; }
+        public List<PlanningAppStateRuleValue> customStateValue  { get; set; }          
         public string Notes { get; set; }
    
         public PlanningAppState()
         {
-                 
+            customStateValue = new List<PlanningAppStateRuleValue>();
         }
+
+        public PlanningAppStateRuleValue getRule(int resourceId) { 
+            return this.customStateValue
+                                    .Where(r => r.RuleId == resourceId).SingleOrDefault();
+        }
+
         /* Helper Methods  */
+
+        public bool isValid() {
+            
+            foreach(var rule in this.state.StateRules) {
+                var value = getRule(rule.StateRuleId);
+
+                if(string.IsNullOrWhiteSpace(value.StrValue) && rule.StateRule.isMandatory)
+                    return false;
+            }
+            return true;
+        }
+
         public int CompleteState(DateTime completionDate, List<StateStatus> stateStatusList) 
         {
             CurrentState = false;
@@ -54,8 +74,7 @@ namespace vega.Core.Models
    
         public string DynamicStateStatus() {
             var alertDate = DueByDate.AddBusinessDays(state.AlertToCompletionTime * -1);
-            
-            //var CurrentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
+        
             var CurrentDate = SystemDate.Instance.date;
             if(CompletionDate == null  )
             {
@@ -75,7 +94,6 @@ namespace vega.Core.Models
 
             if(!planningApp.Completed()) {
                 var current = planningApp.Current();
-                //var currentDate = CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
                 var currentDate = SystemDate.Instance.date;
                 if(this.state.OrderId >= current.state.OrderId) {
                     if(planningApp.isFirstState(this))

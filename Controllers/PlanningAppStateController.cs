@@ -45,9 +45,15 @@ namespace vega.Controllers
 
             var planningAppStateResource = Mapper.Map<PlanningAppState, PlanningAppStateFullResource>(planningAppState);
 
+            //populate the custom fields with values set in 'customStateValue'
+            foreach( var customStateValueResource in planningAppStateResource.StateRules) {
+                var stateRule = planningAppState.getRule(customStateValueResource.Id);
+                if(stateRule != null) //Can be null is new rule added after creation of planning app
+                    customStateValueResource.Value = planningAppState.getRule(customStateValueResource.Id).StrValue;
+            }
+
             DateTime minDueDate = planningAppState.SetMinDueByDate(planningApp);
             planningAppStateResource.MinDueByDate = minDueDate.SettingDateFormat();
-            //planningAppStateResource.DueByDateEditable = minDueDate > CurrentDateSingleton.setDate(DateTime.Now).getCurrentDate();
             planningAppStateResource.DueByDateEditable = minDueDate > SystemDate.Instance.date;
             
             return planningAppStateResource;
@@ -63,47 +69,21 @@ namespace vega.Controllers
             
             if(dueByDate != planningAppState.DueByDate) {
                 planningAppState.UpdateCustomDueByDate(dueByDate);
-                planningAppState.Notes = planningAppStateResource.Notes;
-                //Regenerate due by dates with custom completion date (if set)
-                planningApp.generateDueByDates();
+                planningApp.generateDueByDates();  //Regenerate due by dates
             }
 
             //Set any fields in the PlanningApp table that have been set in the Rule List
-            var planningAppFields = planningAppStateResource.StateRules.Where(r => r.isPlanningAppField == true).ToList();
-            planningApp.UpdateKeyFields(planningAppFields);
+            foreach (var customStateValueResource in planningAppStateResource.StateRules) 
+                planningAppState.getRule(customStateValueResource.Id).StrValue = customStateValueResource.Value;
 
+            //Store custom fields in planning state
+            planningApp.UpdateKeyFields(planningAppStateResource.StateRules);
 
-            // //TODO!!!!!!! Only Update Custom Fields if submitted by them
-            // if(planningAppStateResource.Reset == true)
-            // {
-            //     planningAppState.CustomDurationSet=false;
-            //     planningAppState.CustomDuration=0;
-            //     //Regenerate due by dates with custom completion date (if set)
-            //     planningApp.generateDueByDates();                
-            // }
-            // else if(planningAppStateResource.UpdateCustomFieldsOnly == true)
-            // {
-            //     //Set any fields in the PlanningApp table that have been set in the Rule List
-            //     var planningAppFields = planningAppStateResource.StateRules.Where(r => r.isPlanningAppField == true).ToList();
-            //     planningApp.UpdateKeyFields(planningAppFields);
-            // }
-            // else {
-            //     planningAppState.UpdateCustomDueByDate(dueByDate);
-            //     planningAppState.Notes = planningAppStateResource.Notes;
-            //     //Regenerate due by dates with custom completion date (if set)
-            //     planningApp.generateDueByDates();
-            // }
-
+            planningAppState.Notes = planningAppStateResource.Notes;
             repository.Update(planningAppState);
             await unitOfWork.CompleteAsync();
 
             return Ok();
         }
     }
-
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> UpdatePlanningAppState(int id, bool reset, [FromBody] UpdatePlanningAppStateResource planningAppStateResource)
-        // {
-        //     return Ok();
-        // }
 }

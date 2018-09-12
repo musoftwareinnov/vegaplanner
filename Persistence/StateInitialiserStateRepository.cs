@@ -51,28 +51,17 @@ namespace vega.Persistence
         }
         private StateInitialiser GetStateInitialiser(int id) {
 
-            //if(includeDeleted)
                 return this.vegaDbContext.StateInitialisers
                     .Where(si => si.Id == id)        
                     .Include(s => s.States)
                     .SingleOrDefault();
-            // else {
-            //     var states =  this.vegaDbContext.StateInitialisers
-            //         .Where(si => si.Id == id)        
-            //         .Include(s => s.States)
-            //         .SingleOrDefault();
-                
-            //     var includeDelete = states.States.Where(s => s.isDeleted == true).ToList();
-            //     states.States = includeDelete;
-            //     return states;
-            // }
         }
 
         public async Task<StateInitialiserState>  GetStateInitialiserState(int id) {
                 var res =  this.vegaDbContext.StateInitialiserState
                     .Where(si => si.Id == id)    
                     .Include(v => v.StateRules)
-                        .ThenInclude(vf => vf.StateRule)    
+                        .ThenInclude(vf => vf.StateRule)
                     .SingleOrDefaultAsync();
 
                 return await res;

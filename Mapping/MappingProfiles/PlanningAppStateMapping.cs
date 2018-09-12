@@ -38,8 +38,9 @@ namespace vega.Mapping.MappingProfiles
                     opt => opt.MapFrom(ps => ps.DynamicStateStatus()))
                 .ForMember(sis => sis.StateRules,
                     opt => opt.MapFrom(s => s.state.StateRules
-                        .Select(sr => new StateRule {   Id = sr.StateRule.Id, 
+                        .Select(sr => new StateRuleResource {   Id = sr.StateRule.Id, 
                                                         Name = sr.StateRule.Name,
+                                                        Value = "",
                                                         Type = sr.StateRule.Type,
                                                         isPlanningAppField = sr.StateRule.isPlanningAppField,
                                                         isMandatory = sr.StateRule.isPlanningAppField}))); 

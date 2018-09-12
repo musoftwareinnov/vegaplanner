@@ -22,6 +22,7 @@ namespace vega.Persistence
 
             var appState = vegaDbContext.PlanningAppState.Where(s => s.Id == id)
                                                             .Include(i => i.state)
+                                                            .Include(cv => cv.customStateValue)
                                                            .SingleOrDefault();
             
             appState.state = await stateRepository.GetStateInitialiserState(appState.state.Id);

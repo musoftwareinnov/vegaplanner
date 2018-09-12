@@ -94,15 +94,16 @@ export class VehicleFormComponent implements OnInit {
   submit() {
     var result$ = (this.vehicle.id) ? this.vehicleService.update(this.vehicle) : this.vehicleService.create(this.vehicle); 
     result$.subscribe(
-      // err => {
-      //     this.toastyService.error({
-      //     title: 'Error', 
-      //     msg: 'Vehicle was not saved.',
-      //     theme: 'bootstrap',
-      //     showClose: true,
-      //     timeout: 5000
-      // })
-      // },
+      error => {
+          console.warn("ERROR!!!");
+          this.toastyService.error({
+          title: 'Error', 
+          msg: 'Vehicle was not saved.',
+          theme: 'bootstrap',
+          showClose: true,
+          timeout: 5000
+      })
+      },
     vehicle => {
       this.toastyService.success({
         title: 'Success', 
