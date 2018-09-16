@@ -18,7 +18,8 @@ export class StateInitialiserStateFormComponent implements OnInit {
       completionTime: 2,
       alertToCompletionTime: 1,
       stateInitialiserId: 0,
-      stateRules: []
+      canDelete:true,
+      stateInitialiserStateCustomFields: []
     };
 
   orderId: any = 0;
@@ -31,8 +32,7 @@ export class StateInitialiserStateFormComponent implements OnInit {
     private toastyService: ToastyService,
     private stateInitialiserStateService: StateInitialiserStateService) { 
 
-    route.params.subscribe(p => { 
-                                  this.stateInitialiserState.id = +p['id'] || 0 });
+    route.params.subscribe(p => { this.stateInitialiserState.id = +p['id'] || 0 } );
     }
 
   ngOnInit() {
@@ -78,9 +78,6 @@ export class StateInitialiserStateFormComponent implements OnInit {
         showClose: true,
         timeout: 5000
       })
-  
-      //this.router.navigate(['/stateinitialisers/', this.stateInitialiserState.id])
-      this.router.navigate(['/stateinitialisers']);
     });
   }
 

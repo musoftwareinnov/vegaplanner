@@ -5,13 +5,8 @@
       <h3>Update State</h3>
 </div>
 
-<form #f="ngForm" (submit)="submit()">
+<form #f="ngForm" (submit)="submit()" >
   <div class="well">
-
-      <!-- <div *ngIf="stateInitialiserState.id==0" class="form-group">
-          <label for="prevStateName">Insert After State </label>
-          <input id="prevStateName" type="text" disabled="disabled" class="form-control" [(ngModel)]="prevStateName" name="prevStateName" required #orderId="ngModel">
-      </div> -->
 
       <div class="form-group">
           <label for="name">Name</label>
@@ -19,25 +14,30 @@
       </div>
       <!-- <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Please enter state name.</div> -->
 
-      <div *ngIf="stateInitialiserState.id>0" class="form-group">
+      <!-- <div *ngIf="stateInitialiserState.id>0" class="form-group">
           <label for="orderId">OrderBy</label>
           <input id="orderId" type="text" disabled="disabled" class="form-control" [(ngModel)]="stateInitialiserState.orderId" name="orderId" required #orderId="ngModel">
-      </div>
+      </div> -->
 
       <div class="form-group">
-          <label for="completionTime">Completion Time</label>
+          <label for="completionTime">Completion Time (Days)</label>
           <input id="completionTime" type="text" class="form-control" [(ngModel)]="stateInitialiserState.completionTime" name="completionTime" required #completionTime="ngModel">
       </div>
       <div class="alert alert-danger" *ngIf="completionTime.touched && !completionTime.valid || completionTime == 0">Please enter completion time (days).</div>
  
       <div class="form-group">
-          <label for="alertToCompletionTime">Alert</label>
+          <label for="alertToCompletionTime">Alert (Days)</label>
           <input id="alertToCompletionTime" type="text" class="form-control" [(ngModel)]="stateInitialiserState.alertToCompletionTime" name="alertToCompletionTime" required #alertCompletionTime="ngModel">
       </div>
+
+      <div class="form-group">
+        <label for="canDelete">State Deletable?</label>
+        <input id="canDelete" type="text" class="form-control" disabled="disabled" [(ngModel)]="stateInitialiserState.canDelete" name="canDelete">
+    </div>
       <!-- <div class="alert alert-danger" *ngIf="alertToCompletionTime.touched && !alertToCompletionTime.valid">Please enter Alert in days.</div> -->
 
       <div *ngIf="stateInitialiserState.stateInitialiserStateCustomFields.length>0">
-        <h4>States Rules</h4>
+        <h4>Custom Fields</h4>
         <div class="well">
             <table class="table">
                 <thead>
@@ -55,10 +55,7 @@
                     <td>{{ s.isMandatory}} </td>
                     <!-- <td>
                         <a *ngIf="v.id>0" [routerLink]="['/stateinitialiserstate/', v.id]" [queryParams]="{ orderId: v.orderId }">Edit</a>
-                    </td>
-                    <td>
-                        <a [routerLink]="['/stateinitialiserstate/', 0]" [queryParams]="{ orderId: v.orderId, initialiserId: stateInitialiser.id }">Insert</a>
-                    </td> -->
+                    </td>-->
                 </tr>
             </table>
         </div>
@@ -66,7 +63,9 @@
 
 
 
-    <button class="btn btn-primary" [disabled]="!f.valid">Save State</button>
-    <button *ngIf="stateInitialiserState.id" class="btn btn-danger" type="button" (click)="delete()">Delete</button>
+    <button class="btn btn-primary" [disabled]="!f.valid">Save</button>
+    <button *ngIf="stateInitialiserState.id && stateInitialiserState.canDelete==true" class="btn btn-danger" type="button" (click)="delete()">Delete</button>
+    <button class="btn btn-primary" [routerLink]="['/stateinitialisers/',stateInitialiserId]">Close</button>
+
   </div>
 </form>

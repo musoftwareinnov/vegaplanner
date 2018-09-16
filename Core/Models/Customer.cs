@@ -8,6 +8,7 @@ namespace vega.Core.Models
     {
         public int Id { get; set; }
 
+
         public Contact CustomerContact { get; set; }
 
         public Address CustomerAddress { get; set; }
@@ -16,5 +17,10 @@ namespace vega.Core.Models
         [StringLength(1024)]
         public string Notes { get; set; }
         public ICollection<PlanningApp> planningApps { get; set; }
+
+        public Customer()
+        {
+            planningApps = new List<PlanningApp>();
+        }
     }
 }

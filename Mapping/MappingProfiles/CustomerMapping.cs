@@ -47,7 +47,9 @@ namespace vega.Mapping.MappingProfiles
                         opt => opt.MapFrom(ps =>  ps.CustomerContact.TelephoneWork))
                     .ForMember(psr => psr.TelephoneMobile,                    
                         opt => opt.MapFrom(ps =>  ps.CustomerContact.TelephoneMobile))
-
+                    .ForMember(psr => psr.FullName, 
+                        opt => opt.MapFrom(ps =>  ps.CustomerContact.FirstName  
+                                            + ' ' + ps.CustomerContact.LastName))
                     //Address Details
                     .ForMember(psr => psr.AddressLine1,                    
                         opt => opt.MapFrom(ps =>  ps.CustomerAddress.AddressLine1))
@@ -55,6 +57,10 @@ namespace vega.Mapping.MappingProfiles
                         opt => opt.MapFrom(ps =>  ps.CustomerAddress.AddressLine2))
                     .ForMember(psr => psr.Postcode,                    
                         opt => opt.MapFrom(ps =>  ps.CustomerAddress.Postcode))
+
+                    //No of planning apps associated with customer
+                     .ForMember(psr => psr.planningAppsCount,                    
+                        opt => opt.MapFrom(ps =>  ps.planningApps.Count))                  
 
                     .ForMember(psr => psr.NameSummary,
                     opt => opt.MapFrom(ps =>  ps.CustomerContact.FirstName  
@@ -69,18 +75,6 @@ namespace vega.Mapping.MappingProfiles
                                             + ", " + ps.CustomerAddress.Postcode ));
                                             
             CreateMap<CustomerResource, Customer>()
-                // .ForMember(psr => psr.CustomerAddress.Address1,
-                //     opt => opt.MapFrom(ps =>  ps.Address1))
-                // .ForMember(psr => psr.CustomerAddress.Address2,
-                //     opt => opt.MapFrom(ps =>  ps.Address2))
-                // .ForMember(psr => psr.CustomerAddress.Postcode,
-                //     opt => opt.MapFrom(ps =>  ps.Postcode))
-                // .ForMember(psr => psr.CustomerAddress.EmailAddress,
-                //     opt => opt.MapFrom(ps =>  ps.EmailAddress))
-                // .ForMember(psr => psr.CustomerAddress.TelephoneHome,
-                //     opt => opt.MapFrom(ps =>  ps.TelephoneHome))
-                // .ForMember(psr => psr.CustomerAddress.TelephoneMobile,
-                //     opt => opt.MapFrom(ps =>  ps.TelephoneMobile))
 
                 //Contact Details
                 .ForPath(d => d.CustomerContact.FirstName, 

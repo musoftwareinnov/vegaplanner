@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace vega.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -139,6 +139,7 @@ namespace vega.Migrations
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     OrderId = table.Column<int>(nullable: false),
                     StateInitialiserId = table.Column<int>(nullable: false),
+                    canDelete = table.Column<bool>(nullable: false),
                     isDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -161,9 +162,11 @@ namespace vega.Migrations
                     ApplicationNo = table.Column<string>(nullable: true),
                     CurrentPlanningStatusId = table.Column<int>(nullable: false),
                     CustomerId = table.Column<int>(nullable: false),
+                    CustomerReferenceId = table.Column<string>(nullable: true),
                     LastUpdate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     Notes = table.Column<string>(nullable: true),
+                    SearchCriteria = table.Column<string>(nullable: true),
                     StateInitialiserId = table.Column<int>(nullable: false),
                     DevelopmentAddress_AddressLine1 = table.Column<string>(maxLength: 255, nullable: true),
                     DevelopmentAddress_AddressLine2 = table.Column<string>(nullable: true),
@@ -228,7 +231,7 @@ namespace vega.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StateInitialiserStateCustomField",
+                name: "StateInitialiserStateCustomFields",
                 columns: table => new
                 {
                     StateInitialiserStateId = table.Column<int>(nullable: false),
@@ -236,15 +239,15 @@ namespace vega.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StateInitialiserStateCustomField", x => new { x.StateInitialiserStateId, x.StateInitialiserCustomFieldId });
+                    table.PrimaryKey("PK_StateInitialiserStateCustomFields", x => new { x.StateInitialiserStateId, x.StateInitialiserCustomFieldId });
                     table.ForeignKey(
-                        name: "FK_StateInitialiserStateCustomField_StateInitialiserCustomFields_StateInitialiserCustomFieldId",
+                        name: "FK_StateInitialiserStateCustomFields_StateInitialiserCustomFields_StateInitialiserCustomFieldId",
                         column: x => x.StateInitialiserCustomFieldId,
                         principalTable: "StateInitialiserCustomFields",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StateInitialiserStateCustomField_StateInitialiserState_StateInitialiserStateId",
+                        name: "FK_StateInitialiserStateCustomFields_StateInitialiserState_StateInitialiserStateId",
                         column: x => x.StateInitialiserStateId,
                         principalTable: "StateInitialiserState",
                         principalColumn: "Id",
@@ -434,8 +437,8 @@ namespace vega.Migrations
                 column: "StateInitialiserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StateInitialiserStateCustomField_StateInitialiserCustomFieldId",
-                table: "StateInitialiserStateCustomField",
+                name: "IX_StateInitialiserStateCustomFields_StateInitialiserCustomFieldId",
+                table: "StateInitialiserStateCustomFields",
                 column: "StateInitialiserCustomFieldId");
 
             migrationBuilder.CreateIndex(
@@ -461,7 +464,7 @@ namespace vega.Migrations
                 name: "PlanningAppStateCustomFields");
 
             migrationBuilder.DropTable(
-                name: "StateInitialiserStateCustomField");
+                name: "StateInitialiserStateCustomFields");
 
             migrationBuilder.DropTable(
                 name: "VehicleFeatures");

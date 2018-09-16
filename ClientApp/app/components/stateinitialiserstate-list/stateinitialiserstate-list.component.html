@@ -35,10 +35,10 @@
         <td>{{ v.completionTime}}</td>
         <td>{{ v.alertToCompletionTime}} </td>
         <td>
-            <a *ngIf="v.id>0" [routerLink]="['/stateinitialiserstate/', v.id]" [queryParams]="{ orderId: v.orderId }">Edit</a>
+            <a *ngIf="v.id>0" [routerLink]="['/stateinitialiserstate/', v.id]" [queryParams]="{ orderId: v.orderId, initialiserId: stateInitialiser.id }" class="btn btn-primary btn-xs glyphicon glyphicon-edit"></a>
         </td>
         <td>
-            <a [routerLink]="['/stateinitialiserstate/', 0]" [queryParams]="{ orderId: v.orderId, initialiserId: stateInitialiser.id }">Insert</a>
+            <a [routerLink]="['/stateinitialiserstate/', 0]" [queryParams]="{ orderId: v.orderId, initialiserId: stateInitialiser.id }" class="btn btn-primary btn-xs glyphicon glyphicon-plus-sign"></a>
         </td>
         </tr>
     </tbody>

@@ -31,6 +31,7 @@ export class PlanningAppNewComponent implements OnInit {
       companyName: "",
       firstName: "",
       lastName: "",
+      fullName: "",
       emailAddress: "",
       telephoneMobile:"",
       telephoneWork:""

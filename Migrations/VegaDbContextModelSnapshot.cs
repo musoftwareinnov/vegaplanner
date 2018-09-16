@@ -136,6 +136,10 @@ namespace vega.Migrations
 
                     b.Property<string>("Notes");
 
+                    b.Property<string>("PlanningReferenceId");
+
+                    b.Property<string>("SearchCriteria");
+
                     b.Property<int>("StateInitialiserId");
 
                     b.HasKey("Id");
@@ -274,6 +278,8 @@ namespace vega.Migrations
                     b.Property<int>("OrderId");
 
                     b.Property<int>("StateInitialiserId");
+
+                    b.Property<bool>("canDelete");
 
                     b.Property<bool>("isDeleted");
 

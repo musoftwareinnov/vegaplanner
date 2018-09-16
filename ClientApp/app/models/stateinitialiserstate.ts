@@ -1,4 +1,5 @@
 import { StateRule } from "./StateRule";
+import { CustomField } from "./CustomField";
 
 export interface StateInitialiserState { 
     id: number;
@@ -7,5 +8,6 @@ export interface StateInitialiserState {
     completionTime: number;
     alertToCompletionTime: number;
     stateInitialiserId: number;
-    stateRules: StateRule[];
+    canDelete:boolean;
+    stateInitialiserStateCustomFields: CustomField[];
 }

@@ -11,8 +11,8 @@ using vega.Persistence;
 namespace vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    [Migration("20180912120534_Initial")]
-    partial class Initial
+    [Migration("20180914112305_InitialModel")]
+    partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,6 +129,8 @@ namespace vega.Migrations
 
                     b.Property<int>("CustomerId");
 
+                    b.Property<string>("CustomerReferenceId");
+
                     b.Property<DateTime>("LastUpdate");
 
                     b.Property<string>("Name")
@@ -136,6 +138,8 @@ namespace vega.Migrations
                         .HasMaxLength(255);
 
                     b.Property<string>("Notes");
+
+                    b.Property<string>("SearchCriteria");
 
                     b.Property<int>("StateInitialiserId");
 
@@ -254,7 +258,7 @@ namespace vega.Migrations
 
                     b.HasIndex("StateInitialiserCustomFieldId");
 
-                    b.ToTable("StateInitialiserStateCustomField");
+                    b.ToTable("StateInitialiserStateCustomFields");
                 });
 
             modelBuilder.Entity("vega.Core.Models.States.StateInitialiserState", b =>
@@ -275,6 +279,8 @@ namespace vega.Migrations
                     b.Property<int>("OrderId");
 
                     b.Property<int>("StateInitialiserId");
+
+                    b.Property<bool>("canDelete");
 
                     b.Property<bool>("isDeleted");
 

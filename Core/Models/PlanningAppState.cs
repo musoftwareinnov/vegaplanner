@@ -149,5 +149,23 @@ namespace vega.Core.Models
         public bool isCustomDuration() {
             return this.CustomDurationSet;
         }
+
+        public bool mandatoryFieldsSet() {  
+
+            //get number of mandatory fields
+            int  mandatoryCount = this.state.StateInitialiserStateCustomFields
+                                    .Where(m => m.StateInitialiserCustomField.isMandatory==true).Count();
+
+            foreach(var pcf in this.customFields) {
+                var scf = this.state.StateInitialiserStateCustomFields
+                                .Where(p => p.StateInitialiserCustomFieldId == pcf.StateInitialiserStateCustomFieldId)
+                                .SingleOrDefault();
+
+                if(scf != null)
+                    if(!string.IsNullOrEmpty(pcf.StrValue) && scf.StateInitialiserCustomField.isMandatory == true)
+                        mandatoryCount--;
+            }
+            return mandatoryCount==0;
+         }
     }
 }

@@ -11,8 +11,8 @@ using vega.Persistence;
 namespace vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    [Migration("20180912122233_InitialInitialSeeding")]
-    partial class InitialInitialSeeding
+    [Migration("20180914124107_AddPLanningRefID")]
+    partial class AddPLanningRefID
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -136,6 +136,10 @@ namespace vega.Migrations
                         .HasMaxLength(255);
 
                     b.Property<string>("Notes");
+
+                    b.Property<string>("PlanningReferenceId");
+
+                    b.Property<string>("SearchCriteria");
 
                     b.Property<int>("StateInitialiserId");
 
@@ -275,6 +279,8 @@ namespace vega.Migrations
                     b.Property<int>("OrderId");
 
                     b.Property<int>("StateInitialiserId");
+
+                    b.Property<bool>("canDelete");
 
                     b.Property<bool>("isDeleted");
 

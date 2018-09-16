@@ -14,6 +14,6 @@ namespace vega.Controllers.Resources
         public string StateStatus { get; set; }
         public bool CurrentState { get; set; }
         public bool isCustomDuraton  { get; set; }
-
+        public bool mandatoryFieldsSet { get; set; }
     }
 }

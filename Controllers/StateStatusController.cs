@@ -25,7 +25,7 @@ namespace vega.Controllers
         }
 
         [HttpGet("{customerId}")]
-        public async Task<IEnumerable<StateStatusResource>> GetCustomerStatuses(int customerId)
+        public IEnumerable<StateStatusResource> GetCustomerStatuses(int customerId)
         {
             var statuses = repository.GetStateStatusListCustomer(customerId);
 

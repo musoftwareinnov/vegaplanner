@@ -1,4 +1,5 @@
 import { StateRule } from "./StateRule";
+import { CustomField } from "./CustomField";
 
 export interface PlanningAppState {
     id: number; 
@@ -10,6 +11,8 @@ export interface PlanningAppState {
     minDueByDate: string;
     dueByDateEditable: boolean;
     isCustomDuration: boolean;
-    stateRules: StateRule[];
+    mandatoryFieldsSet: boolean;
+    planningAppId: string;
+    planningAppStateCustomFieldsResource: CustomField[];
     notes: string;
 }

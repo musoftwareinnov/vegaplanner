@@ -42,10 +42,8 @@ namespace vega.Persistence
                 modelBuilder.Entity<StateInitialiserStateCustomField>().HasKey(sr => new { sr.StateInitialiserStateId, sr.StateInitialiserCustomFieldId });
 
                 // modelBuilder.Entity<PlanningAppState>()
-                //     .HasOne(b => b.PlanningApp)
-                //     .WithMany(a => a.PlanningAppStates)
-                //     .IsRequired()
-                //     .OnDelete(DeleteBehavior.Cascade);       
+                //     .OwnsOne(b => b.PlanningApp)
+                //     .OnDelete(DeleteBehavior.Restrict);       
 
         }
     }

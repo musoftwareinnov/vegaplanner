@@ -25,6 +25,8 @@ namespace vega.Controllers
         private readonly IStateInitialiserRepository stateInitialiserRepository;
         private readonly IPlanningAppStateRepository planningAppStateRepository;
 
+        private readonly ICustomerRepository customerRepository;
+
         public IStateStatusRepository statusListRepository { get; }
         public DateSettings dateSettings { get; set; }
 
@@ -36,6 +38,7 @@ namespace vega.Controllers
                                      IPlanningAppStateRepository planningAppStateRepository, 
                                      IUnitOfWork unitOfWork,
                                      IStateStatusRepository statusListRepository,
+                                     ICustomerRepository customerRepository,
                                      IStateInitialiserRepository stateInitialiserRepository)
         {
             this.unitOfWork = unitOfWork;
@@ -44,6 +47,7 @@ namespace vega.Controllers
             this.mapper = mapper;
             this.statusListRepository = statusListRepository;
             this.stateInitialiserRepository = stateInitialiserRepository;
+            this.customerRepository = customerRepository;
         }
 
         [HttpPost]
@@ -60,11 +64,16 @@ namespace vega.Controllers
 
             if(stateInitialiser.States.Count > 0)
             {
+
                 repository.Add(planningApp, stateInitialiser);
-
                 await unitOfWork.CompleteAsync();
-
                 planningApp = await repository.GetPlanningApp(planningApp.Id, includeRelated: true);
+
+                //Generate Customer Reference
+                var customer = await customerRepository.GetCustomer(planningApp.CustomerId,includeRelated:false);
+                planningApp.genCustomerReferenceId(customer);
+                await unitOfWork.CompleteAsync();  //Save reference number
+                
                 result = mapper.Map<PlanningApp, PlanningAppResource>(planningApp);
                 result.BusinessDate = CurrentDate.SettingDateFormat();
             }

@@ -1,4 +1,4 @@
-<h2>Applications In Progress</h2>
+<h3>Applications In Progress</h3>
 
 <div class="well">
   <div class="input-group">
@@ -31,7 +31,7 @@
   <thead>
     <tr>
       <th></th>
-      <th>App Id</th>
+      <th>Reference Id</th>
       <th>Customer</th>
       <th>Description</th>
       <th>Status</th>
@@ -41,12 +41,7 @@
       <th>Completion Date</th>
     </tr>
   </thead>
-
-  <!-- <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'" 
-                                          [class.highlightTerminated]="v.planningStatus == 'Terminated'"
-                                          [class.highlightArchived]="v.planningStatus == 'Archived'"
-                                          [class.highlightCompleted]="v.planningStatus == 'Complete'"
-                                          [class.highlightDue]="v.currentStateStatus == 'Due'"> -->
+  
     <tr *ngFor="let v of queryResult.items">
       <div *ngIf="v.currentStateStatus=='Complete'">
           <td><button class="btn btn-success btn-xs glyphicon glyphicon-ok" type="button"></button> </td>
@@ -60,7 +55,7 @@
       <div *ngIf="v.currentStateStatus=='Overdue'">
             <td><button class="btn btn-danger btn-xs glyphicon glyphicon-exclamation-sign" type="button"></button></td>
       </div>
-      <td>{{ v.id }}</td>
+      <td>{{ v.planningReferenceId }}</td>
       <td>{{ v.customerName}}</td>
       <td>{{ v.name }}</td>
       <td>{{ v.currentStateStatus }}</td>

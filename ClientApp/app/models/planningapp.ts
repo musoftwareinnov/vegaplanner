@@ -3,7 +3,10 @@ import { Developer } from './developer';
 import { Address } from './address';
 export interface PlanningApp {
     id: number; 
+    planningReferenceId: string;
     customer: Customer;
+    developer: Developer;
+    developmentAddress: Address;
     name: string;
     businessDate: string;
     planningStatus: string;

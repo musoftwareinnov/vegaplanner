@@ -1,3 +1,4 @@
+import { PlanningApp } from './../../models/planningapp';
 import { PlanningAppState } from './../../models/PlanningAppState';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,10 +21,13 @@ export class PlanningAppStateFormComponent implements OnInit {
       currentState: false,
       minDueByDate: "",
       dueByDateEditable: false,
-      stateRules: [],
+      planningAppStateCustomFieldsResource: [],
       isCustomDuration: false,
+      mandatoryFieldsSet: false,
+      planningAppId: "",
       notes: "",
     };
+  planningAppId: number = 0;
   
   updatedDueByDate: Date = new Date();
   calMinDate: Date = new Date();
@@ -44,6 +48,7 @@ export class PlanningAppStateFormComponent implements OnInit {
      'DD.MM.YYYY',
      'shortDate'
    ];
+
    format: string = this.formats[0];
    dateOptions: any = {
      formatYear: 'YY',
@@ -63,7 +68,9 @@ export class PlanningAppStateFormComponent implements OnInit {
     private planningAppStateService: PlanningAppStateService) { 
 
     route.params.subscribe(p => { this.planningAppState.id = +p['id'] || 0})
+    route.params.subscribe(pid => { this.planningAppId = +pid['planningAppId'] || 0})
 
+    console.warn("PID=" + this.planningAppId);
     //Calender Specific Settings
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsRangeValue = [this.bsValue, this.maxDate];
@@ -106,8 +113,6 @@ export class PlanningAppStateFormComponent implements OnInit {
     this.planningAppState.dueByDate  = moment(this.updatedDueByDate).format('DD-MM-YYYY');
     var result$ = this.planningAppStateService.updatePlanningAppState(this.planningAppState); 
 
-    console.warn(this.planningAppState.stateRules);
-
     result$.subscribe(
       planningAppState => {
       this.toastyService.success({
@@ -126,8 +131,6 @@ export class PlanningAppStateFormComponent implements OnInit {
   saveRules() {
     this.planningAppState.dueByDate  = moment(this.updatedDueByDate).format('DD-MM-YYYY');
     var result$ = this.planningAppStateService.updatePlanningAppState(this.planningAppState); 
-
-    console.warn(this.planningAppState.stateRules);
 
     result$.subscribe(
       planningAppState => {

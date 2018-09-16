@@ -24,6 +24,8 @@ namespace vega.Mapping.MappingProfiles
                     opt => opt.MapFrom(ps => ps.CompletionDate == null ? "" : ps.CompletionDate.Value.ToLocalTime().SettingDateFormat()))
                 .ForMember(psr => psr.StateStatus,
                     opt => opt.MapFrom(ps => ps.DynamicStateStatus()))
+                .ForMember(sis => sis.mandatoryFieldsSet,
+                    opt => opt.MapFrom(s => s.mandatoryFieldsSet()))
                 .ForMember(psr => psr.isCustomDuraton,
                     opt => opt.MapFrom(ps => ps.isCustomDuration()));
 

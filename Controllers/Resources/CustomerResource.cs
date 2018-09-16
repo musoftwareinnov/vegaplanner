@@ -19,6 +19,9 @@ namespace vega.Controllers.Resources
         public string CustomerAddressSummary { get; set; }
         public string Notes { get; set; }
         public string NameSummary { get; set;}
-        public ICollection<PlanningAppSummaryResource> planningApps { get; set; }
+        public string FullName { get; set;}
+        public int planningAppsCount { get; set; }
+        
+        //public ICollection<PlanningAppSummaryResource> planningApps { get; set; }
     }
 }

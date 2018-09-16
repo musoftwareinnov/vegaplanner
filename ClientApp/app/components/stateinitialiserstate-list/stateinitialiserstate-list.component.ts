@@ -44,27 +44,5 @@ export class StateInitialiserStateListComponent implements OnInit {
             }
         });
   }
-
-  // submit() {
-
-  //   console.warn("Submit -> "  + this.customer.id);
-  //   var result$ = (this.customer.id) ? this.customerService.update(this.customer) : this.customerService.create(this.customer); 
-
-
-  //   result$.subscribe(
-
-  //     customer => {
-  //     this.toastyService.success({
-  //       title: 'Success', 
-  //       msg: 'Customer was sucessfully saved.',
-  //       theme: 'bootstrap',
-  //       showClose: true,
-  //       timeout: 5000
-  //     })
-  
-  //     // this.router.navigate(['/customers/', customer.id])
-  //     this.router.navigate(['/customers'])
-  //   });
-  // }
 }
 

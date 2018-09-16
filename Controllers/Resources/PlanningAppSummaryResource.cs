@@ -3,6 +3,7 @@ namespace vega.Controllers.Resources
     public class PlanningAppSummaryResource
     {
         public int Id { get; set; }
+        public string PlanningReferenceId { get; set; }
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
         public string Name { get; set; }

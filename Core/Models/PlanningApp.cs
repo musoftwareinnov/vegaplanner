@@ -17,6 +17,7 @@ namespace vega.Core.Models
         // public PlanningAppStatus PlanningAppStatus { get; set; }
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
+        public String PlanningReferenceId { get; set; }
         public int StateInitialiserId { get; set; }
         public StateInitialiser StateInitialiser { get; set; }
         public int CurrentPlanningStatusId { get; set; }
@@ -25,6 +26,7 @@ namespace vega.Core.Models
         public Contact Developer { get; set; }
         public Address DevelopmentAddress { get; set; }
 
+        public String SearchCriteria { get; set; }
         // public Contact CaseOfficer { get; set; }
         // public string CaseOfficer  { get; set; }
         // 
@@ -185,6 +187,8 @@ namespace vega.Core.Models
         public void Terminate(List<StateStatus> statusList)
         {   
             CurrentPlanningStatus = statusList.Where(p => p.Name == StatusList.AppTerminated).SingleOrDefault();
+            //this.Current().CompletionDate = SystemDate.Instance.date;
+            
         }
 
         public void UpdateKeyFields(IEnumerable<PlanningAppStateCustomFieldResource> fieldsToUpdate)
@@ -232,6 +236,16 @@ namespace vega.Core.Models
 
         //****************/
         //Helper functions
+
+        //Planning id for customer usage
+        public void genCustomerReferenceId(Customer customer) {
+
+            PlanningReferenceId = "CDS/" + customer.CustomerContact.FirstName.Substring(0,1)
+                                        + customer.CustomerContact.LastName.Substring(0,1)
+                                        + customer.CustomerAddress.Postcode.Substring(0,3)
+                                        + "/"
+                                        + this.Id.ToString("D3");
+        }
 
         public void SetCurrent(PlanningAppState planningAppState) {
 

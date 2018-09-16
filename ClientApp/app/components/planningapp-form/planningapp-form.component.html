@@ -1,10 +1,5 @@
-<h1>Planning Application : {{ planningApp.id }}</h1>
+<h3>Planning Ref : {{ planningApp.planningReferenceId }}</h3>
 
-<!-- <style>
-    input[type="text"], textarea {
-        background-color : #e20b0b; 
-  }
-  </style> -->
   {{ error | json }}
 <form class="form-horizontal" *ngIf="planningApp.planningStatus=='Terminated'">
 <div class="form-group">
@@ -129,9 +124,11 @@
           </div>
           <td>{{ v.dateCompleted }}</td>
           <td>{{ v.stateStatus }}</td>
-
-          <td>
-            <a [routerLink]="['/planningappstate/', v.id]" class="btn btn-primary btn-xs glyphicon glyphicon-edit"> </a>
+          <td *ngIf="v.mandatoryFieldsSet==false">
+            <a [routerLink]="['/planningappstate/', v.id]" [queryParams]="{ planningAppId: Id }" class="btn btn-danger btn-xs glyphicon glyphicon-edit"> </a>
+          </td>
+          <td *ngIf="v.mandatoryFieldsSet==true">
+            <a [routerLink]="['/planningappstate/', v.id]" [queryParams]="{ planningAppId: Id }" class="btn btn-primary btn-xs glyphicon glyphicon-edit"> </a>
           </td>
         </tr>
       </tbody>
@@ -310,7 +307,7 @@
               <div class="form-group">
                   <label class="control-label col-sm-2" for="address1">Email</label>
                   <div class="col-sm-3">
-                    <input id="emailAddress" type="text" class="form-control" [(ngModel)]="planningApp.customer.emailAddress" name="emailAddress">
+                    <input id="emailAddress" type="text" class="form-control" [(ngModel)]="planningApp.developer.emailAddress" name="emailAddress">
                   </div>
                   <div class="col-sm-8">
                   </div>
@@ -318,7 +315,7 @@
               <div class="form-group">
                   <label class="control-label col-sm-2" for="telephoneMobile">Mobile No</label>
                   <div class="col-sm-3">
-                    <input id="telephoneMobile" type="text"  class="form-control" [(ngModel)]="planningApp.customer.telephoneMobile" name="telephoneMobile">
+                    <input id="telephoneMobile" type="text"  class="form-control" [(ngModel)]="planningApp.developer.telephoneMobile" name="telephoneMobile">
                   </div>
                   <div class="col-sm-8">
                   </div>
@@ -326,7 +323,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-2" for="telephoneWork">Work No</label>
                 <div class="col-sm-3">
-                  <input id="telephoneMobile" type="text"  class="form-control" [(ngModel)]="planningApp.customer.telephoneWork" name="telephoneWork">
+                  <input id="telephoneMobile" type="text"  class="form-control" [(ngModel)]="planningApp.developer.telephoneWork" name="telephoneWork">
                 </div>
                 <div class="col-sm-8">
                 </div>

@@ -18,6 +18,7 @@ namespace vega.Core.Models.States
         public bool isDeleted { get; set; }
         public StateInitialiser stateInitialiser;
 
+        public bool canDelete { get; set; }
         public ICollection<StateInitialiserStateCustomField> StateInitialiserStateCustomFields { get; set; }
 
         public StateInitialiserState()

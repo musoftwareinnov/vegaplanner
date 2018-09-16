@@ -41,6 +41,7 @@ export class PlanningAppFormComponent implements OnInit {
 
   planningApp: PlanningApp = {
     id: 0,
+    planningReferenceId: "",
     // customerId: 0,
     customer: {
       id: 0, 
@@ -55,6 +56,22 @@ export class PlanningAppFormComponent implements OnInit {
       telephoneWork:"",
       notes: "",
     },
+    developer: {
+      firstName: "",
+      lastName: "",
+      fullName: "",
+      companyName: "",
+      emailAddress: "",
+      telephoneMobile:"",
+      telephoneWork:"",
+    },
+    developmentAddress: {
+      CompanyName: "",
+      addressLine1: "",
+      addressLine2: "",
+      postcode: "",
+      geoLocation: ""
+     },
     name: "",
     businessDate: "",
     planningStatus:  "",
@@ -71,7 +88,7 @@ export class PlanningAppFormComponent implements OnInit {
   };
 
   interval: any = {};
-
+  
   constructor(
     private route: ActivatedRoute,
     private zone: NgZone,

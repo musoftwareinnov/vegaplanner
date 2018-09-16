@@ -45,30 +45,37 @@
 <table class="table">
   <thead>
     <tr>
-      <th>App Id</th>
+      <th></th>
+      <th>Reference Id</th>
       <th>Description</th>
       <th>Status</th>
       <th>State Status</th>
       <th>State</th>
       <th>Due By </th>
-      <th>Next State</th>
       <th>Exp Completion Date</th>
     </tr>
   </thead>
 
-  <tr *ngFor="let v of queryResult.items" [class.highlightOverdue]="v.currentStateStatus == 'Overdue'"
-                                          [class.highlightDue]="v.currentStateStatus == 'Due'"
-                                          [class.highlightTerminated]="v.planningStatus == 'Terminated'">
-      <td>{{ v.id }}</td>
+  <!-- <tr *ngFor="let v of queryResult.items" [class.highlightTerminated]="v.planningStatus == 'Terminated'"> -->
+  <tr *ngFor="let v of queryResult.items">
+      <div *ngIf="v.planningStatus=='Complete'">
+          <td><button class="btn btn-success btn-xs glyphicon glyphicon-ok" type="button"></button> </td>
+      </div>
+      <div *ngIf="v.planningStatus=='InProgress'">
+          <td><button class="btn btn-success btn-xs glyphicon glyphicon-thumbs-up" type="button"></button> </td>
+      </div>
+      <div *ngIf="v.planningStatus=='Terminated'">
+          <td><button class="btn btn-danger btn-xs glyphicon glyphicon-ban-circle" type="button"></button></td>
+    </div>
+      <td>{{ v.planningReferenceId }}</td>
       <td>{{ v.name }}</td>
       <td>{{ v.planningStatus }}</td>
       <td>{{ v.currentStateStatus }}</td>
       <td>{{ v.currentState }}</td>
       <td>{{ v.expectedStateCompletionDate }}</td>
-      <td>{{ v.nextState }}</td>
       <td>{{ v.completionDate }}</td>
       <td>
-        <a [routerLink]="['/planningapps/', v.id]">View</a>
+        <a [routerLink]="['/planningapps/', v.id]" class="btn btn-primary btn-xs glyphicon glyphicon-edit"></a>
       </td>
     </tr>
   </tbody>
