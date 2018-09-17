@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using vega.Core.Models;
 using vega.Core.Models.States;
+using vegaplanner.Core.Models.Security;
 
 namespace vega.Persistence
 {
-    public class VegaDbContext : DbContext
+    public class VegaDbContext : IdentityDbContext<AppUser>
     {
         
         public DbSet<Make> Makes { get; set; }
@@ -24,12 +26,17 @@ namespace vega.Persistence
         public DbSet<Address> DevelopmentAddress { get; set; }
         public DbSet<StateInitialiserCustomField> StateInitialiserCustomFields { get; set; }
 
+        //Security based contexts
+        public DbSet<InternalAppUser> AppUsers { get; set; }
+
         public VegaDbContext(DbContextOptions<VegaDbContext> options) : base (options)
         {
             
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+                base.OnModelCreating(modelBuilder);    //Required for Identity User!!!!
+
                 modelBuilder.Entity<VehicleFeature>().HasKey(vf => new { vf.VehicleId, vf.FeatureId });
                 modelBuilder.Entity<Vehicle>().OwnsOne(c => c.Contact);
 
