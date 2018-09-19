@@ -7,11 +7,30 @@
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
             </button>
-            <a class='navbar-brand' [routerLink]="['/home']">vega</a>
+            <a class='navbar-brand' [routerLink]="['/home']">Vega Planner</a>  
+            <!-- <a *ngIf="loginStatus" class='navbar-brand'>{{ userName }}</a>   -->
+            
+            <a *ngIf="loginStatus"><button type="button" style="text-align:center;" class="btn btn-success ">{{ userName }}</button></a>
+            <div class='clearfix'></div>
+            <div class='clearfix'></div>
         </div>
         <div class='clearfix'></div>
-        <div class='navbar-collapse collapse'>
-            <ul class='nav navbar-nav'>
+        <div class='clearfix'></div>
+        <div class='navbar-collapse collapse' id="navbarsExampleDefault">
+            <ul *ngIf="!loginStatus" class='nav navbar-nav'  id="loginComponents">
+                <li  [routerLinkActive]="['link-active']">
+                        <a [routerLink]="['/login']">
+                            <span class='glyphicon glyphicon-log-in'></span> Login
+                        </a>
+                    </li>
+            </ul>
+            <!-- <ul *ngIf="loginStatus" class='nav navbar-nav' id="loggedInComponents">    -->
+            <ul class='nav navbar-nav' id="loggedInComponents">           
+                <li [routerLinkActive]="['link-active']" >
+                        <a [routerLink]="['/login']" (click)="logout()">
+                            <span class='glyphicon glyphicon-log-out' href="#"></span> Logoff
+                        </a> 
+                    </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/home']">
                         <span class='glyphicon glyphicon-home'></span> Dashboard
@@ -22,9 +41,9 @@
                         <span class='glyphicon glyphicon-list-alt'></span> Apps In Progress <span class="badge badge-light">{{ planningStatistics.inProgress}}</span>
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
+                <li  [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
                         <a [routerLink]="['/planningapps/new']">
-                            <span class='glyphicon glyphicon-plus'></span> New Planning Application
+                            <span class='glyphicon glyphicon-plus'></span> New Planning App
                         </a>
                     </li>
                 <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
@@ -42,7 +61,7 @@
                         <span class='glyphicon glyphicon-question-sign'></span>Web Enquiries <span class="badge">5</span>
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
+                <li  [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
                         <a [routerLink]="['/planningapps/completed']">
                             <span class='glyphicon glyphicon-check'></span>Apps Completed <span class="badge">{{ planningStatistics.completed}}</span>
                         </a>
@@ -52,6 +71,7 @@
                             <span class='glyphicon glyphicon-cog'></span>State Generators
                         </a>
                     </li>
+        
                 <!-- <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
                     <a [routerLink]="['/vehicles']">
                         <span class='glyphicon glyphicon-home'></span> Vehicles

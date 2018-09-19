@@ -207,7 +207,7 @@ namespace vega
 
             app.UseAuthentication();
             app.UseDefaultFiles();
-
+            app.UseCors("AllowAll");
             app.UseStaticFiles();
 
             app.UseMvc(routes =>

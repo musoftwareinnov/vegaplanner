@@ -43,6 +43,17 @@ import { DrawingService } from './services/drawing.service';
 import { StateStatusService } from './services/statestatus.service';
 import { PlanningAppStateService } from './services/planninappstate.service';
 import { StatisticsService } from './services/statistics.service';
+import { UserService } from './shared/services/user.service';
+
+//Security
+import { HttpModule, XHRBackend } from '@angular/http';
+import { AuthenticateXHRBackend } from './authenticate-xhr.backend';
+import { BrowserModule } from '@angular/platform-browser';
+import { Ng2Webstorage} from 'ngx-webstorage';
+import { AccountModule }  from './components/account/account.module';
+import { ConfigService } from './shared/utils/config.service';
+import { AuthGuard } from './auth.guard';
+
 
 @NgModule({
     declarations: [
@@ -91,7 +102,7 @@ import { StatisticsService } from './services/statistics.service';
             { path: 'vehicles/:id', component: ViewVehicleComponent },
             { path: 'vehicles', component: VehicleListComponent },
             { path: 'planningapps/completed', component: PlanningAppListCompletedComponent },
-            { path: 'planningapps/new', component: PlanningAppNewComponent },
+            { path: 'planningapps/new', component: PlanningAppNewComponent, canActivate: [AuthGuard] },
             { path: 'planningapps', component: PlanningAppListComponent },
             { path: 'planningapps/all', component: PlanningAppListComponent },
             { path: 'planningapps/:id', component: PlanningAppFormComponent },
@@ -104,8 +115,15 @@ import { StatisticsService } from './services/statistics.service';
             { path: 'customers/new', component: CustomerFormComponent },
             { path: 'customers/edit/:id', component: CustomerFormComponent },
             { path: 'customers/planningapps/:id', component: CustomerPlanningAppListComponent },
-            { path: '**', redirectTo: 'home' }
-        ])
+            { path: '**', redirectTo: 'auth/login' }
+        ]),
+
+        //Security
+        BrowserModule,
+        HttpModule,
+        Ng2Webstorage,
+        AccountModule,
+        
     ],
 
     providers : [
@@ -121,7 +139,13 @@ import { StatisticsService } from './services/statistics.service';
         StateStatusService,
         StateInitialiserService,
         StateInitialiserStateService,
-        StatisticsService
+        StatisticsService,
+        UserService,
+        [ConfigService, { 
+            provide: XHRBackend, 
+            useClass: AuthenticateXHRBackend
+          }],
+        AuthGuard
     ]
 })
 export class AppModuleShared {

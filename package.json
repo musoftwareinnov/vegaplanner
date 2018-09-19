@@ -69,6 +69,7 @@
     "moment": "^2.22.2",
     "ng2-toasty": "^4.0.3",
     "ngx-bootstrap": "^3.0.1",
+    "ngx-webstorage": "^2.0.1",
     "popper.js": "^1.14.4"
   }
 }

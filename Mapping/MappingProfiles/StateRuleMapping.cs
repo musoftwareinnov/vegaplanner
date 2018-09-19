@@ -7,7 +7,7 @@ using vega.Core.Models;
 namespace vega.Mapping.MappingProfiles
 {
     public class StateRuleMapping : Profile
-    {
+    { 
         public StateRuleMapping()
         {  
             CreateMap<PlanningAppStateCustomFieldResource, StateInitialiserCustomField>();

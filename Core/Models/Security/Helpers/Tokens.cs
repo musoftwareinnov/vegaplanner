@@ -9,16 +9,15 @@ namespace vegaplanner.Core.Models.Security.Helpers
 {
     public class Tokens
     {
-      public static async Task<string> GenerateJwt(ClaimsIdentity identity, IJwtFactory jwtFactory,string userName, JwtIssuerOptions jwtOptions, JsonSerializerSettings serializerSettings)
+      public static async Task<JwtModel> GenerateJwt(ClaimsIdentity identity, IJwtFactory jwtFactory,string userName, JwtIssuerOptions jwtOptions, JsonSerializerSettings serializerSettings)
       {
-        var response = new
+        var response = new JwtModel
         {
-          id = identity.Claims.Single(c => c.Type == "id").Value,
-          auth_token = await jwtFactory.GenerateEncodedToken(userName, identity),
-          expires_in = (int)jwtOptions.ValidFor.TotalSeconds
+          Id = identity.Claims.Single(c => c.Type == "id"),
+          AuthToken = await jwtFactory.GenerateEncodedToken(userName, identity),
+          Expiry = (int)jwtOptions.ValidFor.TotalSeconds
         };
-
-        return JsonConvert.SerializeObject(response, serializerSettings);
+        return response;
       }
     }
 }
