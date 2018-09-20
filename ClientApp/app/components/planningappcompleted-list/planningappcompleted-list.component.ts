@@ -3,6 +3,7 @@ import { StateStatus } from './../../models/statestatus';
 import { PlanningAppService } from '../../services/planningapp.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastyService } from 'ng2-toasty';
+import { AuthGuard } from '../../auth.guard';
 ;
 
 @Component({
@@ -24,7 +25,10 @@ export class PlanningAppListCompletedComponent implements OnInit {
 
   constructor(private PlanningAppService: PlanningAppService,
               private StateStatusService: StateStatusService,
-              private toastyService: ToastyService,) { }
+              private toastyService: ToastyService,
+              private authGuard:AuthGuard) { 
+                  authGuard.canActivate();
+              }
 
   ngOnInit() {
     this.toastyService.wait({

@@ -8,9 +8,11 @@ using vega.Controllers.Resources;
 using vega.Core.Models;
 using vega.Core;
 using vega.Core.Models.States;
- 
+using Microsoft.AspNetCore.Authorization;
+
 namespace vega.Controllers
 {   
+    [Authorize(Policy = "ApiUser")]
     [Route("/api/statestatus")]
     public class StateStatusController: Controller
     {  

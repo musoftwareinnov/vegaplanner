@@ -19,10 +19,12 @@ using vegaplanner.Core.Models.Security.Resources;
 using Microsoft.AspNetCore.Http;
 
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace vegaplanner.Controllers
 {
- [Route("api/[controller]")] 
+    [Authorize(Policy = "ApiUser")]
+    [Route("api/[controller]/[action]")]
     public class AccountsController : Controller
     {
         private readonly IUserRepository userRepository;
@@ -69,22 +71,31 @@ namespace vegaplanner.Controllers
         [HttpGet]
         public async Task<IActionResult> Account()
         {
-        // retrieve the user info
+        //Retrieve the user info
         //HttpContext.User
         var userId = httpContextAccessor.HttpContext.User.Claims.Single(c => c.Type == "id");
-        var customer = await userRepository.Get(userId);
+        var user = await userRepository.Get(userId);
         
         return new OkObjectResult(new
         {
             Message = "This is secure API and user data!",
-            customer.Identity.FirstName,
-            customer.Identity.LastName,
-            customer.Identity.PictureUrl,
-            customer.Identity.FacebookId,
-            customer.Location,
-            customer.Locale,
-            customer.Gender
+            user.Identity.FirstName,
+            user.Identity.LastName,
+            user.Identity.PictureUrl,
+            user.Identity.FacebookId,
+            user.Identity.Email,
+            user.Location,
+            user.Locale,
+            user.Gender
         });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Accounts()
+        {
+            var users = await userRepository.Get();
+        
+            return Ok();
         }
     }
 

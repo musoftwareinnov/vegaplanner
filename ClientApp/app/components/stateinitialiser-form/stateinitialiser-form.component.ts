@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router
 import { ToastyService } from '../../../../node_modules/ng2-toasty';
 import { StateInitialiser } from '../../models/stateinitialiser';
 import { StateInitialiserService } from '../../services/stateinitialiser.service';
+import { AuthGuard } from '../../auth.guard';
 
 @Component({
   selector: 'app-stateinitialiser-form',
@@ -27,7 +28,9 @@ export class StateInitialiserFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastyService: ToastyService,
-    private stateInitialiserService: StateInitialiserService) { 
+    private stateInitialiserService: StateInitialiserService,
+    private authGuard:AuthGuard) { 
+        authGuard.canActivate();
     }
 
   ngOnInit() {

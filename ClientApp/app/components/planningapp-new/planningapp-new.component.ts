@@ -9,6 +9,7 @@ import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../../services/customer.service';
 import { StateInitialiserService } from '../../services/stateinitialiser.service';
+import { AuthGuard } from '../../auth.guard';
 
 @Component({
   selector: 'app-planningapp-new',
@@ -50,7 +51,10 @@ export class PlanningAppNewComponent implements OnInit {
               private toastyService: ToastyService,
               private customerService: CustomerService,
               private stateInitialiserService: StateInitialiserService,
-              private router: Router) { }
+              private router: Router,
+              private authGuard:AuthGuard) {
+                  authGuard.canActivate();
+               }
 
   ngOnInit() {
 

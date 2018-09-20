@@ -8,9 +8,11 @@ using vega.Core.Models;
 using vega.Core.Models.States;
 using vega.Controllers.Resources.StateInitialser;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace vega.Controllers
 {
+    [Authorize(Policy = "ApiUser")]
     [Route("/api/stateinitialisers")]
     public class StateInitialiserController : Controller
     {

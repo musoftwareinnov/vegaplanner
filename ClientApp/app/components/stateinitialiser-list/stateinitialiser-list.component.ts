@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StateInitialiserService } from '../../services/stateinitialiser.service';
+import { AuthGuard } from '../../auth.guard';
 
 @Component({
   selector: 'app-stateinitialiser-list',
@@ -13,8 +14,10 @@ export class StateInitialiserListComponent implements OnInit {
     pageSize: this.PAGE_SIZE
   };
 
-  constructor(private stateInitialiserService: StateInitialiserService) { }
-
+  constructor(private stateInitialiserService: StateInitialiserService,
+              private authGuard:AuthGuard) { 
+                authGuard.canActivate();
+    }
   ngOnInit() {
     this.populateStateInitialisers();
   }

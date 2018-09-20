@@ -10,14 +10,16 @@ using vega.Core;
 using vega.Core.Models.States;
 using vega.Persistence;
 using vega.Controllers.Resources.StateInitialser;
+using Microsoft.AspNetCore.Authorization;
 
 namespace vega.Controllers
 {
+    [Authorize(Policy = "ApiUser")]
     [Route("/api/stateinitialiserstates")]
     public class StateInitialiserStateController : Controller
     {
         private readonly IPlanningAppRepository planningAppRepository;
-        public StateInitialiserStateController(IMapper mapper, 
+        public StateInitialiserStateController(IMapper mapper,
                                                 IStateInitialiserStateRepository repository, 
                                                 IPlanningAppRepository planningAppRepository, 
                                                 IStateStatusRepository stateStatusRepository,
@@ -96,7 +98,7 @@ namespace vega.Controllers
 
             //update states from all current planning applications
             var apps =  planningAppRepository.GetPlanningAppsUsingGenerator(stateInitialiserState.StateInitialiserId, inProgress:true);
-            apps.ForEach(p => p.generateDueByDates());
+            apps.ForEach(p => p.updateDueByDates());
 
             await UnitOfWork.CompleteAsync();
 

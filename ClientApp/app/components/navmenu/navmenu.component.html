@@ -10,7 +10,10 @@
             <a class='navbar-brand' [routerLink]="['/home']">Vega Planner</a>  
             <!-- <a *ngIf="loginStatus" class='navbar-brand'>{{ userName }}</a>   -->
             
-            <a *ngIf="loginStatus"><button type="button" style="text-align:center;" class="btn btn-success ">{{ userName }}</button></a>
+            <a *ngIf="loginStatus" >
+                <span class='glyphicon glyphicon-user'></span> 
+                <button type="button" style="text-align:center;" class="btn btn-success ">{{ userName }}</button>
+            </a>
             <div class='clearfix'></div>
             <div class='clearfix'></div>
         </div>
@@ -24,8 +27,8 @@
                         </a>
                     </li>
             </ul>
-            <!-- <ul *ngIf="loginStatus" class='nav navbar-nav' id="loggedInComponents">    -->
-            <ul class='nav navbar-nav' id="loggedInComponents">           
+            <ul *ngIf="loginStatus" class='nav navbar-nav' id="loggedInComponents">   
+            <!-- <ul class='nav navbar-nav' id="loggedInComponents">            -->
                 <li [routerLinkActive]="['link-active']" >
                         <a [routerLink]="['/login']" (click)="logout()">
                             <span class='glyphicon glyphicon-log-out' href="#"></span> Logoff
@@ -71,18 +74,11 @@
                             <span class='glyphicon glyphicon-cog'></span>State Generators
                         </a>
                     </li>
-        
-                <!-- <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
-                    <a [routerLink]="['/vehicles']">
-                        <span class='glyphicon glyphicon-home'></span> Vehicles
-                    </a>
-                </li>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/vehicles/new']">
-                        <span class='glyphicon glyphicon-plus'></span> New Vehicles
-                    </a>
-                </li> -->
             </ul>
         </div>
     </div>
 </div>
+
+
+
+

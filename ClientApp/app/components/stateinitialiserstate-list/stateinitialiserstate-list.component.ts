@@ -5,6 +5,7 @@ import { CustomerService } from '../../services/customer.service';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
 import { ToastyService } from '../../../../node_modules/ng2-toasty';
 import { StateInitialiserService } from '../../services/stateinitialiser.service';
+import { AuthGuard } from '../../auth.guard';
 
 @Component({
   selector: 'app-stateinitialiserstate-list',
@@ -25,9 +26,10 @@ export class StateInitialiserStateListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastyService: ToastyService,
-    private stateInitialiserService: StateInitialiserService) { 
-
-    route.params.subscribe(p => { this.stateInitialiser.id = +p['id'] || 0})
+    private stateInitialiserService: StateInitialiserService,
+    private authGuard:AuthGuard) { 
+        authGuard.canActivate();
+        route.params.subscribe(p => { this.stateInitialiser.id = +p['id'] || 0})
     }
 
   ngOnInit() {

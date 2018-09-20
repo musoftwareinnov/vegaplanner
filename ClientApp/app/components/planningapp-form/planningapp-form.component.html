@@ -113,7 +113,7 @@
                 <td><button class="btn btn-danger btn-xs glyphicon glyphicon-exclamation-sign" type="button"></button></td>
           </div>
           <div *ngIf="v.stateStatus=='Overran'">
-              <td><button class="btn btn-success btn-xs glyphicon glyphicon-thumbs-down" type="button"></button></td>
+              <td><button class="btn btn-danger btn-xs glyphicon glyphicon-thumbs-down" type="button"></button></td>
           </div>
           <td>{{ v.stateName}}</td>
           <div *ngIf="v.isCustomDuraton==true">
@@ -125,10 +125,10 @@
           <td>{{ v.dateCompleted }}</td>
           <td>{{ v.stateStatus }}</td>
           <td *ngIf="v.mandatoryFieldsSet==false">
-            <a [routerLink]="['/planningappstate/', v.id]" [queryParams]="{ planningAppId: Id }" class="btn btn-danger btn-xs glyphicon glyphicon-edit"> </a>
+            <a [routerLink]="['/planningappstate/', v.id]" [skipLocationChange]="true" [queryParams]="{ planningAppId: Id }" class="btn btn-danger btn-xs glyphicon glyphicon-edit"> </a>
           </td>
           <td *ngIf="v.mandatoryFieldsSet==true">
-            <a [routerLink]="['/planningappstate/', v.id]" [queryParams]="{ planningAppId: Id }" class="btn btn-primary btn-xs glyphicon glyphicon-edit"> </a>
+            <a [routerLink]="['/planningappstate/', v.id]" [skipLocationChange]="true" [queryParams]="{ planningAppId: Id }" class="btn btn-primary btn-xs glyphicon glyphicon-edit"> </a>
           </td>
         </tr>
       </tbody>

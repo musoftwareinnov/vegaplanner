@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { StateInitialiserStateService } from '../../services/stateinitialiserstate.service';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
 import { ToastyService } from '../../../../node_modules/ng2-toasty';
+import { AuthGuard } from '../../auth.guard';
 
 @Component({
   selector: 'app-stateinitialiserstate-form',
@@ -30,9 +31,11 @@ export class StateInitialiserStateFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastyService: ToastyService,
-    private stateInitialiserStateService: StateInitialiserStateService) { 
+    private stateInitialiserStateService: StateInitialiserStateService,
+    private authGuard:AuthGuard) { 
+      authGuard.canActivate();
 
-    route.params.subscribe(p => { this.stateInitialiserState.id = +p['id'] || 0 } );
+      route.params.subscribe(p => { this.stateInitialiserState.id = +p['id'] || 0 } );
     }
 
   ngOnInit() {

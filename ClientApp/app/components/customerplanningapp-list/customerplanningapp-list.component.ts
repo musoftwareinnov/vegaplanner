@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router
 import { Customer } from '../../models/customer';
 import { StateStatusService } from '../../services/statestatus.service';
 import { StateStatus } from '../../models/statestatus';
+import { AuthGuard } from '../../auth.guard';
 
 @Component({
   selector: 'app-customerplanningapp-list',
@@ -33,8 +34,11 @@ export class CustomerPlanningAppListComponent implements OnInit {
   private router: Router,
   private PlanningAppService: PlanningAppService,
   private StateStatusService: StateStatusService,
-  private CustomerService: CustomerService) { 
+  private CustomerService: CustomerService,
+  private authGuard:AuthGuard) {
 
+    authGuard.canActivate();
+   
     route.params.subscribe(p => { this.query.customerId = +p['id'] || 0})
   }
 

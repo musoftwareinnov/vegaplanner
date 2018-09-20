@@ -53,6 +53,8 @@ import { Ng2Webstorage} from 'ngx-webstorage';
 import { AccountModule }  from './components/account/account.module';
 import { ConfigService } from './shared/utils/config.service';
 import { AuthGuard } from './auth.guard';
+import { JwtHeader } from './shared/utils/jwt.header';
+import { StorageServiceModule} from 'angular-webstorage-service';
 
 
 @NgModule({
@@ -94,7 +96,7 @@ import { AuthGuard } from './auth.guard';
         BsDatepickerModule.forRoot(),
         ToastyModule.forRoot(),
         RouterModule.forRoot([
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'vehicles/new', component: VehicleFormComponent },
@@ -102,7 +104,8 @@ import { AuthGuard } from './auth.guard';
             { path: 'vehicles/:id', component: ViewVehicleComponent },
             { path: 'vehicles', component: VehicleListComponent },
             { path: 'planningapps/completed', component: PlanningAppListCompletedComponent },
-            { path: 'planningapps/new', component: PlanningAppNewComponent, canActivate: [AuthGuard] },
+            { path: 'planningapps/new', component: PlanningAppNewComponent },
+            // { path: 'planningapps/new', component: PlanningAppNewComponent, canActivate: [AuthGuard] },
             { path: 'planningapps', component: PlanningAppListComponent },
             { path: 'planningapps/all', component: PlanningAppListComponent },
             { path: 'planningapps/:id', component: PlanningAppFormComponent },
@@ -118,12 +121,12 @@ import { AuthGuard } from './auth.guard';
             { path: '**', redirectTo: 'auth/login' }
         ]),
 
-        //Security
+        //Security/Login
         BrowserModule,
         HttpModule,
         Ng2Webstorage,
         AccountModule,
-        
+        StorageServiceModule
     ],
 
     providers : [
@@ -145,7 +148,8 @@ import { AuthGuard } from './auth.guard';
             provide: XHRBackend, 
             useClass: AuthenticateXHRBackend
           }],
-        AuthGuard
+        AuthGuard,
+        JwtHeader
     ]
 })
 export class AppModuleShared {

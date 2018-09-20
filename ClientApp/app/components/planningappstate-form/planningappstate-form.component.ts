@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { PlanningAppStateService } from '../../services/planninappstate.service';
 import * as moment from 'moment';
+import { AuthGuard } from '../../auth.guard';
 
 @Component({
   selector: 'app-planningappstate-form',
@@ -60,33 +61,37 @@ export class PlanningAppStateFormComponent implements OnInit {
   
    private conList: { conditionName:any, conditionValue: any } [];
 
-  
+
+   
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private toastyService: ToastyService,
-    private planningAppStateService: PlanningAppStateService) { 
+    private planningAppStateService: PlanningAppStateService,
+    private authGuard:AuthGuard) { 
 
-    route.params.subscribe(p => { this.planningAppState.id = +p['id'] || 0})
-    route.params.subscribe(pid => { this.planningAppId = +pid['planningAppId'] || 0})
-
-    console.warn("PID=" + this.planningAppId);
-    //Calender Specific Settings
-    this.maxDate.setDate(this.maxDate.getDate() + 7);
-    this.bsRangeValue = [this.bsValue, this.maxDate];
-    (this.tomorrow = new Date()).setDate(this.tomorrow.getDate() + 1);
-    (this.afterTomorrow = new Date()).setDate(this.tomorrow.getDate() + 2);
-    this.dateDisabled = [];
-    this.ignoreWeekends = [0,6];
-    this.events = [
-      { date: this.tomorrow, status: 'full' },
-      { date: this.afterTomorrow, status: 'partially' }
-    ];
-    // End of Calendar settings
-
-
-    this.conList = [ {conditionName: "planningAppId", conditionValue: ""}, {conditionName: "Build Regs Date1", conditionValue: ""} ]
-
+        authGuard.canActivate();
+    
+        route.params.subscribe(p => { this.planningAppState.id = +p['id'] || 0})
+        route.params.subscribe(pid => { this.planningAppId = +pid['planningAppId'] || 0})
+    
+        console.warn("PID=" + this.planningAppId);
+        //Calender Specific Settings
+        this.maxDate.setDate(this.maxDate.getDate() + 7);
+        this.bsRangeValue = [this.bsValue, this.maxDate];
+        (this.tomorrow = new Date()).setDate(this.tomorrow.getDate() + 1);
+        (this.afterTomorrow = new Date()).setDate(this.tomorrow.getDate() + 2);
+        this.dateDisabled = [];
+        this.ignoreWeekends = [0,6];
+        this.events = [
+          { date: this.tomorrow, status: 'full' },
+          { date: this.afterTomorrow, status: 'partially' }
+        ];
+        // End of Calendar settings
+    
+    
+        this.conList = [ {conditionName: "planningAppId", conditionValue: ""}, {conditionName: "Build Regs Date1", conditionValue: ""} ]
+    
     }
 
   ngOnInit() {

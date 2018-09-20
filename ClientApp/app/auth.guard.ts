@@ -9,13 +9,18 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
 
-    console.log("Can Activate!!!")
     if(!this.user.isLoggedIn())
     {
+       console.info("AuthGuard: Component Activation Unsuccessfull, user not logged in ")
        this.router.navigate(['/login']);
        return false;
     }
 
+    console.info("AuthGuard: Component Activation successfull ")
     return true;
+  }
+
+  getUserWebToken() {
+      this.user.getUwt();
   }
 }

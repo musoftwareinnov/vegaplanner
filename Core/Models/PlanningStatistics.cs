@@ -1,7 +1,7 @@
 namespace vega.Core
 {
     public class PlanningStatistics
-    {
+    { 
         public int InProgress;
         public int OnTime;
         public int Due;

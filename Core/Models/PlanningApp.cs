@@ -81,6 +81,7 @@ namespace vega.Core.Models
 
             if(!Completed()) {
                 var currentState = Current();
+
                 if(newStateInitialiser.OrderId > currentState.state.OrderId) {
 
                     //Remove states after current state
@@ -93,7 +94,8 @@ namespace vega.Core.Models
                     newState.CompletionDate = null;
                     newState.DueByDate = DateTime.Now;
                     PlanningAppStates.Add(newState);
-                    generateDueByDates();
+
+                    updateDueByDates();
                 }
             }
             return this;
@@ -107,13 +109,13 @@ namespace vega.Core.Models
                         var planningStateToRemove = this.PlanningAppStates.Where(s => s.state.Id == stateInitialiserState.Id).SingleOrDefault();
                         if(planningStateToRemove != null) {
                             this.PlanningAppStates.Remove(planningStateToRemove);
-                            generateDueByDates();
+                            updateDueByDates();
                         }
                 }
             }  
         }   
 
-        public void generateDueByDates() 
+        public void generateDueByDates()
         {
             if(!Completed()) {
 
@@ -137,8 +139,28 @@ namespace vega.Core.Models
                 SetCurrent(resetCurrent);
             }
         }
- 
   
+        public void updateDueByDates()  //Called when inserting a new state to an existing planning app
+        {
+            if(!Completed()) {
+
+                //Important - put states in order before processing!!
+                PlanningAppStates = PlanningAppStates.OrderBy(s => s.state.OrderId).ToList();
+                var prevState = new PlanningAppState();
+                var currState = Current();
+                var resetCurrent = Current();
+
+                while(currState != null) {
+                    if(!isFirstState(currState)) {
+                        prevState = SeekPrev();
+                        currState.AggregateDueByDate(prevState);
+                    }               
+                    currState = Next(currState);
+                }               
+                //Set original state 
+                SetCurrent(resetCurrent);
+            }
+        }
 
         public void NextState(List<StateStatus> statusList)
         {

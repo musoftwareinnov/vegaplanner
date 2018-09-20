@@ -13,11 +13,12 @@ using Microsoft.Extensions.Options;
 using vega.Core.Models.Settings;
 using vega.Core.Utils;
 using vega.Controllers.Resources.Statistics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace vegaplanner.Controllers
 {
     [Route("/api/planningappstatistics")]
-    public class PlanningStatisticsController
+    public class PlanningStatisticsController 
     {        private readonly IMapper mapper;
         private readonly IPlanningStatisticsRepository repository;
         private readonly IUnitOfWork unitOfWork;

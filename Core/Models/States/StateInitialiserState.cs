@@ -24,7 +24,7 @@ namespace vega.Core.Models.States
         public StateInitialiserState()
         {  
             StateInitialiserStateCustomFields = new Collection<StateInitialiserStateCustomField>();
-
+            canDelete = true;
         }
     }
 }

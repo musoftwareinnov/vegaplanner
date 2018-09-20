@@ -1,5 +1,6 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { CustomerService } from '../../services/customer.service';
+import { AuthGuard } from '../../auth.guard';
 
 
 @Component({
@@ -22,8 +23,12 @@ export class CustomerListComponent implements OnInit {
     sortBy:""
   };
 
-  constructor(private customerService: CustomerService) { }
-
+  constructor(private customerService: CustomerService,
+              private authGuard:AuthGuard) {
+  
+              authGuard.canActivate();
+    }
+    
   ngOnInit() {
     this.populateCustomers();
   }

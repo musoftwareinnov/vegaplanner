@@ -4,6 +4,7 @@ import { Customer } from '../../models/customer';
 import { CustomerService } from '../../services/customer.service';
 import { ActivatedRoute, Router } from '../../../../node_modules/@angular/router';
 import { ToastyService } from '../../../../node_modules/ng2-toasty';
+import { AuthGuard } from '../../auth.guard';
 
 @Component({
   selector: 'app-customer-form',
@@ -29,9 +30,11 @@ export class CustomerFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastyService: ToastyService,
-    private customerService: CustomerService) { 
+    private customerService: CustomerService,
+    private authGuard:AuthGuard) {
 
-    route.params.subscribe(p => { this.customer.id = +p['id'] || 0})
+      authGuard.canActivate();
+      route.params.subscribe(p => { this.customer.id = +p['id'] || 0})
     }
 
   ngOnInit() {

@@ -36,6 +36,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
     constructor(private statisticsService: StatisticsService, private userService:UserService)  { }
 
     ngOnInit() {
+
         this.populateStatistics();
 
         this.interval = setInterval(() => { 
@@ -48,10 +49,10 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       }
 
       private populateStatistics() {
-        this.statisticsService.getPlanningStatistics()
-        .subscribe(
-          v => this.planningStatistics = v
-        );
+          this.statisticsService.getPlanningStatistics()
+          .subscribe(
+            v => this.planningStatistics = v
+          );
       }
 
     logout() {

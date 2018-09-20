@@ -1,5 +1,3 @@
-Done.   StateInitialiserState -> On Update of Days to Compeletion update all planning apps using it (PUT)
-                      -> Delete, do not remove, but soft delete if old planning apps are linked to it
 
 Concurrency -> prevent two people from working on the same app at the same time -> 
                         need to ad user data - grey out 'Complete' button
@@ -13,8 +11,8 @@ Environmnent -> read config files based on environment settings
 
 Archive PLanning apps
 
-Terminate PLanning apps
-
-BUG - Do not allow all states to be deleted!!!!!!
-
-        (Skip/Take) without OrderBy
+//Secure all controllers
+*CustomerController.cs		        *StateInitialiserController.cs
+DrawingsController.cs			*PlanningAppController.cs		*StateInitialiserStateController.cs
+                			*PlanningAppStateController.cs		*StateStatusController.cs
+HomeController.cs			*PlanningStatisticsController.cs		

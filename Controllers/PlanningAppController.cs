@@ -12,10 +12,11 @@ using vega.Extensions.DateTime;
 using Microsoft.Extensions.Options;
 using vega.Core.Models.Settings;
 using vega.Core.Utils;
+using Microsoft.AspNetCore.Authorization;
 
-  
 namespace vega.Controllers
 {
+    [Authorize(Policy = "ApiUser")]
     [Route("/api/planningapps")]
     public class PlanningAppController : Controller
     {

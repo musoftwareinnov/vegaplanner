@@ -1,3 +1,4 @@
+import { AuthGuard } from './../../auth.guard';
 import { Customer } from './../../models/customer';
 import * as _ from 'underscore';
 import { ProgressService } from '../../services/progress.service';
@@ -97,9 +98,13 @@ export class PlanningAppFormComponent implements OnInit {
     private progressService: ProgressService,
     private drawingServices: DrawingService,
     private planningAppService: PlanningAppService,
-    private location: Location) { 
+    private location: Location,
+    private authGuard:AuthGuard) { 
 
-    route.params.subscribe(p => { this.planningApp.id = +p['id'] || 0}); }
+      //authGuard.canActivate();
+      route.params.subscribe(p => { this.planningApp.id = +p['id'] || 0});  
+
+    }
     
   ngOnInit() {
     this.drawingServices.getDrawings(this.planningApp.id)
@@ -112,13 +117,13 @@ export class PlanningAppFormComponent implements OnInit {
         if (err.status == 404) {
           this.router.navigate(['/planningapps']);
           return; 
+        }  
+        else if (err.status == 401){ 
+          console.warn("error status => "  + err.status);
+          this.router.navigate(['/login']);
+          return;        
         }
     });
-
-    // this.refreshData();
-    // this.interval = setInterval(() => { 
-    //     this.refreshData(); 
-    // }, 5000);
   }
 
   refreshData() {

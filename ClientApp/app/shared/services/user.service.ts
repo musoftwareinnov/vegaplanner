@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { UserRegistration } from '../models/user.registration.interface';
 import { ConfigService } from '../utils/config.service';
@@ -6,9 +6,13 @@ import {BaseService} from "./base.service";
 import { Observable } from 'rxjs/Rx';
 import { BehaviorSubject } from 'rxjs/Rx'; 
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+
+
 
 // Add the RxJS Observable operators we need in this app.
 import '../../rxjs-operators';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 
@@ -24,21 +28,18 @@ export class UserService extends BaseService {
 
   private loggedIn = false;
 
-  constructor(private http: Http, private configService: ConfigService, private localSt:LocalStorageService, private sessionSt:SessionStorageService) {
+  constructor(private http: Http, private configService: ConfigService, 
+                                  private localSt:LocalStorageService, 
+                                  )  {
     super();
-  
-    // localSt.store('auth_token', "fffff");
-    // localSt.clear('auth_token');
-    this.loggedIn = !!localSt.retrieve('authToken');
 
-    console.log("logged In:" + this.loggedIn);
     // ?? not sure if this the best way to broadcast the status but seems to resolve issue on page refresh where auth status is lost in
     // header component resulting in authed user nav links disappearing despite the fact user is still logged in
     this._authNavStatusSource.next(this.loggedIn);
     this.baseUrl = configService.getApiURI();
   }
 
-    register(email: string, password: string, firstName: string, lastName: string,location: string): Observable<UserRegistration> {
+  register(email: string, password: string, firstName: string, lastName: string,location: string): Observable<UserRegistration> {
     let body = JSON.stringify({ email, password, firstName, lastName,location });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -59,7 +60,11 @@ export class UserService extends BaseService {
       )
       .map(res => res.json())
       .map(res => {
-        this.localSt.store('authToken', res.authToken);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('authToken', res.authToken);
+          if(res.authToken )
+            console.log("UserService Login succeeded: webtoken obtained for " + userName);
+       }
         this.loggedIn = true;
         this._authNavStatusSource.next(true);
         this._authNavUserNameSource.next(res.userName);
@@ -69,7 +74,10 @@ export class UserService extends BaseService {
   }
 
   logout() {
-    this.localSt.clear('authToken')
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('authToken')
+      console.log("UserService Logout succeeded");
+    }
     this.loggedIn = false;
     this._authNavStatusSource.next(false);
     this._authNavUserNameSource.next("");
@@ -77,5 +85,22 @@ export class UserService extends BaseService {
 
   isLoggedIn() {
     return this.loggedIn;
+  }
+
+  getUwt() {
+    var httpHeaders = new HttpHeaders;
+    if(this.isLoggedIn()) {
+      //console.log("UserService getUserWebTokenHeader:" + localStorage.getItem('authToken'));
+      if (typeof window !== 'undefined') {
+        //console.log("UserService getting webtoken:" + localStorage.getItem('authToken'));
+        var webToken = localStorage.getItem('authToken');
+        var httpHeaders = new HttpHeaders(
+          {
+            'Content-Type': 'application/json',
+            'Authorization':`Bearer ${webToken}`
+          });
+      }
+    }
+    return httpHeaders;
   }
 }

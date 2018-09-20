@@ -13,7 +13,7 @@ namespace vega.Core
 
         List<StateStatus> GetStateStatusListCustomer (int CustomerId);
         Task<List<StateStatus>> GetStateStatusList ();
-
+   
         Task<List<StateStatus>> GetStateStatusListInProgress();
         StateStatus GetStateStatus(int id);
     }

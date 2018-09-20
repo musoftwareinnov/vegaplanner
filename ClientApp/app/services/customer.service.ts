@@ -1,39 +1,35 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Customer } from '../models/customer';
+import { JwtHeader } from '../shared/utils/jwt.header';
 
 @Injectable()
 export class CustomerService {
 
   private readonly customersEndpoint = '/api/customers';
-  constructor(private http: HttpClient) { }
-
+  private httpHeaders = new HttpHeaders;
+  
+  constructor(private http: HttpClient, private jwtHeader:JwtHeader) { 
+    //getJwtHeader injects user service to get Web Token and create header
+    this.httpHeaders = jwtHeader.getJwtHeader();
+  }
   getCustomers(filter:any)  {
     console.warn("Filter " + this.toQueryString(filter));
-    return this.http.get<any>(this.customersEndpoint  + '?' + this.toQueryString(filter))
-      //.map(res => res.json());
+    return this.http.get<any>(this.customersEndpoint  + '?' + this.toQueryString(filter), { headers: this.httpHeaders })
   }
 
   getCustomer(id: number)  {
-    return this.http.get<Customer>(this.customersEndpoint + '/' + id)
-      //.map(res => res.json());
+    return this.http.get<Customer>(this.customersEndpoint + '/' + id, { headers: this.httpHeaders })
   }
 
   create(customer:any) {
     customer.id=0;
-    return this.http.post(this.customersEndpoint, customer)
-      //.map(res => res.json());
-
-    //   postSubscription(model: IPostSubscription): Observable<ISubscription> {
-    //     return this.http.post<ISubscription>(this.originUrl + '/api/subscriptions', model)
-    //         .catch((reason: any) => this.handleError(reason));
-    // }
+    return this.http.post(this.customersEndpoint, customer, { headers: this.httpHeaders })
   }
 
   update(customer:any) {
     customer.planningApps = null; //Ignore planning applications - TODO create api with no app options
-    return this.http.put(this.customersEndpoint + '/' + customer.id, customer)
-      //.map(res => res.json());
+    return this.http.put(this.customersEndpoint + '/' + customer.id, customer, { headers: this.httpHeaders })
   }
 
   toQueryString(obj:any) {

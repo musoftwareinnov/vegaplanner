@@ -13,9 +13,11 @@ using Microsoft.Extensions.Options;
 using vega.Core.Models.Settings;
 using vega.Core.Utils;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace vega.Controllers
 {
+    [Authorize(Policy = "ApiUser")]
     [Route("/api/planningappstate")]
     public class PlanningAppStateController : Controller
     {
@@ -69,7 +71,7 @@ namespace vega.Controllers
             
             if(dueByDate != planningAppState.DueByDate) {
                 planningAppState.UpdateCustomDueByDate(dueByDate);
-                planningApp.generateDueByDates();  //Regenerate due by dates
+                planningApp.updateDueByDates();  //Regenerate due by dates
             }
 
             //Set any fields in the PlanningApp table that have been set in the Rule List

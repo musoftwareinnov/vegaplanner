@@ -1,8 +1,10 @@
+import { UserService } from './../../shared/services/user.service';
 import { StateStatusService } from './../../services/statestatus.service';
 import { StateStatus } from './../../models/statestatus';
 import { PlanningAppService } from '../../services/planningapp.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastyService } from 'ng2-toasty';
+import { AuthGuard } from '../../auth.guard';
 
 @Component({
   templateUrl: './planningapp-list.component.html'
@@ -21,26 +23,32 @@ export class PlanningAppListComponent implements OnInit {
 
   constructor(private PlanningAppService: PlanningAppService,
               private StateStatusService: StateStatusService,
-              private toastyService: ToastyService,) { }
+              private toastyService: ToastyService,
+              private authGuard:AuthGuard,
+              private userService: UserService) {
+
+               authGuard.canActivate();
+               }
 
   ngOnInit() {
-    this.toastyService.wait({
-      title: 'Initialising', 
-      msg: 'Loading Applications.....',
-      theme: 'bootstrap',
-      showClose: false,
-      timeout: 2000
-    });
-    this.populatePlanningAppSummary();
-    this.loadStatuses();
-    this.refreshData();
-    this.interval = setInterval(() => { 
-        this.refreshData(); 
-    }, 5000);
+      this.toastyService.wait({
+        title: 'Initialising', 
+        msg: 'Loading Applications.....',
+        theme: 'bootstrap',
+        showClose: false,
+        timeout: 2000
+      });
+      this.loadStatuses();
+      this.refreshData();
+      this.interval = setInterval(() => { 
+          this.refreshData(); 
+      }, 5000);
+  
   }
 
   refreshData() {
-    this.populatePlanningAppSummary();
+      console.info("PlanningAppListComponent: Heartbeat");
+      this.populatePlanningAppSummary();
   }
 
   private loadStatuses() {
@@ -59,8 +67,14 @@ export class PlanningAppListComponent implements OnInit {
   }
 
   onStateFilterChange() {
-    console.warn("state = " + this.query.planningAppType);
+    console.info("PlanningAppListComponent: Type Change = " + this.query.planningAppType);
     this.populatePlanningAppSummary();
+  }
+
+  ngOnDestroy() {   //Stop the planning service being called when user logs off
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
 }
 
