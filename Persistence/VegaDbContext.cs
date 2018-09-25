@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using vega.Core.Models;
 using vega.Core.Models.States;
+using vegaplanner.Core.Models;
 using vegaplanner.Core.Models.Security;
 
 namespace vega.Persistence
@@ -25,6 +26,7 @@ namespace vega.Persistence
         public DbSet<Address> CustomerAddress { get; set; }
         public DbSet<Address> DevelopmentAddress { get; set; }
         public DbSet<StateInitialiserCustomField> StateInitialiserCustomFields { get; set; }
+        public DbSet<DevelopmentType> DevelopmentType { get; set; }
 
         //Security based contexts
         public DbSet<InternalAppUser> AppUsers { get; set; }

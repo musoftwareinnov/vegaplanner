@@ -55,7 +55,6 @@
     "typescript": "2.4.2",
     "underscore": "^1.9.1",
     "url-loader": "0.5.9",
-    "webpack": "2.5.1",
     "webpack-hot-middleware": "2.18.2",
     "webpack-merge": "4.1.0",
     "zone.js": "0.8.12"
@@ -71,6 +70,7 @@
     "ng2-toasty": "^4.0.3",
     "ngx-bootstrap": "^3.0.1",
     "ngx-webstorage": "^2.0.1",
-    "popper.js": "^1.14.4"
+    "popper.js": "^1.14.4",
+    "webpack": "^2.5.1"
   }
 }

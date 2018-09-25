@@ -12,14 +12,14 @@ namespace vega.Controllers
     [Route("/api/vehicles")]
     public class VehiclesController : Controller
     {
-        private readonly IMapper mapper;   
+        private readonly IMapper mapper;    
         private readonly IVehicleRepository repository;
         private readonly IUnitOfWork unitOfWork;
         public VehiclesController(IMapper mapper, IVehicleRepository repository, IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
             this.repository = repository;
-            this.mapper = mapper;
+            this.mapper = mapper;   
 
         }
 

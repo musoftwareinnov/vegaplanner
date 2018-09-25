@@ -72,6 +72,7 @@ export class PlanningAppListComponent implements OnInit {
   }
 
   ngOnDestroy() {   //Stop the planning service being called when user logs off
+    console.warn("DESTROY CALLED")
     if (this.interval) {
       clearInterval(this.interval);
     }

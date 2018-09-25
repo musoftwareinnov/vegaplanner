@@ -75,7 +75,6 @@ export class PlanningAppStateFormComponent implements OnInit {
         route.params.subscribe(p => { this.planningAppState.id = +p['id'] || 0})
         route.params.subscribe(pid => { this.planningAppId = +pid['planningAppId'] || 0})
     
-        console.warn("PID=" + this.planningAppId);
         //Calender Specific Settings
         this.maxDate.setDate(this.maxDate.getDate() + 7);
         this.bsRangeValue = [this.bsValue, this.maxDate];

@@ -22,7 +22,7 @@ export class PlanningAppNewComponent implements OnInit {
   };
   customerSelect:any[] = [];
   stateGeneratorSelect:any[] = [];
-  //addContactDetails:boolean;
+
 
   generator: PlanningAppGenerator = {
     customerId: 0,

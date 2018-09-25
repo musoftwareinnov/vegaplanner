@@ -129,8 +129,22 @@ namespace vega.Controllers
             else 
                 {
                 //No state specified just save details that can be modified by the user
+                //PlanningApp res = mapper.Map<UpdatePlanningAppResource, PlanningApp>(planningResource);
+
+                //Refactor!!!!!!
                 planningApp.Notes = planningResource.Notes;
-                }     
+                planningApp.Developer.FirstName = planningResource.Developer.FirstName;
+                planningApp.Developer.LastName = planningResource.Developer.LastName;
+                planningApp.Developer.EmailAddress = planningResource.Developer.EmailAddress;
+                planningApp.Developer.TelephoneMobile = planningResource.Developer.TelephoneMobile;
+                planningApp.Developer.TelephoneWork = planningResource.Developer.TelephoneWork;
+
+                planningApp.DevelopmentAddress.CompanyName = planningResource.DevelopmentAddress.CompanyName;
+                planningApp.DevelopmentAddress.AddressLine1 = planningResource.DevelopmentAddress.AddressLine1;
+                planningApp.DevelopmentAddress.AddressLine2 = planningResource.DevelopmentAddress.AddressLine2;
+                planningApp.DevelopmentAddress.Postcode = planningResource.DevelopmentAddress.Postcode;
+                planningApp.DevelopmentAddress.GeoLocation = planningResource.DevelopmentAddress.GeoLocation;               
+                }    
       
             repository.UpdatePlanningApp(planningApp);
             await unitOfWork.CompleteAsync();

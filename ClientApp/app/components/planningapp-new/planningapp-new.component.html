@@ -37,7 +37,7 @@
 
     <div class="form-group">
       <div class="form-check">
-        <input #altContact type="checkbox" [checked]="false" class="form-check-input"  id="exampleCheck1" [(ngModel)]="generator.addContactDetails">
+        <input #altContact type="checkbox" [checked]="false" class="form-check-input"  id="exampleCheck1" [(ngModel)]="generator.addContactDetails" name="altcontact">
         <label class="form-check-label" for="exampleCheck1">Add developer contact details</label>
       </div>
     </div>
@@ -87,7 +87,7 @@
 
     <div class="form-group">
         <div class="form-check">
-          <input #altAddress type="checkbox" [checked]="false" class="form-check-input"  id="altAddress" [(ngModel)]="generator.addContactDetails">
+          <input #altAddress type="checkbox" [checked]="false" class="form-check-input"  id="altAddress" [(ngModel)]="generator.addContactDetails" name="altContact">
           <label class="form-check-label" for="exampleCheck1">Add development address</label>
         </div>
       </div>

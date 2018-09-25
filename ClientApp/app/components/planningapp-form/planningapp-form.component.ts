@@ -184,33 +184,29 @@ export class PlanningAppFormComponent implements OnInit {
         );
   }
 
-  saveNotes() {
-    this.plannningNotes.id = this.planningApp.id;
-    this.plannningNotes.notes = this.planningApp.notes;
-    console.warn("notes:" + this.plannningNotes.notes);
-    var result$ = this.planningAppService.saveNotes(this.plannningNotes )
-    result$.subscribe(
-      planningApp => {
-        this.toastyService.success({
-          title: 'Success', 
-          msg: 'Notes updated ',
-          theme: 'bootstrap',
-          showClose: true,
-          timeout: 5000
-        })
-      });
-  }
+  // saveNotes() {
+  //   this.plannningNotes.id = this.planningApp.id;
+  //   this.plannningNotes.notes = this.planningApp.notes;
+  //   var result$ = this.planningAppService.saveNotes(this.plannningNotes )
+  //   result$.subscribe(
+  //     planningApp => {
+  //       this.toastyService.success({
+  //         title: 'Success', 
+  //         msg: 'Notes updated ',
+  //         theme: 'bootstrap',
+  //         showClose: true,
+  //         timeout: 5000
+  //       })
+  //     });
+  // }
 
   saveDevelopmentDetails() {
-    this.plannningNotes.id = this.planningApp.id;
-    this.plannningNotes.notes = this.planningApp.notes;
-    console.warn("notes:" + this.plannningNotes.notes);
     var result$ = this.planningAppService.saveDevelopmentDetails(this.planningApp )
     result$.subscribe(
       planningApp => {
         this.toastyService.success({
           title: 'Success', 
-          msg: 'Notes updated ',
+          msg: 'Planning Details updated ',
           theme: 'bootstrap',
           showClose: true,
           timeout: 5000

@@ -32,6 +32,8 @@ namespace vega.Mapping.MappingProfiles
                     
             
             CreateMap<CreatePlanningAppResource, PlanningApp>();
+
+            CreateMap<UpdatePlanningAppResource, PlanningApp>();
         }
     }
 }

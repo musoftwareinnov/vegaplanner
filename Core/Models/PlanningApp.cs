@@ -8,6 +8,7 @@ using vega.Core.Models.States;
 using vega.Core.Utils;
 using vega.Extensions.DateTime;
 using vega.Persistence;
+using vegaplanner.Core.Models;
 
 namespace vega.Core.Models
 {
@@ -25,8 +26,11 @@ namespace vega.Core.Models
         public string ApplicationNo { get; set; }
         public Contact Developer { get; set; }
         public Address DevelopmentAddress { get; set; }
-
+        
+        // public int DevelopmentTypeId { get; set; }
+        // public DevelopmentType DevelopmentType { get; set; }
         public String SearchCriteria { get; set; }
+
         // public Contact CaseOfficer { get; set; }
         // public string CaseOfficer  { get; set; }
         // 
@@ -266,12 +270,12 @@ namespace vega.Core.Models
                                         + customer.CustomerContact.LastName.Substring(0,1)
                                         + customer.CustomerAddress.Postcode.Substring(0,3)
                                         + "/"
-                                        + this.Id.ToString("D3");
+                                        + this.Id.ToString("D5");
         }
 
         public void SetCurrent(PlanningAppState planningAppState) {
 
-            foreach ( var state  in PlanningAppStates) {
+            foreach ( var state  in PlanningAppStates) {   
                 state.CurrentState = false;
             }
             PlanningAppStates[PlanningAppStates.IndexOf(planningAppState)].CurrentState = true;

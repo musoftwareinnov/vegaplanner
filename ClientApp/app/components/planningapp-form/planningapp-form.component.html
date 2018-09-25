@@ -297,13 +297,21 @@
  
           <form class="form-horizontal">
               <div class="form-group">
-                  <label class="control-label col-sm-2" for="firstName">Developer Name </label>
+                  <label class="control-label col-sm-2" for="firstName">First Name </label>
                   <div class="col-sm-3">
-                    <input id="developerName" type="text"  class="form-control" [(ngModel)]="planningApp.developer.fullName" name="developerName">
+                    <input id="firstName" type="text"  class="form-control" [(ngModel)]="planningApp.developer.firstName" name="firstName">
                   </div>
                   <div class="col-sm-8">
                   </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="lastName">Last Name </label>
+                    <div class="col-sm-3">
+                      <input id="lastName" type="text"  class="form-control" [(ngModel)]="planningApp.developer.lastName" name="lastName">
+                    </div>
+                    <div class="col-sm-8">
+                    </div>
+                  </div>
               <div class="form-group">
                   <label class="control-label col-sm-2" for="address1">Email</label>
                   <div class="col-sm-3">
@@ -331,7 +339,7 @@
               <div class="form-group">
                   <label class="control-label col-sm-4"></label>
                   <div class="col-sm-1">
-                      <button class="btn btn-primary">Save</button>        
+                      <button class="btn btn-primary" (click)="saveDevelopmentDetails()">Save</button>        
                   </div>
               </div>  
           </form>
@@ -382,7 +390,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-4"></label>
                     <div class="col-sm-1">
-                        <button class="btn btn-primary">Save</button>        
+                        <button class="btn btn-primary" (click)="saveDevelopmentDetails()">Save</button>        
                     </div>
                 </div> 
           </form>
@@ -399,6 +407,7 @@
     </div>
     <img *ngFor="let drawing of drawings" src="/uploads/{{ drawing.fileName }}" class="img-thumbnail">
   </div>
+
   <div role="tabpanel" class="tab-pane" id="notes">
     <div class="well">
         <div class="form-group">
@@ -407,7 +416,7 @@
   
               </div>  
               <div>
-                <button  class="btn btn-primary" type="button" (click)="saveNotes()">Save</button> 
+                <button  class="btn btn-primary" type="button" (click)="saveDevelopmentDetails()">Save</button> 
               </div>
                       
             </div>

@@ -8,7 +8,6 @@ namespace vega.Controllers.Resources.Contact
         public string FirstName { get; set;}
         [StringLength(30)]
         public string LastName { get; set;}
-
         [StringLength(30)]
         public string FullName { get; set;}
         [StringLength(30)]

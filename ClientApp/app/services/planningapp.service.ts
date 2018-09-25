@@ -5,8 +5,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { StateAction } from '../constants';
-import { JwtHeader } from '../shared/utils/jwt.header';
 import { UserService } from '../shared/services/user.service';
+import { HttpJwtService } from '../shared/services/httpJwt.service';
+
 
 @Injectable()
 export class PlanningAppService {
@@ -15,38 +16,38 @@ export class PlanningAppService {
 
   private httpHeaders = new HttpHeaders;
 
-  constructor(private http: HttpClient, private jwtHeader:JwtHeader, private userService:UserService) { }
+  constructor(private http: HttpClient, 
+              private userService:UserService,
+              private httpJwtService:HttpJwtService) { }
 
   getPlanningAppSummary(filter:any) {
-    return this.http.get<any>(this.planningappsEndpoint + '?' + this.toQueryString(filter), { headers: this.userService.getUwt() });
+    return this.httpJwtService.get<PlanningApp>(this.planningappsEndpoint + '?' + this.toQueryString(filter));
   }
 
   getPlanningApp(id:any) {
-    //  return this.restDecorService.get<PlanningApp>(this.planningappsEndpoint + '/' + id)
-    return this.http.get<PlanningApp>(this.planningappsEndpoint + '/' + id, { headers: this.userService.getUwt() });
+    return this.httpJwtService.get<PlanningApp>(this.planningappsEndpoint + '/' + id)
   }
 
   nextState(changePlanningAppState: ChangePlanningAppState) {
     changePlanningAppState.method = StateAction.Next;  //move to next state
-    return this.http.put(this.planningappsEndpoint + '/' + changePlanningAppState.id, changePlanningAppState, { headers: this.userService.getUwt() })
+    return this.httpJwtService.put<ChangePlanningAppState>(this.planningappsEndpoint + '/' + changePlanningAppState.id, changePlanningAppState)
   }
 
   terminate(changePlanningAppState: ChangePlanningAppState) {
     changePlanningAppState.method = StateAction.Terminate; 
-    return this.http.put(this.planningappsEndpoint + '/' + changePlanningAppState.id, changePlanningAppState, { headers: this.userService.getUwt() })
+    return this.httpJwtService.put<ChangePlanningAppState>(this.planningappsEndpoint + '/' + changePlanningAppState.id, changePlanningAppState)
   }
 
   saveNotes(planningNotes: SavePlanningNotes) {
-    return this.http.put(this.planningappsEndpoint + '/' + planningNotes.id, planningNotes, { headers: this.userService.getUwt()})
+    return this.httpJwtService.put<SavePlanningNotes>(this.planningappsEndpoint + '/' + planningNotes.id, planningNotes)
   }
 
   saveDevelopmentDetails(planningApp: PlanningApp) {
-    return this.http.put(this.planningappsEndpoint + '/' + planningApp.id, planningApp, { headers: this.userService.getUwt() })
+    return this.httpJwtService.put<PlanningApp>(this.planningappsEndpoint + '/' + planningApp.id, planningApp)
   }
   
   generatePlanningApp(planningAppGenerator:PlanningAppGenerator) {
-    console.warn(planningAppGenerator);
-    return this.http.post<PlanningApp>(this.planningappsEndpoint, planningAppGenerator, { headers: this.userService.getUwt() })
+    return this.httpJwtService.post<PlanningApp>(this.planningappsEndpoint, planningAppGenerator)
   }
 
   toQueryString(obj:any) {

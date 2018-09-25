@@ -53,8 +53,8 @@ import { Ng2Webstorage} from 'ngx-webstorage';
 import { AccountModule }  from './components/account/account.module';
 import { ConfigService } from './shared/utils/config.service';
 import { AuthGuard } from './auth.guard';
-import { JwtHeader } from './shared/utils/jwt.header';
 import { StorageServiceModule} from 'angular-webstorage-service';
+import { HttpJwtService } from './shared/services/httpJwt.service';
 
 
 @NgModule({
@@ -149,7 +149,7 @@ import { StorageServiceModule} from 'angular-webstorage-service';
             useClass: AuthenticateXHRBackend
           }],
         AuthGuard,
-        JwtHeader
+        HttpJwtService
     ]
 })
 export class AppModuleShared {

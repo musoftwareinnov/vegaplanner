@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StateInitialiser } from '../models/stateinitialiser';
-import { JwtHeader } from '../shared/utils/jwt.header';
+import { HttpJwtService } from '../shared/services/httpJwt.service';
 
 @Injectable()
 export class StateInitialiserService {
@@ -9,24 +9,19 @@ export class StateInitialiserService {
   private readonly stateInitialiserEndpoint = '/api/stateinitialisers';
   private httpHeaders = new HttpHeaders;
   
-  constructor(private http: HttpClient, private jwtHeader:JwtHeader) { 
-    //getJwtHeader injects user service to get Web Token and create header
-    this.httpHeaders = jwtHeader.getJwtHeader();
+  constructor(private http: HttpClient, private httpJwtService:HttpJwtService) { 
   }
 
   getStateInitialiserList(filter:any)  {
-    return this.http.get<any>(this.stateInitialiserEndpoint + '?' + this.toQueryString(filter),{ headers: this.httpHeaders })
-      //.map(res => res.json());
+    return this.httpJwtService.get<any>(this.stateInitialiserEndpoint + '?' + this.toQueryString(filter))
   }
 
   getStateInitialiser(id: number)  {
-    return this.http.get<StateInitialiser>(this.stateInitialiserEndpoint + '/' + id, { headers: this.httpHeaders })
-      //.map(res => res.json());
+    return this.httpJwtService.get<StateInitialiser>(this.stateInitialiserEndpoint + '/' + id)
   }
 
   create(stateInitialiser:any) {
-    return this.http.post(this.stateInitialiserEndpoint, stateInitialiser, { headers: this.httpHeaders })
-     // .map(res => res.json());
+    return this.httpJwtService.post<any>(this.stateInitialiserEndpoint, stateInitialiser)
   }
 
   toQueryString(obj:any) {

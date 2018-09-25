@@ -2,7 +2,7 @@ import { StateStatus } from './../models/statestatus';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Statistics } from '../models/statistics';
-import { JwtHeader } from '../shared/utils/jwt.header';
+import { HttpJwtService } from '../shared/services/httpJwt.service';
 
 @Injectable()
 export class StatisticsService {
@@ -10,12 +10,9 @@ export class StatisticsService {
   private readonly statestatusEndpoint = '/api/planningappstatistics';
   private httpHeaders = new HttpHeaders;
   
-  constructor(private http: HttpClient, private jwtHeader:JwtHeader) { 
-    //getJwtHeader injects user service to get Web Token and create header
-    this.httpHeaders = jwtHeader.getJwtHeader();
-  }
+  constructor(private http: HttpClient, private httpJwtService:HttpJwtService) { }
 
   getPlanningStatistics()  {
-    return this.http.get<Statistics>(this.statestatusEndpoint,{ headers: this.httpHeaders })
+    return this.httpJwtService.get<Statistics>(this.statestatusEndpoint)
   }
 }
