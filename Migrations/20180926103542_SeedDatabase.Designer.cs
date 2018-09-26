@@ -11,7 +11,7 @@ using vega.Persistence;
 namespace vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    [Migration("20180919092832_SeedDatabase")]
+    [Migration("20180926103542_SeedDatabase")]
     partial class SeedDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -448,6 +448,22 @@ namespace vega.Migrations
                     b.HasIndex("FeatureId");
 
                     b.ToTable("VehicleFeatures");
+                });
+
+            modelBuilder.Entity("vegaplanner.Core.Models.DevelopmentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DevelopmentType");
                 });
 
             modelBuilder.Entity("vegaplanner.Core.Models.Security.AppUser", b =>

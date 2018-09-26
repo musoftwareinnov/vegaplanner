@@ -1,4 +1,5 @@
 
+FROM node:8.2
 FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
 
@@ -9,6 +10,7 @@ RUN dotnet restore
 # Copy everything else and build
 COPY . ./
 RUN dotnet publish -c Release -o out
+
 
 # Build runtime image
 FROM microsoft/dotnet:aspnetcore-runtime

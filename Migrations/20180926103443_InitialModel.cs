@@ -78,6 +78,20 @@ namespace vega.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DevelopmentType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LastUpdate = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DevelopmentType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Features",
                 columns: table => new
                 {
@@ -686,6 +700,9 @@ namespace vega.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "DevelopmentType");
 
             migrationBuilder.DropTable(
                 name: "Drawings");

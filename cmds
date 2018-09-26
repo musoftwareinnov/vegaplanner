@@ -11,6 +11,12 @@
 
   npm webpack   #check build is okay
 
+npm install @ngtools/webpack@1.10.2 --only=dev -- to build with node
+'If problems!!!
+ npm cache clean --force
+ npm install
+ npm install --save-dev @angular/cli@latest
+
 
 #change env to production
 export ASPNETCORE_ENVIRONMENT=Production

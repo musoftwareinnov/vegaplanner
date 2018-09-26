@@ -449,6 +449,22 @@ namespace vega.Migrations
                     b.ToTable("VehicleFeatures");
                 });
 
+            modelBuilder.Entity("vegaplanner.Core.Models.DevelopmentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DevelopmentType");
+                });
+
             modelBuilder.Entity("vegaplanner.Core.Models.Security.AppUser", b =>
                 {
                     b.Property<string>("Id")

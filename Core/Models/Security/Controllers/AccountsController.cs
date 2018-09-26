@@ -23,8 +23,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace vegaplanner.Controllers
 {
-    [Authorize(Policy = "ApiUser")]
-    [Route("api/[controller]/[action]")]
+    //[Authorize(Policy = "ApiUser")]
+    [Route("api/[controller]")]
     public class AccountsController : Controller
     {
         private readonly IUserRepository userRepository;

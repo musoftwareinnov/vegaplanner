@@ -1,3 +1,4 @@
+import { Developer } from './../../models/developer';
 import { PlanningApp } from './../../models/planningapp';
 import { Component, OnInit } from '@angular/core';
 import { CustomerSelect, Customer } from '../../models/customer';
@@ -64,7 +65,6 @@ export class PlanningAppNewComponent implements OnInit {
 
     this.stateInitialiserService.getStateInitialiserList(this.query)
       .subscribe(stateGeneratorSelect => this.stateGeneratorSelect = stateGeneratorSelect);
-
   }
 
   onGeneratorChange(){

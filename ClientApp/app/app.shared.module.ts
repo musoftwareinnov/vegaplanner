@@ -55,6 +55,7 @@ import { ConfigService } from './shared/utils/config.service';
 import { AuthGuard } from './auth.guard';
 import { StorageServiceModule} from 'angular-webstorage-service';
 import { HttpJwtService } from './shared/services/httpJwt.service';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 
 @NgModule({
@@ -79,6 +80,7 @@ import { HttpJwtService } from './shared/services/httpJwt.service';
         CustomerFormComponent,
         CustomerPlanningAppListComponent,
         PaginationComponent,
+        SpinnerComponent
     ],
     exports: [
         ButtonsModule,
