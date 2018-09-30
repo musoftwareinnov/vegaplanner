@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using vega.Core.Models.Settings;
 using vega.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
+using vegaplanner.Core.Models.Security.Helpers;
 
 namespace vega.Controllers
 {
@@ -62,10 +63,12 @@ namespace vega.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            Customer c = new Customer();
-            
- 
             var customer = mapper.Map<CustomerResource, Customer>(customerResource);
+
+            if (customerRepository.CustomerExists(customer))
+            {
+                return BadRequest(Errors.AddErrorToModelState("login_failure", "Username already taken.", ModelState));
+            }
 
             customerRepository.Add(customer);
 

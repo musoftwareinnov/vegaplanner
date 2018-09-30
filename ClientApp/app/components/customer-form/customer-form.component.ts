@@ -25,6 +25,8 @@ export class CustomerFormComponent implements OnInit {
       telephoneWork:"",
       notes: "",
     };
+
+  errors: string = "";
     
   constructor(
     private route: ActivatedRoute,
@@ -55,21 +57,21 @@ export class CustomerFormComponent implements OnInit {
 
     console.warn("Submit -> "  + this.customer.id);
     var result$ = (this.customer.id) ? this.customerService.update(this.customer) : this.customerService.create(this.customer); 
-
+    //this.errors='';
 
     result$.subscribe(
 
       customer => {
       this.toastyService.success({
-        title: 'Success', 
+        title: 'Success',  
         msg: 'Customer was sucessfully saved.',
         theme: 'bootstrap',
         showClose: true,
         timeout: 5000
-      })
-  
+      }),
       // this.router.navigate(['/customers/', customer.id])
       this.router.navigate(['/customers'])
-    });
+      },
+      error => this.errors = "Name already taken");
   }
 }

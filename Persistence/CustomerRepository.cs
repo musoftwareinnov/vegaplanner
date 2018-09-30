@@ -72,5 +72,13 @@ namespace vega.Persistence
             vegaDbContext.Update(customer);
 
         }
+
+        public bool CustomerExists(Customer customer)
+        {
+            return vegaDbContext.Customers
+                .Where(fn => fn.CustomerContact.FirstName == customer.CustomerContact.FirstName
+                        && fn.CustomerContact.LastName == customer.CustomerContact.LastName).Count() > 0;
+
+        }
     }
 }
